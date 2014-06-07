@@ -47,7 +47,7 @@ CREATE TABLE domicilios (
  * - participa en contrato abierto:
  *      bool si tiene o no registros en la tabla (no existente) de productis
  *
- * @aka Vendedor, entidad vendedora
+ * @aka Vendedor, entidad vendedora, representante legal, rep legal
  *
  * @todo el ID debería de ser el NIT?
  * @link http://guatecompras.gt/info/preguntasFrecProv.aspx#_lbl10
@@ -67,10 +67,43 @@ CREATE TABLE proveedores (
     , FOREIGN KEY (id_domicilo_comercial) REFERENCES domicilios(id)
     , url                 varchar(255) NOT NULL DEFAULT '',
     , email               varchar(255) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-    , description varchar(255) NOT NULL DEFAULT ''
-    , created     datetime      NOT NULL
-    , updated     datetime     NOT NULL
-    , foreign_id  INT UNSIGNED NOT NULL
-    , FOREIGN KEY (foreign_id) REFERENCES foreign(id)
+/**
+ * Representante Legal
+ *
+ * La estructura encontrada en GTC mostró que se usa la misma vista y la misma data tanto para repslegales como para
+ * los proveedores
+ *
+ * @aka rep legal
+ *
+ * @todo el ID debería de ser el NIT?
+ */
+DROP TABLE IF EXISTS representante_legal;
+CREATE TABLE representante_legal (
+    id            int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+    , nombre        varchar(128) NOT NULL DEFAULT ''
+    , nit                 varchar(32)  NOT NULL DEFAULT ''
+    , nombre_comercial_1
+    , nombre_comercial_2
+    , statsus
+    , tiene_acceso_sistema bool NOT NULL, -- En GTC se muestra como CON/SIN CONTRASEÑA
+    , id_domicilio_fiscal
+    , FOREIGN KEY (id_domicilo_fiscal) REFERENCES domicilios(id)
+    , id_domicilio_comercial
+    , FOREIGN KEY (id_domicilo_comercial) REFERENCES domicilios(id)
+    , url                 varchar(255) NOT NULL DEFAULT '',
+    , email               varchar(255) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/**
+ * Relación de muchos a muchos. Un representante legal puede representar muchas empresas. Una empresa puede estar
+ * representada por muchos representantes.
+ */
+DROP TABLE IF EXISTS provevedor_representado_por;
+CREATE TABLE provevedor_representado_por (
+    , id_proveedor INT UNSIGNED NOT NULL
+    , FOREIGN KEY (proveedor_id)           REFERENCES foreign(id)
+    , id_representante_legal  INT UNSIGNED NOT NULL
+    , FOREIGN KEY (id_representante_legal) REFERENCES foreign(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
