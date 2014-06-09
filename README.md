@@ -1,7 +1,15 @@
 guatecompras-transparente
 =========================
 
-Scrapper del portal de Guatecompras
+Guatecompras es el portal del gobierno donde intenta hacer transparente todas las compras realizadas para el gobierno. El gobierno publica sus intenciones de compra, los proveedores ofertan y se le asigna el proyecto a la mejor oferta. Es un secreto a voces que se puede engañar al sistema y hay muchos proyectos que se terminan asignando a familiares, conocidos y asociados con los que inflan los precios y se reparten la diferencia.
+
+Guatecompras Transparente busca ayudar a los periodistas e investigadores a evidenciar prácticas de corrupción por parte de las municipalidades y empresas oferentes que el portal de Guatecompras no hace ver tan fácilmente automatizando la comparación entre proyectos.  Guatecompras Transparente es un scrapper de datos que almacenará toda la información recopilada del portal de Guatecompras para tener un acceso público y transparente.
+
+Con el scrapper en mente, se han visto varios casos de uso de datos que se podrían encontrar que no son visibles actualmente en el portal de Guatecompras, como hacer búsquedas acerca de las licitaciones ganadas por empresas y evidenciar si estas fueron creadas específicamente para las licitaciones que ganaron o si por medio de referencias entre familiares reciben prioridad en los concursos.
+
+Guatecompras Transparente es el primer proyecto del que sabemos tenga como meta ayudar a la transparencia en Guatemala creado por el público con una visión totalmente abierta. El scrapper puede servir para muchos proyectos que ya hemos identificado pero todos necesitan algún dataset para análisis.
+
+Guatecompras Transparente será el primer dataset del que sabemos para nuestro país.
 
 
 URLs
