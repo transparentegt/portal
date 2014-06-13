@@ -5,14 +5,12 @@ $zfloader->register();
 
 use Zend\Dom\Query;
 
-
-
 /**
  * Returns a cached crawled URL
  *
  * @param string $url
  * @param string $method
- * @return \Symfony\Component\DomCrawler\Crawler
+ * @return \Zend\Dom\Query
  */
 function getCachedUrl($url, $method='GET') {
     if (!isset($_SESSION['scraper.cache'])) {
@@ -30,10 +28,14 @@ function getCachedUrl($url, $method='GET') {
 
 
 session_start();
-echo '<!DOCTYPE html><head><meta charset="utf-8"></head><body>';
+echo '<!DOCTYPE html><head><meta charset="utf-8"></head><body><pre>';
 // Conseguir todos los proveedores adjudicados del año en curso
 $year            = date('Y');
 $proveedoresList = getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year);
-// aquó es donde truena, el query de los links que su href empieze con ese path es lo que no se puede convertir a XPath
-$proveedoresList = $proveedoresList->execute('a[href^="./consultaDetProveeAdj.aspx"]');
-echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump(count($proveedoresList)); die();
+// aquí es donde truena, el query de los links que su href empieze con ese path es lo que no se puede convertir a XPath
+$xpath = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";
+$proveedoresList = $proveedoresList->queryXpath($xpath); // ^="./consultaDetProveeAdj.aspx
+foreach($proveedoresList as $proveedor) {
+    /* @var $proveedor DOMElement */
+    echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($proveedor->getAttribute('href')); die();
+}
