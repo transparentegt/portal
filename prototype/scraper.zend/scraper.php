@@ -48,15 +48,30 @@ foreach($proveedoresList as $proveedor) {
     // @todo Solo los proveedores que no están en la DB son los que vamos a barrer
     $url = "http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=8&lprv={$proveedor['id']}";
     $páginaDelProveedor = getCachedUrl($url);
+
+    /**
+     * Que valores vamos a buscar via xpath en la página del proveedor
+     *
+     * Usamos de nombre los campos de la base de datos para después solo volcar el arreglo con los resultados directo a
+     * la DB. El nombre comercial no lo leemos de aquí, mejor buscamos en la URL que barre todos los nombres.
+     *
+     * @var array
+     *
+     * @todo barrer los nombres comerciales en su URL específica
+     */
     $xpath              = [
-        'nombre' => '//*[@id="MasterGC_ContentBlockHolder_lblNombreProv"]',
-        'nit'    => '//*[@id="MasterGC_ContentBlockHolder_lblNIT"]',
+        'nombre'               => '//*[@id="MasterGC_ContentBlockHolder_lblNombreProv"]',
+        'nit'                  => '//*[@id="MasterGC_ContentBlockHolder_lblNIT"]',
+        'status'               => '//*[@id="MasterGC_ContentBlockHolder_lblHabilitado"]',
+        'tiene_acceso_sistema' => '//*[@id="MasterGC_ContentBlockHolder_lblContraSnl"]',
     ];
     foreach($xpath as $key => $path) {
         $proveedor[$key] = $páginaDelProveedor->queryXpath($path)->current()->nodeValue;
     }
-    // Ya tenemos el ID, nombre y NIT! Esto es un milestone!!
+    // después de capturar los datos, hacemos un postproceso
+    $proveedor['status']               = ($proveedor['status'] == 'HABILITADO');
+    // @todo getCachedUrl no está retornando el HTML como UTF-8
+    $proveedor['tiene_acceso_sistema'] = ($proveedor['tiene_acceso_sistema'] == 'CON CONTRASEÃA');
+
     echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($proveedor); die();
-
-
 }
