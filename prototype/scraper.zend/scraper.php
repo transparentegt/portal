@@ -35,7 +35,28 @@ $proveedoresList = getCachedUrl('http://guatecompras.gt/proveedores/consultaProv
 // aquí es donde truena, el query de los links que su href empieze con ese path es lo que no se puede convertir a XPath
 $xpath = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";
 $proveedoresList = $proveedoresList->queryXpath($xpath); // ^="./consultaDetProveeAdj.aspx
+// @todo Este listado nos da los 50 primeros proveedores, necesitamos barrer más
 foreach($proveedoresList as $proveedor) {
     /* @var $proveedor DOMElement */
-    echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($proveedor->getAttribute('href')); die();
+    // El link apunta a las adjudicaciones/projectos del proveedor, pero de aquí sacamos el ID del proveedor
+    $url = parse_url($proveedor->getAttribute('href'));
+    parse_str($url['query'], $url);
+
+    $proveedor = ['id' => $url['lprv']];
+
+    // ahora podemos construir la URL para barrer los datos del proveedor
+    // @todo Solo los proveedores que no están en la DB son los que vamos a barrer
+    $url = "http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=8&lprv={$proveedor['id']}";
+    $páginaDelProveedor = getCachedUrl($url);
+    $xpath              = [
+        'nombre' => '//*[@id="MasterGC_ContentBlockHolder_lblNombreProv"]',
+        'nit'    => '//*[@id="MasterGC_ContentBlockHolder_lblNIT"]',
+    ];
+    foreach($xpath as $key => $path) {
+        $proveedor[$key] = $páginaDelProveedor->queryXpath($path)->current()->nodeValue;
+    }
+    // Ya tenemos el ID, nombre y NIT! Esto es un milestone!!
+    echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($proveedor); die();
+
+
 }
