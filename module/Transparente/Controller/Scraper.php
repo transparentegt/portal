@@ -6,6 +6,10 @@ use Zend\View\Model\ViewModel;
 
 /**
  * Scraper
+ *
+ * Tiempo aprox para leer solo los proveedores, 00:01:20
+ *
+ * @todo Convertirlo en un CLI
  */
 class Scraper extends AbstractActionController
 {
