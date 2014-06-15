@@ -1,7 +1,21 @@
+<?php
+/* @var $this Zend\View\Renderer\PhpRenderer */
+?>
 <div class="jumbotron">
-    <h1>Transparente</h1>
-    <p><?php echo sprintf($this->translate('Congratulations! You have successfully installed the %sZF2 Skeleton Application%s. You are currently running Zend Framework version %s. This skeleton can serve as a simple starting point for you to begin building your application on ZF2.'), '<a href="https://github.com/zendframework/ZendSkeletonApplication" target="_blank">', '</a>', \Zend\Version\Version::VERSION) ?></p>
-    <p><a class="btn btn-success btn-lg" href="https://github.com/zendframework/zf2" target="_blank"><?php echo $this->translate('Fork Zend Framework 2 on GitHub') ?> &raquo;</a></p>
+    <h1>Guatecompras Transparente</h1>
+    <p>
+        Guatecompras Transparente busca ayudar a los periodistas e investigadores a evidenciar prácticas de corrupción
+        por parte de las municipalidades y empresas oferentes que el portal de Guatecompras no hace ver tan fácilmente
+        automatizando la comparación entre proyectos.  Guatecompras Transparente es un
+        <a href="http://es.wikipedia.org/wiki/Web_scraping" target="_blank">scraper</a> de datos que almacenará toda la
+        información recopilada del portal de <a href="http://guatecompras.gt/" target="_blank">Guatecompras</a> para
+        tener un acceso público y transparente.
+    </p>
+    <p>
+        <a class="btn btn-success btn-lg" href="https://github.com/str/guatecompras-transparente/archive/master.tar.gz">
+            Descargar el proyecto »
+        </a>
+    </p>
 </div>
 
 <div class="row">
@@ -9,11 +23,21 @@
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $this->translate('Follow Development') ?></h3>
+                <h3 class="panel-title">Software Libre</h3>
             </div>
             <div class="panel-body">
-                <p><?php echo sprintf($this->translate('Zend Framework 2 is under active development. If you are interested in following the development of ZF2, there is a special ZF2 portal on the official Zend Framework website which provides links to the ZF2 %swiki%s, %sdev blog%s, %sissue tracker%s, and much more. This is a great resource for staying up to date with the latest developments!'), '<a href="http://framework.zend.com/wiki/display/ZFDEV2/Home">', '</a>', '<a href="http://framework.zend.com/zf2/blog">', '</a>', '<a href="https://github.com/zendframework/zf2/issues">', '</a>') ?></p>
-                <p><a class="btn btn-success pull-right" href="http://framework.zend.com/zf2" target="_blank"><?php echo $this->translate('ZF2 Development Portal') ?> &raquo;</a></p>
+                <p>
+                    Guatecompras Transparente es un proyecto colaborativo donde, con el tema de transparencia siempre
+                    primero, el código fuente es libre para que cualquiera lo pueda ver, mejorar, y replicar.
+                </p>
+                <p>
+                    El acceso a los datos que tengamos recopilados también será libre.
+                </p>
+                <p>
+                    <a class="btn btn-success pull-right" href="https://github.com/str/guatecompras-transparente" target="_blank">
+                        Ver el proyecto en GitHub »
+                    </a>
+                </p>
             </div>
         </div>
     </div>
@@ -21,11 +45,26 @@
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $this->translate('Discover Modules') ?></h3>
+                <h3 class="panel-title">¿Cómo colaborar?</h3>
             </div>
             <div class="panel-body">
-                <p><?php echo sprintf($this->translate('The community is working on developing a community site to serve as a repository and gallery for ZF2 modules. The project is available %son GitHub%s. The site is currently live and currently contains a list of some of the modules already available for ZF2.'), '<a href="https://github.com/zendframework/modules.zendframework.com">', '</a>') ?></p>
-                <p><a class="btn btn-success pull-right" href="http://modules.zendframework.com/" target="_blank"><?php echo $this->translate('Explore ZF2 Modules') ?> &raquo;</a></p>
+                <p>
+                    "Apenas llevamos 3 trazos de un plano de 3 millones de lineas" y hay mucho que hacer. Las tareas
+                    específicas que hemos encontrado las hemos publicado en el
+                    <a href="https://github.com/str/guatecompras-transparente/issues?state=open" target="_blank">
+                        manejador de incidencias
+                    </a>
+                    donde publicamos las tareas que podríamos recibir ayuda.
+                </p>
+                <p>
+                    ¿Encontraste un probleam y quieres reportarlo? También podés publicar la incidencia para que lo
+                    arreglemos.
+                </p>
+                <p>
+                    <a class="btn btn-success pull-right" href="https://github.com/str/guatecompras-transparente/issues?state=open" target="_blank">
+                        Ver manejador de incidencias »
+                    </a>
+                </p>
             </div>
         </div>
     </div>
@@ -33,11 +72,18 @@
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $this->translate('Help &amp; Support') ?></h3>
+                <h3 class="panel-title">¿Dónde empiezo?</h3>
             </div>
             <div class="panel-body">
-                <p><?php echo sprintf($this->translate('If you need any help or support while developing with ZF2, you may reach us via IRC: %s#zftalk on Freenode%s. We\'d love to hear any questions or feedback you may have regarding the beta releases. Alternatively, you may subscribe and post questions to the %smailing lists%s.'), '<a href="irc://irc.freenode.net/zftalk">', '</a>', '<a href="http://framework.zend.com/wiki/display/ZFDEV/Mailing+Lists">', '</a>') ?></p>
-                <p><a class="btn btn-success pull-right" href="http://webchat.freenode.net?channels=zftalk" target="_blank"><?php echo $this->translate('Ping us on IRC') ?> &raquo;</a></p>
+                <p>
+                    Donde hemos empezado, es con recopilar los datosde los 50 primeros proveedores que más dinero han
+                    ganado este año (2014) con proyectos adjudicados.
+                </p>
+                <p>
+                    <a class="btn btn-success pull-right" href="<?php echo $this->url('transparente')?>/proveedores">
+                        Ver Proveedores »
+                    </a>
+                </p>
             </div>
         </div>
     </div>

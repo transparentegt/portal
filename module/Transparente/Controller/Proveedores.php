@@ -12,11 +12,15 @@ namespace Transparente\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class Index extends AbstractActionController
+class Proveedores extends AbstractActionController
 {
     public function indexAction()
     {
+
+        echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump('listar proveedores'); die();
+
         return new ViewModel();
     }
+
 
 }

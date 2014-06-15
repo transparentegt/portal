@@ -10,7 +10,8 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-            'Transparente\Controller\Index' => 'Transparente\Controller\Index',
+            'Transparente\Controller\Index'       => 'Transparente\Controller\Index',
+            'Transparente\Controller\Proveedores' => 'Transparente\Controller\Proveedores',
         ),
     ),
     'router' => array(
@@ -29,7 +30,7 @@ return array(
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
             // using the path /module/:controller/:action
-            'module' => array(
+            'transparente' => array(
                 'type'    => 'Literal',
                 'options' => array(
                     'route'    => '/transparente',
