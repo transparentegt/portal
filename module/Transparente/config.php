@@ -1,17 +1,15 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
+ * Configuración del módulo de Transparente
  *
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @todo simplificar más este archivo (la documentación para un módulo mínimo es muy poca)
  */
-
 return array(
     'controllers' => array(
         'invokables' => array(
             'Transparente\Controller\Index'       => 'Transparente\Controller\Index',
             'Transparente\Controller\Proveedores' => 'Transparente\Controller\Proveedores',
+            'Transparente\Controller\Scraper    ' => 'Transparente\Controller\Scraper',
         ),
     ),
     'router' => array(
