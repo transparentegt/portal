@@ -1,0 +1,55 @@
+<?php
+
+ $title = 'Domicilios';
+ $this->headTitle($title);
+ ?>
+<h1 class="tituloSeccion"><?php echo $this->escapeHtml($title); ?></h1>
+<p class="menuSeccion">
+     <a class="button" href="/transparente/domicilios/add" >
+		<span>Agregar Domicilio</span>
+	</a>
+</p>
+<table class="table">
+<tr>
+    <th>ID</th>
+    <th>Nombre</th>
+    <th>Teléfonos</th>
+    <th>Fax</th>
+    <th>Municipio</th>
+    <th>&nbsp;</th>
+</tr>
+ <?php foreach ($this->paginator as $item) : ?>
+ <tr>
+ 	<td><?php echo $item->id;?></td>
+    <td><?php echo $this->escapeHtml($item->direccion);?> 	
+    <td><?php echo $this->escapeHtml($item->telefonos);?> 	
+    <td><?php echo $this->escapeHtml($item->fax);?> 	
+	<td><?php echo $this->escapeHtml(getMunicipio($this->db, $item->id_municipio)); ?></td>
+    <td>
+        <a href="/transparente/domicilios/edit/<?php echo $item->id;?>">Editar</a>
+        <a href="/transparente/domicilios/delete/<?php echo $item->id;?>">Borrar</a>
+    </td> 
+ </tr>
+ <?php endforeach; ?>
+ </table>
+  <?php
+ // add at the end of the file after the table
+ echo $this->paginationControl(
+     // the paginator object;
+     $this->paginator,
+     // the scrolling style
+     'sliding',
+     // the partial to use to render the control
+     array('partial/paginator.phtml', 'domicilios'),
+     // the route to link to when a user clicks a control link
+     array(
+         'route' => 'transparente'
+     )
+ );
+ 
+ function getMunicipio($db, $muni)
+ {
+ 	$municipio = $db->query('select nombre from geo_municipios where id='.$muni)->execute()->current();
+	return $municipio['nombre'];
+ }
+ ?>
