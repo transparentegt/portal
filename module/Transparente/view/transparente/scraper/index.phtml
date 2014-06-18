@@ -28,7 +28,15 @@
                 <td><?=$proveedor['rep_legales_updated']?></td>
             </tr>
             <tr>
-                <td colspan="4">
+                <td colspan="2">
+                    nombres comerciales:
+                    <ul>
+                        <?php foreach($proveedor['nombres_comerciales'] as $nombre) :?>
+                            <li><?=$nombre?></li>
+                        <?php endforeach?>
+                    </ul>
+                </td>
+                <td colspan="3">
                     domicilio fiscal:
                     <p>
                         <?=$proveedor['domicilio_fiscal']['dirección']?><br />
@@ -38,7 +46,7 @@
                     </p>
                 </td>
 
-                <td colspan="4">
+                <td colspan="3">
                     domicilio comercial:
                     <p>
                         <?=$proveedor['domicilio_comercial']['dirección']?><br />

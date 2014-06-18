@@ -58,6 +58,27 @@ class Scraper
     }
 
     /**
+     * Obtiene los nombres comerciales de los proveedores
+     *
+     * @param int $id
+     * @return array
+     */
+    public function scrapNombresComercialesDelProveedor($id)
+    {
+        $página  = $this->getCachedUrl('http://www.guatecompras.gt/proveedores/consultaProveeNomCom.aspx?rqp=8&lprv='.$id);
+        $xpath   = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]';
+        $nodos   = $página->queryXpath($xpath);
+        $nombres = [];
+        foreach($nodos as $nodo) {
+            if (in_array($nodo->nodeValue, $nombres)) continue;
+            $nombres[] = $nodo->nodeValue;
+        }
+        sort($nombres);
+        return $nombres;
+    }
+
+
+    /**
      * Lee todos los datos del proveedor según su ID
      *
      * @param int $id
@@ -65,24 +86,19 @@ class Scraper
      *
      * @todo getCachedUrl no está retornando el HTML como UTF-8 y no se puede leer bien si tiene contraseña o no
      */
-    private function scrapProveedor($id)
+    public function scrapProveedor($id)
     {
-        // ahora podemos construir la URL para barrer los datos del proveedor
-        // @todo Solo los proveedores que no están en la DB son los que vamos a barrer
-        $url = "http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=8&lprv={$id}";
-
+        $url               = "http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=8&lprv={$id}";
         $páginaDelProveedor = $this->getCachedUrl($url);
 
         /**
          * Que valores vamos a buscar via xpath en la página del proveedor
          *
          * Usamos de nombre los campos de la base de datos para después solo volcar el arreglo con los resultados directo a
-         * la DB. El nombre comercial no lo leemos de aquí, mejor buscamos en la URL que barre todos los nombres.
+         * la DB.
          *
          * @var array
-         *
-         * @todo barrer los nombres comerciales en su URL específica
-        */
+         */
         $xpaths = [
             'nombre'               => '//*[@id="MasterGC_ContentBlockHolder_lblNombreProv"]',
             'nit'                  => '//*[@id="MasterGC_ContentBlockHolder_lblNIT"]',
@@ -122,14 +138,19 @@ class Scraper
         return $proveedor;
     }
 
+    /**
+     * Conseguir todos los proveedores adjudicados del año en curso
+     *
+     * @return multitype:Ambigous <multitype:, number>
+     *
+     * @todo Solo los proveedores que no están en la DB son los que vamos a barrer
+     */
     public function scrapProveedores()
     {
-        // Conseguir todos los proveedores adjudicados del año en curso
         $year            = date('Y');
         $proveedoresList = $this->getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year);
-        // aquí es donde truena, el query de los links que su href empieze con ese path es lo que no se puede convertir a XPath
-        $xpath = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";
-        $proveedoresList = $proveedoresList->queryXpath($xpath); // ^="./consultaDetProveeAdj.aspx
+        $xpath           = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";
+        $proveedoresList = $proveedoresList->queryXpath($xpath);
 
         $proveedores = [];
         foreach($proveedoresList as $proveedor) {
@@ -137,7 +158,10 @@ class Scraper
             // El link apunta a las adjudicaciones/projectos del proveedor, pero de aquí sacamos el ID del proveedor
             $url = parse_url($proveedor->getAttribute('href'));
             parse_str($url['query'], $url);
-            $proveedores[] = $this->scrapProveedor($url['lprv']);
+            $idProveedor   = $url['lprv'];
+            $proveedor     = $this->scrapProveedor($idProveedor);
+            $proveedor    += ['nombres_comerciales' => $this->scrapNombresComercialesDelProveedor($idProveedor)];
+            $proveedores[] = $proveedor;
         }
         return $proveedores;
     }
