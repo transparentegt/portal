@@ -1,0 +1,53 @@
+<?php
+/* @var $this Zend\View\Renderer\PhpRenderer */
+?>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>nombre</th>
+            <th>nit</th>
+            <th>status</th>
+            <th>sistema</th> <!-- th>tiene acceso al sistema</th  -->
+            <th>url</th>
+            <th>email</th>
+            <th>rep legal</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($this->proveedores as $proveedor) :?>
+            <tr>
+                <td><?=$proveedor['id']?></td>
+                <td><?=$proveedor['nombre']?></td>
+                <td><?=$proveedor['nit']?></td>
+                <td><?=($proveedor['status']) ? 'activo' : 'inactivo'?></td>
+                <td><?=($proveedor['tiene_acceso_sistema']) ? 'si' : 'no'?></td>
+                <td><?=$proveedor['url']?></td>
+                <td><?=$proveedor['email']?></td>
+                <td><?=$proveedor['rep_legales_updated']?></td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    domicilio fiscal:
+                    <p>
+                        <?=$proveedor['domicilio_fiscal']['dirección']?><br />
+                        <?=$proveedor['domicilio_fiscal']['municipio']?>,  <?=$proveedor['domicilio_fiscal']['departamento']?><br />
+                        tel: <?=$proveedor['domicilio_fiscal']['teléfonos']?><br />
+                        fax: <?=$proveedor['domicilio_fiscal']['fax']?><br />
+                    </p>
+                </td>
+
+                <td colspan="4">
+                    domicilio comercial:
+                    <p>
+                        <?=$proveedor['domicilio_comercial']['dirección']?><br />
+                        <?=$proveedor['domicilio_comercial']['municipio']?>,  <?=$proveedor['domicilio_comercial']['departamento']?><br />
+                        tel: <?=$proveedor['domicilio_comercial']['teléfonos']?><br />
+                        fax: <?=$proveedor['domicilio_comercial']['fax']?><br />
+                    </p>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

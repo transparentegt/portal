@@ -47,11 +47,20 @@ class Scraper extends AbstractActionController
                 if (!$path) {
                     $element[$key] = null;
                 } else {
-                    $node = $dom->queryXpath($path)->current();
+                    if ($path[0] == '/') {
+                        $nodes = $dom->queryXpath($path);
+                    } else {
+                        $nodes = $dom->execute($path);
+                    }
+                    $nodesCount = count($nodes);
+                    if ($nodesCount > 1) {
+                        throw new \Exception("path '$path' not expecific enought, returned $nodesCount");
+                    }
+                    $node = $nodes->current();
                     if (!is_a($node , 'DOMElement')) {
                         $element[$key] = null;
                     } else {
-                        $element[$key] = $dom->queryXpath($path)->current()->nodeValue;
+                        $element[$key] = $node->nodeValue;
                     }
                 }
             }
@@ -93,33 +102,36 @@ class Scraper extends AbstractActionController
             'status'               => '//*[@id="MasterGC_ContentBlockHolder_lblHabilitado"]',
             'tiene_acceso_sistema' => '//*[@id="MasterGC_ContentBlockHolder_lblContraSnl"]',
             'domicilio_fiscal'     => [
-                'updated'      => '/html/body/form/table[2]/tbody/tr/td/div[2]/div[1]/div/table/tbody/tr/td[2]/span/span',
-                'departamento' => '/html/body/form/table[2]/tbody/tr/td/div[2]/div[2]/div/table/tbody/tr[1]/td[2]',
-                'municipio'    => '/html/body/form/table[2]/tbody/tr/td/div[2]/div[2]/div/table/tbody/tr[2]/td[2]',
-                'dirección'    => '/html/body/form/table[2]/tbody/tr/td/div[2]/div[2]/div/table/tbody/tr[3]/td[2]',
-                'teléfonos'    => '/html/body/form/table[2]/tbody/tr/td/div[2]/div[2]/div/table/tbody/tr[4]/td[2]',
-                'fax'          => '/html/body/form/table[2]/tbody/tr/td/div[2]/div[2]/div/table/tbody/tr[5]/td[2]',
+                'updated'      => 'div#MasterGC_ContentBlockHolder_divDomicilioFiscal span.AvisoGrande span.AvisoGrande',
+                'departamento' => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioFiscal2"]//tr[1]//td[2]',
+                'municipio'    => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioFiscal2"]//tr[2]//td[2]',
+                'dirección'    => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioFiscal2"]//tr[3]//td[2]',
+                'teléfonos'    => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioFiscal2"]//tr[4]//td[2]',
+                'fax'          => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioFiscal2"]//tr[5]//td[2]',
             ],
             'domicilio_comercial'     => [
                 'updated'      => null,
-                'departamento' => '/html/body/form/table[2]/tbody/tr/td/div[3]/div[2]/div/table/tbody/tr[3]/td[2]',
-                'municipio'    => '/html/body/form/table[2]/tbody/tr/td/div[3]/div[2]/div/table/tbody/tr[4]/td[2]',
-                'dirección'    => '/html/body/form/table[2]/tbody/tr/td/div[3]/div[2]/div/table/tbody/tr[5]/td[2]',
-                'teléfonos'    => '/html/body/form/table[2]/tbody/tr/td/div[3]/div[2]/div/table/tbody/tr[6]/td[2]',
-                'fax'          => '/html/body/form/table[2]/tbody/tr/td/div[3]/div[2]/div/table/tbody/tr[7]/td[2]',
+                'departamento' => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[3]//td[2]',
+                'municipio'    => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[4]//td[2]',
+                'dirección'    => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[5]//td[2]',
+                'teléfonos'    => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[6]//td[2]',
+                'fax'          => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[7]//td[2]',
             ],
-            'url'                 => '/html/body/form/table[2]/tbody/tr/td/div[3]/div[2]/div/table/tbody/tr[1]/td[2]',
-            'email'               => '/html/body/form/table[2]/tbody/tr/td/div[3]/div[2]/div/table/tbody/tr[2]/td[2]',
-            'rep_legales_updated' => '/html/body/form/table[2]/tbody/tr/td/div[4]/div[1]/div/table/tbody/tr/td[2]/span/span',
+            'url'                 => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[1]//td[2]',
+            'email'               => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[2]//td[2]',
+            'rep_legales_updated' => '//*[@id="MasterGC_ContentBlockHolder_divRepresentantesLegales"]//span/span',
         ];
 
-        $proveedor = $this->fetchData($xpaths, $páginaDelProveedor);
-        echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($proveedor); die();
-
+        $proveedor = ['id' => $id] + $this->fetchData($xpaths, $páginaDelProveedor);
 
         // después de capturar los datos, hacemos un postproceso
         $proveedor['status']               = ($proveedor['status'] == 'HABILITADO');
         $proveedor['tiene_acceso_sistema'] = ($proveedor['tiene_acceso_sistema'] == 'CON CONTRASEÃA');
+        $proveedor['rep_legales_updated']  = strptime($proveedor['rep_legales_updated'], '(Datos recibidos de la SAT el: %d.%b.%Y %T ');
+        $proveedor['rep_legales_updated']  = 1900+$proveedor['rep_legales_updated']['tm_year']
+            . '-' . (1 + $proveedor['rep_legales_updated']['tm_mon'])
+            . '-' . ($proveedor['rep_legales_updated']['tm_mday'])
+        ;
         return $proveedor;
     }
 
@@ -143,8 +155,6 @@ class Scraper extends AbstractActionController
             parse_str($url['query'], $url);
             $proveedores[] = $this->scrapProveedor($url['lprv']);
         }
-        echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($proveedores); die();
-
-        return new ViewModel();
+        return new ViewModel(compact('proveedores'));
     }
 }
