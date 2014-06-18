@@ -45,7 +45,7 @@ CREATE TABLE domicilios (
     , dirección    varchar(255) NOT NULL DEFAULT ''
     , telefonos    varchar(255) DEFAULT NULL -- meter todos en un solo campo, porque pelan
     , fax          varchar(255) DEFAULT NULL
-    , updated      datetime  DEFAULT NULL -- última fecha de actualización, null si no saebmos cuando la actualizaron
+    , updated      datetime     DEFAULT NULL -- última fecha de actualización, null si no saebmos cuando la actualizaron
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

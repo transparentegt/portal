@@ -10,6 +10,7 @@ use Zend\View\Model\ViewModel;
  * Tiempo aprox para leer solo los proveedores, 00:01:20
  *
  * @todo Convertirlo en un CLI
+ * @todo Convertirlo en un modelo
  */
 class Scraper extends AbstractActionController
 {
@@ -36,6 +37,29 @@ class Scraper extends AbstractActionController
         return $dom;
     }
 
+    private function fetchData($xpaths, \Zend\Dom\Query $dom)
+    {
+        $element = [];
+        foreach($xpaths as $key => $path) {
+            if (is_array($path)) {
+                $element[$key] = $this->fetchData($path, $dom);
+            } else {
+                if (!$path) {
+                    $element[$key] = null;
+                } else {
+                    $node = $dom->queryXpath($path)->current();
+                    if (!is_a($node , 'DOMElement')) {
+                        $element[$key] = null;
+                    } else {
+                        $element[$key] = $dom->queryXpath($path)->current()->nodeValue;
+                    }
+                }
+            }
+        }
+        return $element;
+    }
+
+
     /**
      * Lee todos los datos del proveedor según su ID
      *
@@ -49,6 +73,7 @@ class Scraper extends AbstractActionController
         // ahora podemos construir la URL para barrer los datos del proveedor
         // @todo Solo los proveedores que no están en la DB son los que vamos a barrer
         $url = "http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=8&lprv={$id}";
+
         $páginaDelProveedor = $this->getCachedUrl($url);
 
         /**
@@ -60,17 +85,38 @@ class Scraper extends AbstractActionController
          * @var array
          *
          * @todo barrer los nombres comerciales en su URL específica
+         * @todo Los xpath absolutos no los está encontrando
         */
-        $xpath = [
+        $xpaths = [
             'nombre'               => '//*[@id="MasterGC_ContentBlockHolder_lblNombreProv"]',
             'nit'                  => '//*[@id="MasterGC_ContentBlockHolder_lblNIT"]',
             'status'               => '//*[@id="MasterGC_ContentBlockHolder_lblHabilitado"]',
             'tiene_acceso_sistema' => '//*[@id="MasterGC_ContentBlockHolder_lblContraSnl"]',
+            'domicilio_fiscal'     => [
+                'updated'      => '/html/body/form/table[2]/tbody/tr/td/div[2]/div[1]/div/table/tbody/tr/td[2]/span/span',
+                'departamento' => '/html/body/form/table[2]/tbody/tr/td/div[2]/div[2]/div/table/tbody/tr[1]/td[2]',
+                'municipio'    => '/html/body/form/table[2]/tbody/tr/td/div[2]/div[2]/div/table/tbody/tr[2]/td[2]',
+                'dirección'    => '/html/body/form/table[2]/tbody/tr/td/div[2]/div[2]/div/table/tbody/tr[3]/td[2]',
+                'teléfonos'    => '/html/body/form/table[2]/tbody/tr/td/div[2]/div[2]/div/table/tbody/tr[4]/td[2]',
+                'fax'          => '/html/body/form/table[2]/tbody/tr/td/div[2]/div[2]/div/table/tbody/tr[5]/td[2]',
+            ],
+            'domicilio_comercial'     => [
+                'updated'      => null,
+                'departamento' => '/html/body/form/table[2]/tbody/tr/td/div[3]/div[2]/div/table/tbody/tr[3]/td[2]',
+                'municipio'    => '/html/body/form/table[2]/tbody/tr/td/div[3]/div[2]/div/table/tbody/tr[4]/td[2]',
+                'dirección'    => '/html/body/form/table[2]/tbody/tr/td/div[3]/div[2]/div/table/tbody/tr[5]/td[2]',
+                'teléfonos'    => '/html/body/form/table[2]/tbody/tr/td/div[3]/div[2]/div/table/tbody/tr[6]/td[2]',
+                'fax'          => '/html/body/form/table[2]/tbody/tr/td/div[3]/div[2]/div/table/tbody/tr[7]/td[2]',
+            ],
+            'url'                 => '/html/body/form/table[2]/tbody/tr/td/div[3]/div[2]/div/table/tbody/tr[1]/td[2]',
+            'email'               => '/html/body/form/table[2]/tbody/tr/td/div[3]/div[2]/div/table/tbody/tr[2]/td[2]',
+            'rep_legales_updated' => '/html/body/form/table[2]/tbody/tr/td/div[4]/div[1]/div/table/tbody/tr/td[2]/span/span',
         ];
-        $proveedor = [];
-        foreach($xpath as $key => $path) {
-            $proveedor[$key] = $páginaDelProveedor->queryXpath($path)->current()->nodeValue;
-        }
+
+        $proveedor = $this->fetchData($xpaths, $páginaDelProveedor);
+        echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($proveedor); die();
+
+
         // después de capturar los datos, hacemos un postproceso
         $proveedor['status']               = ($proveedor['status'] == 'HABILITADO');
         $proveedor['tiene_acceso_sistema'] = ($proveedor['tiene_acceso_sistema'] == 'CON CONTRASEÃA');
