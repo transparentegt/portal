@@ -65,7 +65,7 @@ class Scraper
      */
     public function scrapNombresComercialesDelProveedor($id)
     {
-        $página  = $this->getCachedUrl('http://www.guatecompras.gt/proveedores/consultaProveeNomCom.aspx?rqp=8&lprv='.$id);
+        $página  = $this->getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeNomCom.aspx?rqp=8&lprv='.$id);
         $xpath   = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]';
         $nodos   = $página->queryXpath($xpath);
         $nombres = [];
@@ -76,7 +76,6 @@ class Scraper
         sort($nombres);
         return $nombres;
     }
-
 
     /**
      * Lee todos los datos del proveedor según su ID
@@ -130,11 +129,14 @@ class Scraper
         // después de capturar los datos, hacemos un postproceso
         $proveedor['status']               = ($proveedor['status'] == 'HABILITADO');
         $proveedor['tiene_acceso_sistema'] = ($proveedor['tiene_acceso_sistema'] == 'CON CONTRASEÃA');
+        // algunas fechas no están bien parseadas
         $proveedor['rep_legales_updated']  = strptime($proveedor['rep_legales_updated'], '(Datos recibidos de la SAT el: %d.%b.%Y %T ');
         $proveedor['rep_legales_updated']  = 1900+$proveedor['rep_legales_updated']['tm_year']
                                             . '-' . (1 + $proveedor['rep_legales_updated']['tm_mon'])
                                             . '-' . ($proveedor['rep_legales_updated']['tm_mday'])
-        ;
+                                            ;
+        $proveedor['url']                  = ($proveedor['url'] != '[--No Especificado--]') ? $proveedor['url'] : null;
+        $proveedor['email']                = ($proveedor['email'] != '[--No Especificado--]') ? $proveedor['email'] : null;
         return $proveedor;
     }
 
@@ -160,9 +162,25 @@ class Scraper
             parse_str($url['query'], $url);
             $idProveedor   = $url['lprv'];
             $proveedor     = $this->scrapProveedor($idProveedor);
-            $proveedor    += ['nombres_comerciales' => $this->scrapNombresComercialesDelProveedor($idProveedor)];
+            $proveedor    += ['nombres_comerciales'    => $this->scrapNombresComercialesDelProveedor($idProveedor)];
+            $proveedor    += ['representantes_legales' => $this->scrapRepresentantesLegales($idProveedor)];
             $proveedores[] = $proveedor;
         }
         return $proveedores;
     }
+
+    public function scrapRepresentantesLegales($id)
+    {
+        $página    = $this->getCachedUrl('http://guatecompras.gt/proveedores/consultaprrepleg.aspx?rqp=8&lprv=' . $id);
+        $xpath     = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]';
+        $nodos     = $página->queryXpath($xpath);
+        $elementos = [];
+        foreach($nodos as $nodo) {
+            if (in_array($nodo->nodeValue, $elementos)) continue;
+            $elementos[] = trim($nodo->nodeValue);
+        }
+        sort($elementos);
+        return $elementos;
+    }
+
 }

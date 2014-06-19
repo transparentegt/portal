@@ -12,24 +12,38 @@
             <th>sistema</th> <!-- th>tiene acceso al sistema</th  -->
             <th>url</th>
             <th>email</th>
-            <th>rep legal</th>
         </tr>
     </thead>
     <tbody>
         <?php foreach($this->proveedores as $proveedor) :?>
             <tr>
-                <td><?=$proveedor['id']?></td>
+                <td>
+                    <a href="http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=8&lprv=<?=$proveedor['id']?>">
+                        <?=$proveedor['id']?>
+                    </a>
+                </td>
                 <td><?=$proveedor['nombre']?></td>
                 <td><?=$proveedor['nit']?></td>
                 <td><?=($proveedor['status']) ? 'activo' : 'inactivo'?></td>
                 <td><?=($proveedor['tiene_acceso_sistema']) ? 'si' : 'no'?></td>
-                <td><?=$proveedor['url']?></td>
-                <td><?=$proveedor['email']?></td>
-                <td><?=$proveedor['rep_legales_updated']?></td>
+                <td>
+                    <?php if ($proveedor['url']) :?>
+                        <a href="http://<?=$proveedor['url']?>"><?=$proveedor['url']?></a>
+                    <?php endif ?>
+                </td>
+                <td>
+                    <?php if ($proveedor['email']) :?>
+                        <a href="mailto:<?=$proveedor['email']?>"><?=$proveedor['email']?></a>
+                    <?php endif ?>
+                </td>
+                <td></td>
             </tr>
+
             <tr>
-                <td colspan="2">
-                    nombres comerciales:
+                <td colspan="3">
+                    <a href="http://www.guatecompras.gt/proveedores/consultaProveeNomCom.aspx?rqp=8&lprv=<?=$proveedor['id']?>">
+                        nombres comerciales:
+                    </a>
                     <ul>
                         <?php foreach($proveedor['nombres_comerciales'] as $nombre) :?>
                             <li><?=$nombre?></li>
@@ -37,6 +51,20 @@
                     </ul>
                 </td>
                 <td colspan="3">
+                    <a href="http://guatecompras.gt/proveedores/consultaprrepleg.aspx?rqp=8&lprv=<?=$proveedor['id']?>">
+                        (<?=count($proveedor['representantes_legales'])?>) representantes legales:
+                    </a>
+                    <ul>
+                        <?php foreach($proveedor['representantes_legales'] as $nombre) :?>
+                            <li><?=$nombre?></li>
+                        <?php endforeach?>
+                    </ul>
+                    (última actualización: <?=$proveedor['rep_legales_updated']?>)
+                </td>
+
+                <td colspan="1">
+
+                    <?php if (!empty($proveedor['domicilio_fiscal']['dirección'])) :?>
                     domicilio fiscal:
                     <p>
                         <?=$proveedor['domicilio_fiscal']['dirección']?><br />
@@ -44,9 +72,8 @@
                         tel: <?=$proveedor['domicilio_fiscal']['teléfonos']?><br />
                         fax: <?=$proveedor['domicilio_fiscal']['fax']?><br />
                     </p>
-                </td>
-
-                <td colspan="3">
+                    <?php endif ?>
+                    <?php if (!empty($proveedor['domicilio_comercial']['dirección'])) :?>
                     domicilio comercial:
                     <p>
                         <?=$proveedor['domicilio_comercial']['dirección']?><br />
@@ -54,6 +81,7 @@
                         tel: <?=$proveedor['domicilio_comercial']['teléfonos']?><br />
                         fax: <?=$proveedor['domicilio_comercial']['fax']?><br />
                     </p>
+                    <?php endif ?>
                 </td>
             </tr>
         <?php endforeach; ?>
