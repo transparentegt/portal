@@ -49,7 +49,12 @@
             <?php echo $this->content; ?>
             <hr>
             <footer>
-                <p>Zend Framework Version: <?php echo \Zend\Version\Version::VERSION ?></p>
+                <a href="http://framework.zend.com" title="Zend Framework Version: <?php echo \Zend\Version\Version::VERSION ?>" >
+                    <img src="<?=$this->basePath()?>/img/zf_powered.png" alt="Zend Framework Version: <?php echo \Zend\Version\Version::VERSION ?>" />
+                </a>
+                <a href="http://maphpia.com" title="Desarrollado por La Maphpia" >
+                    <img src="<?=$this->basePath()?>/img/maphpia_powered.png" alt="Desarrollado por La Maphpia" />
+                </a>
             </footer>
         </div> <!-- /container -->
         <?php echo $this->inlineScript() ?>
