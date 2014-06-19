@@ -10,7 +10,10 @@ return array(
             'Transparente\Controller\Index'       => 'Transparente\Controller\Index',
             'Transparente\Controller\Proveedores' => 'Transparente\Controller\Proveedores',
             'Transparente\Controller\Scraper    ' => 'Transparente\Controller\Scraper',
-        ),
+            'Transparente\Controller\geoDepartamentos' => 'Transparente\Controller\geoDepartamentosController',
+            'Transparente\Controller\geoMunicipios' => 'Transparente\Controller\geoMunicipiosController',
+            'Transparente\Controller\domicilios' => 'Transparente\Controller\domiciliosController'
+       ),
     ),
     'router' => array(
         'routes' => array(
@@ -23,7 +26,7 @@ return array(
                         'action'     => 'index',
                     ),
                 ),
-            ),
+			),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -43,7 +46,7 @@ return array(
                     'default' => array(
                         'type'    => 'Segment',
                         'options' => array(
-                            'route'    => '/[:controller[/:action]]',
+                            'route'    => '/[:controller[/:action[/:id]]]',
                             'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',

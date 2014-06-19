@@ -1,0 +1,21 @@
+<?php
+ // module/Album/view/album/album/add.phtml:
+
+
+ $title = 'Agregar Domicilio';
+ $this->headTitle($title);
+ ?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+	<a href="/transparente/domicilios">
+		<span>Regresar</span>
+	</a>
+</p>
+ <?php
+ $form->setAttribute('action', '/transparente/domicilios/add');
+ $form->prepare();
+
+ echo $this->form()->openTag($form);
+ echo $this->formCollection($form);
+ echo $this->form()->closeTag();
+ ?>
