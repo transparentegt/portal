@@ -7,12 +7,12 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-            'Transparente\Controller\Index'       => 'Transparente\Controller\Index',
-            'Transparente\Controller\Proveedores' => 'Transparente\Controller\Proveedores',
-            'Transparente\Controller\Scraper    ' => 'Transparente\Controller\Scraper',
+            'Transparente\Controller\Domicilios'       => 'Transparente\Controller\DomiciliosController',
             'Transparente\Controller\geoDepartamentos' => 'Transparente\Controller\geoDepartamentosController',
-            'Transparente\Controller\geoMunicipios' => 'Transparente\Controller\geoMunicipiosController',
-            'Transparente\Controller\domicilios' => 'Transparente\Controller\domiciliosController'
+            'Transparente\Controller\geoMunicipios'    => 'Transparente\Controller\geoMunicipiosController',
+            'Transparente\Controller\Index'            => 'Transparente\Controller\Index',
+            'Transparente\Controller\Proveedores'      => 'Transparente\Controller\Proveedores',
+            'Transparente\Controller\Scraper'          => 'Transparente\Controller\Scraper',
        ),
     ),
     'router' => array(
@@ -26,7 +26,7 @@ return array(
                         'action'     => 'index',
                     ),
                 ),
-			),
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
