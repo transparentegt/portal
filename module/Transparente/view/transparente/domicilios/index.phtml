@@ -1,13 +1,13 @@
 <?php
-
- $title = 'Domicilios';
- $this->headTitle($title);
- ?>
+/* @var $this Zend/View/Model/ViewModel */
+$title = 'Domicilios';
+$this->headTitle($title);
+?>
 <h1 class="tituloSeccion"><?php echo $this->escapeHtml($title); ?></h1>
 <p class="menuSeccion">
-     <a class="button" href="/transparente/domicilios/add" >
-		<span>Agregar Domicilio</span>
-	</a>
+     <a class="button" href="<?php echo $this->basepath()?>/transparente/domicilios/add" >
+        <span>Agregar Domicilio</span>
+    </a>
 </p>
 <table class="table">
 <tr>
@@ -20,15 +20,15 @@
 </tr>
  <?php foreach ($this->paginator as $item) : ?>
  <tr>
- 	<td><?php echo $item->id;?></td>
-    <td><?php echo $this->escapeHtml($item->direccion);?> 	
-    <td><?php echo $this->escapeHtml($item->telefonos);?> 	
-    <td><?php echo $this->escapeHtml($item->fax);?> 	
-	<td><?php echo $this->escapeHtml(getMunicipio($this->db, $item->id_municipio)); ?></td>
+    <td><?php echo $item->id;?></td>
+    <td><?php echo $this->escapeHtml($item->direccion);?>
+    <td><?php echo $this->escapeHtml($item->telefonos);?>
+    <td><?php echo $this->escapeHtml($item->fax);?>
+    <td><?php echo $this->escapeHtml(getMunicipio($this->db, $item->id_municipio)); ?></td>
     <td>
         <a href="/transparente/domicilios/edit/<?php echo $item->id;?>">Editar</a>
         <a href="/transparente/domicilios/delete/<?php echo $item->id;?>">Borrar</a>
-    </td> 
+    </td>
  </tr>
  <?php endforeach; ?>
  </table>
@@ -46,10 +46,10 @@
          'route' => 'transparente'
      )
  );
- 
+
  function getMunicipio($db, $muni)
  {
- 	$municipio = $db->query('select nombre from geo_municipios where id='.$muni)->execute()->current();
-	return $municipio['nombre'];
+     $municipio = $db->query('select nombre from geo_municipios where id='.$muni)->execute()->current();
+    return $municipio['nombre'];
  }
  ?>

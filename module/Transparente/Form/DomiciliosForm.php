@@ -33,7 +33,7 @@ class DomiciliosForm extends Form
                 );
         $this->add(
                 array(
-                        'name' => 'direccion',
+                        'name' => 'dirección',
                         'type' => 'Text',
                         'options' => array(
                                 'label' => 'Dirección'
