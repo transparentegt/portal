@@ -21,8 +21,8 @@ $this->headTitle($title);
  <?php foreach ($this->paginator as $item) : ?>
  <tr>
     <td><?php echo $item->id;?></td>
-    <td><?php echo $this->escapeHtml($item->direccion);?>
-    <td><?php echo $this->escapeHtml($item->telefonos);?>
+    <td><?php echo $this->escapeHtml($item->dirección);?>
+    <td><?php echo $this->escapeHtml($item->teléfonos);?>
     <td><?php echo $this->escapeHtml($item->fax);?>
     <td><?php echo $this->escapeHtml(getMunicipio($this->db, $item->id_municipio)); ?></td>
     <td>

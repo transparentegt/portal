@@ -1,5 +1,6 @@
 <?php
 namespace Transparente\Model;
+
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
@@ -11,12 +12,12 @@ class DomiciliosTable
 
     protected $tableGateway;
 
-    public function __construct (TableGateway $tableGateway)
+    public function __construct(TableGateway $tableGateway)
     {
         $this->tableGateway = $tableGateway;
     }
 
-    public function fetchAll ($paginated = false)
+    public function fetchAll($paginated = false)
     {
         if ($paginated) {
             // create a new Select object for the table album
@@ -26,12 +27,12 @@ class DomiciliosTable
             $resultSetPrototype->setArrayObjectPrototype(new Domicilios());
             // create a new pagination adapter object
             $paginatorAdapter = new DbSelect(
-                    // our configured select object
-                    $select,
-                    // the adapter to run it against
-                    $this->tableGateway->getAdapter(),
-                    // the result set to hydrate
-                    $resultSetPrototype);
+                // our configured select object
+                $select,
+                // the adapter to run it against
+                $this->tableGateway->getAdapter(),
+                // the result set to hydrate
+                $resultSetPrototype);
             $paginator = new Paginator($paginatorAdapter);
             return $paginator;
         }
@@ -39,11 +40,11 @@ class DomiciliosTable
         return $resultSet;
     }
 
-    public function getDomicilios ($id)
+    public function getDomicilios($id)
     {
         $id = (int) $id;
         $rowset = $this->tableGateway->select(array(
-                'id' => $id
+            'id' => $id
         ));
         $row = $rowset->current();
         if (! $row) {
@@ -52,14 +53,14 @@ class DomiciliosTable
         return $row;
     }
 
-    public function saveDomicilios (Domicilios $domicilios)
+    public function saveDomicilios(Domicilios $domicilios)
     {
         $data = array(
-                'direccion' => $domicilios->direccion,
-                'telefonos' => $domicilios->telefonos,
-                'fax' => $domicilios->fax,
-                'id_municipio' => $domicilios->id_municipio,
-                'updated' => $domicilios->updated
+            'dirección'    => $domicilios->dirección,
+            'teléfonos'    => $domicilios->teléfonos,
+            'fax'          => $domicilios->fax,
+            'id_municipio' => $domicilios->id_municipio,
+            'updated'      => $domicilios->updated
         );
         $id = (int) $domicilios->id;
         if ($id == 0) {
@@ -67,7 +68,7 @@ class DomiciliosTable
         } else {
             if ($this->getDomicilios($id)) {
                 $this->tableGateway->update($data, array(
-                        'id' => $id
+                    'id' => $id
                 ));
             } else {
                 throw new \Exception('Usuario no existe');
@@ -75,10 +76,10 @@ class DomiciliosTable
         }
     }
 
-    public function deleteDomicilios ($id)
+    public function deleteDomicilios($id)
     {
         $this->tableGateway->delete(array(
-                'id' => (int) $id
+            'id' => (int) $id
         ));
     }
 }

@@ -41,7 +41,7 @@ class DomiciliosForm extends Form
                 ));
         $this->add(
                 array(
-                        'name' => 'telefonos',
+                        'name' => 'teléfonos',
                         'type' => 'Text',
                         'options' => array(
                                 'label' => 'Teléfonos'
