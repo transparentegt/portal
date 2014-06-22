@@ -6,7 +6,7 @@ namespace Transparente\Model;
  *
  * @todo Probar extends ArrayObject
  */
-class Proveedor
+class Proveedor extends AbstractDbModel
 {
     public $id;
     public $nombre;
@@ -24,25 +24,5 @@ class Proveedor
     public $inscripcion_provisional;
     public $inscripcion_definitiva;
     public $inscripcion_sat;
-
-    /**
-     * Requerimiento del ResultSet
-     *
-     * @param array $data
-     *
-     * @see Zend\Db\ResultSet\ResultSet
-     */
-    public function exchangeArray($data)
-    {
-        $props = $this->asArray();
-        foreach ($props as $key => $value) {
-            $this->$key = (!empty($data[$key])) ? $data[$key] : null;
-        }
-    }
-
-    public function asArray()
-    {
-        return get_object_vars($this);
-    }
 
 }
