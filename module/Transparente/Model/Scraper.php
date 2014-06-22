@@ -125,7 +125,6 @@ class Scraper
         ];
 
         $proveedor = ['id' => $id] + $this->fetchData($xpaths, $páginaDelProveedor);
-
         // después de capturar los datos, hacemos un postproceso
         $proveedor['status']               = ($proveedor['status'] == 'HABILITADO');
         $proveedor['tiene_acceso_sistema'] = ($proveedor['tiene_acceso_sistema'] == 'CON CONTRASEÃA');
@@ -153,18 +152,17 @@ class Scraper
         $proveedoresList = $this->getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year);
         $xpath           = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";
         $proveedoresList = $proveedoresList->queryXpath($xpath);
-
-        $proveedores = [];
-        foreach($proveedoresList as $proveedor) {
+        $proveedores     = [];
+        foreach($proveedoresList as $nodo) {
             /* @var $proveedor DOMElement */
             // El link apunta a las adjudicaciones/projectos del proveedor, pero de aquí sacamos el ID del proveedor
-            $url = parse_url($proveedor->getAttribute('href'));
+            $url = parse_url($nodo->getAttribute('href'));
             parse_str($url['query'], $url);
-            $idProveedor   = $url['lprv'];
-            $proveedor     = $this->scrapProveedor($idProveedor);
-            $proveedor    += ['nombres_comerciales'    => $this->scrapNombresComercialesDelProveedor($idProveedor)];
-            $proveedor    += ['representantes_legales' => $this->scrapRepresentantesLegales($idProveedor)];
-            $proveedores[] = $proveedor;
+            $idProveedor  = $url['lprv'];
+            $data          = $this->scrapProveedor($idProveedor);
+            $data         += ['nombres_comerciales'    => $this->scrapNombresComercialesDelProveedor($idProveedor)];
+            $data         += ['representantes_legales' => $this->scrapRepresentantesLegales($idProveedor)];
+            $proveedores[] = $data;
         }
         return $proveedores;
     }

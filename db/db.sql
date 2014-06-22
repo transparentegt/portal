@@ -2,8 +2,9 @@
  * Estructura de la DB en MySQL para guardar los datos scrappeados de Guatecompras
  *
  *
- * Los nombres de las tablas y campos se ponen en español para que cualquier guatemalteco lo pueda entender. Los nombres
- * de los campos también son mas fáciles en español por el lingo legal
+ * Los nombres de las tablas y campos se ponen en español para que cualquier persona que hable español lo pueda entender.
+ * Los nombres de los campos también son más fáciles en español por el lingo legal. Hay un bug en Zend\Db que da error
+ * con campos con acentos por lo que los campos se usan sin acentos.
  *
  * Nombres de campos "flags" si se usarán en inglés para el flujo de la lectura del código, y son populares en software.
  * Ejémplos de esto serían campos como 'id', 'status', 'created', 'updated',
@@ -42,8 +43,8 @@ CREATE TABLE domicilios (
     id             int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
     , id_municipio INT UNSIGNED NOT NULL
     , FOREIGN KEY (id_municipio) REFERENCES geo_municipios(id) ON DELETE CASCADE ON UPDATE CASCADE
-    , dirección    varchar(255) NOT NULL DEFAULT ''
-    , teléfonos    varchar(255) DEFAULT NULL -- meter todos en un solo campo, porque pelan
+    , direccion    varchar(255) NOT NULL DEFAULT ''
+    , telefonos    varchar(255) DEFAULT NULL -- meter todos en un solo campo, porque pelan
     , fax          varchar(255) DEFAULT NULL
     , updated      datetime     DEFAULT NULL -- última fecha de actualización, null si no saebmos cuando la actualizaron
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -61,27 +62,29 @@ CREATE TABLE domicilios (
  * @aka Vendedor, entidad vendedora
  *
  * @link http://guatecompras.gt/info/preguntasFrecProv.aspx#_lbl10
+ *
+ * @todo dejar de tener campos NOT NULL
  */
 DROP TABLE IF EXISTS proveedores;
 CREATE TABLE proveedores (
-    id                       int UNSIGNED NOT NULL PRIMARY KEY -- no es autoincrement para usaar el mismo ID que en GTC
-    , nombre                 varchar(128) NOT NULL DEFAULT ''
-    , nit                    varchar(16)  NOT NULL DEFAULT ''
-    , status                 bool DEFAULT true          -- GTC: HABILITADO / INHABILITADO
-    , tiene_acceso_sistema   bool NOT NULL              -- En GTC se muestra como CON/SIN CONTRASEÑA
-    , id_domicilio_fiscal    int UNSIGNED NOT NULL
-    , FOREIGN KEY (id_domicilio_fiscal) REFERENCES domicilios(id) ON DELETE CASCADE ON UPDATE CASCADE
-    , id_domicilio_comercial  int UNSIGNED NOT NULL
+    id                       int UNSIGNED  NOT NULL PRIMARY KEY -- no es autoincrement para usaar el mismo ID que en GTC
+    , nombre                 varchar(128)  NOT NULL DEFAULT ''
+    , nit                    varchar(16)   NOT NULL DEFAULT ''
+    , status                 bool          NOT NULL DEFAULT false -- GTC: HABILITADO / INHABILITADO
+    , tiene_acceso_sistema   bool          NOT NULL DEFAULT false -- En GTC se muestra como CON/SIN CONTRASEÑA
+    , id_domicilio_fiscal    int UNSIGNED           DEFAULT NULL
+    , FOREIGN KEY (id_domicilio_fiscal)    REFERENCES domicilios(id) ON DELETE CASCADE ON UPDATE CASCADE
+    , id_domicilio_comercial  int UNSIGNED          DEFAULT NULL
     , FOREIGN KEY (id_domicilio_comercial) REFERENCES domicilios(id) ON DELETE CASCADE ON UPDATE CASCADE
-    , url                     varchar(255) DEFAULT NULL -- está en domicilio comercial, pero no queremos meter eso en la tabla domicilios
-    , email                   varchar(255) DEFAULT NULL -- está en domicilio comercial, pero no queremos meter eso en la tabla domicilios
-    , rep_legales_updated     datetime                  -- última fecha que se actualizaron los representantes legales
-    , tipo_organización       varchar(64)  DEFAULT NULL -- sociedad anónima, tiene que ser un listado limitado
-    , const_num_escritura     int UNSIGNED NOT NULL DEFAULT 0    -- número de escritura de constitucioń (WTF? será número entero)
-    , const_fecha             date
-    , inscripción_provisional date
-    , inscripción_definitiva  date
-    , inscripción_sat         date
+    , url                     varchar(255)          DEFAULT NULL -- está en domicilio comercial, pero no queremos meter eso en la tabla domicilios
+    , email                   varchar(255)          DEFAULT NULL -- está en domicilio comercial, pero no queremos meter eso en la tabla domicilios
+    , rep_legales_updated     datetime              DEFAULT NULL -- última fecha que se actualizaron los representantes legales
+    , tipo_organizacion       varchar(64)           DEFAULT NULL -- sociedad anónima, tiene que ser un listado limitado
+    , const_num_escritura     int UNSIGNED          DEFAULT 0    -- número de escritura de constitucioń (WTF? será número entero)
+    , const_fecha             date                  DEFAULT NULL
+    , inscripcion_provisional date                  DEFAULT NULL
+    , inscripcion_definitiva  date                  DEFAULT NULL
+    , inscripcion_sat         date                  DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /**
