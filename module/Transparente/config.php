@@ -12,7 +12,7 @@ return array(
             'Transparente\Controller\geoMunicipios'    => 'Transparente\Controller\geoMunicipiosController',
             'Transparente\Controller\Index'            => 'Transparente\Controller\Index',
             'Transparente\Controller\Proveedores'      => 'Transparente\Controller\Proveedores',
-            'Transparente\Controller\Scraper'          => 'Transparente\Controller\Scraper',
+            'Transparente\Controller\Scraper'          => 'Transparente\Controller\ScraperController',
        ),
     ),
     'router' => array(

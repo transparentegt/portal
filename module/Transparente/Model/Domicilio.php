@@ -1,41 +1,39 @@
 <?php
 namespace Transparente\Model;
 
-use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
-class Domicilios
+class Domicilio extends AbstractDbModel
 {
 
     public $id;
-
     public $id_municipio;
-
-    public $dirección;
-
+    public $direccion;
     public $teléfonos;
-
     public $fax;
-
     public $updated;
 
     protected $inputFilter;
 
-    public function exchangeArray($data)
+    private function detectarMunicipio($data)
     {
-        $this->id           = (! empty($data['id'])) ? $data['id'] : null;
-        $this->id_municipio = (! empty($data['id_municipio'])) ? $data['id_municipio'] : null;
-        $this->dirección    = (! empty($data['dirección'])) ? $data['dirección'] : null;
-        $this->teléfonos    = (! empty($data['teléfonos'])) ? $data['teléfonos'] : null;
-        $this->fax          = (! empty($data['fax'])) ? $data['fax'] : null;
-        $this->updated      = (! empty($data['updated'])) ? $data['updated'] : null;
+        if (!empty($data['departamento']) && !empty($data['municipio'])) {
+            $departamento = $data['departamento'];
+            $departamento = strtolower($departamento);
+            $departamento = ucfirst($departamento);
+            $municipio    = $data['municipio'];
+            $municipio    = strtolower($municipio);
+            $municipio    = ucfirst($municipio);
+        }
     }
 
-    public function getArrayCopy()
+
+    public function exchangeArray($data)
     {
-        return get_object_vars($this);
+        $data = $this->detectarMunicipio($data);
+        echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($data); die();
+
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter)

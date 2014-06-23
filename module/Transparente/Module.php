@@ -8,8 +8,8 @@ namespace Transparente;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
-// Modulos ABCD
-use Transparente\Model\Domicilios;
+// ABCD
+use Transparente\Model\Domicilio;
 use Transparente\Model\DomiciliosTable;
 use Transparente\Model\geoDepartamentos;
 use Transparente\Model\geoDepartamentosTable;
@@ -47,19 +47,27 @@ class Module
         );
     }
 
+    /**
+     * Define las factories para crear los modelos y tablas para conectar a la DB
+     *
+     * @todo Los factories se podrían definir en la AbstractDbTable
+     *
+     * @return array
+     */
     public function getServiceConfig()
     {
         return array(
             'factories' => [
-                'Transparente\Model\DomiciliosTable' => function ($sm) {
-                    $tableGateway = $sm->get('domiciliosTableGateway');
-                    $table = new DomiciliosTable($tableGateway);
+                // Domicilios
+                'Transparente\Model\DomiciliosTable' => function ($serviceManager) {
+                    $tableGateway = $serviceManager->get('DomiciliosTableGateway');
+                    $table        = new DomiciliosTable($tableGateway);
                     return $table;
                 },
-                'DomiciliosTableGateway' => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                'DomiciliosTableGateway' => function ($serviceManager) {
+                    $dbAdapter          = $serviceManager->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new Domicilios());
+                    $resultSetPrototype->setArrayObjectPrototype(new Domicilio());
                     return new TableGateway('domicilios', $dbAdapter, null, $resultSetPrototype);
                 },
 
@@ -88,7 +96,7 @@ class Module
                 // Proveedores
                 'Transparente\Model\ProveedoresTable' => function ($serviceManager) {
                     $tableGateway = $serviceManager->get('ProveedoresTableGateway');
-                    $table = new ProveedoresTable($tableGateway);
+                    $table        = new ProveedoresTable($tableGateway);
                     return $table;
                 },
                 'ProveedoresTableGateway' => function ($serviceManager) {

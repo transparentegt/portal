@@ -29,15 +29,27 @@ class AbstractDbTable
         return $rs;
     }
 
+    /**
+     *
+     * @param AbstractDbModel $element
+     *
+     * @return AbstractDbModel
+     */
     public function save(AbstractDbModel $element)
     {
-        $data = $element->asArray();
-        if (!$this->getById($data['id'])) {
-            $return = $this->tableGateway->insert($data);
+        $data   = $element->asArray();
+        if ((empty($data['id'])) || (!$this->getById($data['id']))) {
+            $stored = $this->tableGateway->insert($data);
+            if (!empty($data['id'])) {
+                $model = $this->getById($data['id']);
+            } else  {
+                $model = $this->getById($this->tableGateway->lastInsertValue);
+            }
         } else {
-            $return = $this->tableGateway->update($data, array('id' => $data['id']));
+            $stored = $this->tableGateway->update($data, array('id' => $data['id']));
+            $model  = $this->getById($data['id']);
         }
-        return $return;
+        return $model;
     }
 
     public function delete($id)
