@@ -32,8 +32,7 @@ class Domicilio extends AbstractDbModel
     public function exchangeArray($data)
     {
         $data = $this->detectarMunicipio($data);
-        echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($data); die();
-
+        return parent::exchangeArray($data);
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter)

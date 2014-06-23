@@ -65,13 +65,10 @@ class ScraperController extends AbstractActionController
             if ($data['domicilio_fiscal']['direccion']) {
                 $domicilio = new Domicilio();
                 $domicilio->exchangeArray($data['domicilio_fiscal']);
-                $domicilio = $this->getDomiciliosTable()->save($domicilio);
-
-                echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($domicilio); die();
-
+                //$domicilio = $this->getDomiciliosTable()->save($domicilio);
+                // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($domicilio); die();
             }
-            echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($proveedor); die();
-
+            // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($proveedor); die();
         }
 
         return new ViewModel(compact('proveedores'));
