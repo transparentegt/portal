@@ -13,3 +13,7 @@ nbproject
 .settings
 composer.lock
 vendor/bin
+
+# DoctrineORM
+vendor/doctrine/
+vendor/symfony/

@@ -1,10 +1,11 @@
 <?php
 namespace Transparente\Controller;
 
+use Transparente\Model\ProveedorModel;
+use Transparente\Model\DomicilioModel;
+use Doctrine\ORM\UnitOfWork;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Transparente\Model\Proveedor;
-use Transparente\Model\Domicilio;
 
 /**
  * ScraperController
@@ -17,60 +18,49 @@ use Transparente\Model\Domicilio;
  */
 class ScraperController extends AbstractActionController
 {
-
-    /**
-     * @var Transparente\Model\DomiciliosTable
-     */
-    private $domiciliosTable;
-
-    /**
-     * @var Transparente\Model\ProveedoresTable
-     */
-    private $proveedoresTable;
-
-
-    private function getDomiciliosTable()
-    {
-        if (!$this->proveedoresTable) {
-            $sm = $this->getServiceLocator();
-            $this->proveedoresTable = $sm->get('Transparente\Model\DomiciliosTable');
-        }
-        return $this->proveedoresTable;
-    }
-
-    private function getProveedoresTable()
-    {
-        if (!$this->proveedoresTable) {
-            $sm = $this->getServiceLocator();
-            $this->proveedoresTable = $sm->get('Transparente\Model\ProveedoresTable');
-        }
-        return $this->proveedoresTable;
-    }
-
     /**
      * Iniciando el scraper
      */
     public function indexAction()
     {
-        $scraper = new \Transparente\Model\Scraper();
-        $proveedores = $scraper->scrapProveedores();
-        foreach ($proveedores as $data) {
-            $proveedor = new Proveedor();
-            $proveedor->exchangeArray($data);
-            $proveedor = $this->getProveedoresTable()->save($proveedor);
-            $tainted   = false;
-            if (!$proveedor) {
-                throw new \Exception("No se pudo grabar el proveedor '{$proveedor['id']}'.");
-            }
-            if ($data['domicilio_fiscal']['direccion']) {
-                $domicilio = new Domicilio();
-                $domicilio->exchangeArray($data['domicilio_fiscal']);
-                //$domicilio = $this->getDomiciliosTable()->save($domicilio);
-                // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($domicilio); die();
-            }
-            // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($proveedor); die();
-        }
+        $proveedorModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
+        /* @var $proveedorModel ProveedorModel */
+        $domicilioModel = $this->getServiceLocator()->get('Transparente\Model\DomicilioModel');
+        /* @var $domicilioModel DomicilioModel */
 
+        $scraper        = new \Transparente\Model\Scraper();
+        $proveedores    = $scraper->scrapProveedores();
+        foreach ($proveedores as $data) {
+            $proveedor = new \Transparente\Model\Entity\Proveedor();
+            $proveedor->exchangeArray($data);
+
+            $domicilio = new \Transparente\Model\Entity\Domicilio();
+            $domicilio->exchangeArray($data['domicilio_fiscal']);
+            try {
+                $domicilio = $domicilioModel->createFromScrappedData($data['domicilio_fiscal']);
+                $proveedor->setDomicilioFiscal($domicilio);
+            } catch (\Exception $e) {
+                $proveedor->exchangeArray(['domicilio_fiscal' => null]);
+            }
+
+            $domicilio = new \Transparente\Model\Entity\Domicilio();
+            $domicilio->exchangeArray($data['domicilio_comercial']);
+            try {
+                $domicilio = $domicilioModel->createFromScrappedData($data['domicilio_comercial']);
+                $proveedor->setDomicilioComercial($domicilio);
+            } catch (\Exception $e) {
+                $proveedor->exchangeArray(['domicilio_comercial' => null]);
+            }
+
+            try {
+                $proveedorModel->save($proveedor);
+            } catch (\Exception $e) {
+                echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n";
+                    \Doctrine\Common\Util\Debug::dump($proveedor);
+                    var_dump($data);
+                die();
+            }
+        }
         return new ViewModel(compact('proveedores'));
     }
 }

@@ -1,12 +1,12 @@
 <?php
-namespace Transparente\Model;
+namespace Transparente\Model\Entity;
 
 /**
  * Clase abstracta para modelos tradicionales guardados en la por Transparente\Model\AbstractDbTable
  *
  * @todo probablemente deberíamos de cambiar a Doctrine o un ORM más robusto
  */
-abstract class AbstractDbModel
+abstract class AbstractDoctrineEntity
 {
 
     /**
@@ -32,7 +32,9 @@ abstract class AbstractDbModel
     {
         $props = $this->asArray();
         foreach ($props as $key => $value) {
-            $this->$key = (!empty($data[$key])) ? $data[$key] : null;
+            if (!empty($data[$key]) && !is_array($data[$key])) {
+                $this->$key = $data[$key];
+            }
         }
         return $this->asArray();
     }

@@ -3,8 +3,23 @@
  * Configuración del módulo de Transparente
  *
  * @todo simplificar más este archivo (la documentación para un módulo mínimo es muy poca)
+ * @todo el application_entities debería de ser por namespace, ahy que probar si funciona usando __NAMESPACE__
  */
 return array(
+    'doctrine' => array(
+      'driver' => array(
+        'application_entities' => array(
+          'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+          'cache' => 'array',
+          'paths' => array(__DIR__ . '/Model/Entity')
+        ),
+
+        'orm_default' => array(
+          'drivers' => array(
+            'Transparente\Model\Entity' => 'application_entities'
+          )
+    ))),
+
     'controllers' => array(
         'invokables' => array(
             'Transparente\Controller\Domicilios'       => 'Transparente\Controller\DomiciliosController',

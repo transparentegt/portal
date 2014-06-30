@@ -73,9 +73,9 @@ CREATE TABLE proveedores (
     , status                 bool          NOT NULL DEFAULT false -- GTC: HABILITADO / INHABILITADO
     , tiene_acceso_sistema   bool          NOT NULL DEFAULT false -- En GTC se muestra como CON/SIN CONTRASEÑA
     , id_domicilio_fiscal    int UNSIGNED           DEFAULT NULL
-    , FOREIGN KEY (id_domicilio_fiscal)    REFERENCES domicilios(id) ON DELETE CASCADE ON UPDATE CASCADE
+    , FOREIGN KEY (id_domicilio_fiscal)    REFERENCES domicilios(id) ON DELETE SET NULL ON UPDATE CASCADE
     , id_domicilio_comercial  int UNSIGNED          DEFAULT NULL
-    , FOREIGN KEY (id_domicilio_comercial) REFERENCES domicilios(id) ON DELETE CASCADE ON UPDATE CASCADE
+    , FOREIGN KEY (id_domicilio_comercial) REFERENCES domicilios(id) ON DELETE SET NULL ON UPDATE CASCADE
     , url                     varchar(255)          DEFAULT NULL -- está en domicilio comercial, pero no queremos meter eso en la tabla domicilios
     , email                   varchar(255)          DEFAULT NULL -- está en domicilio comercial, pero no queremos meter eso en la tabla domicilios
     , rep_legales_updated     datetime              DEFAULT NULL -- última fecha que se actualizaron los representantes legales
