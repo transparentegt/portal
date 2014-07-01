@@ -9,17 +9,14 @@ class Scraper
      * @param string $url
      * @param string $method
      * @return \Zend\Dom\Query
-     *
-     * @todo Verificar el charset, según veo en la página de GTC, el encoding es UTF-8, pero al leerlo y escupirlo
-     *       muestra caracteres extraños
      */
     private function getCachedUrl($url, $method='GET') {
         $session = new \Zend\Session\Container('Transparente\Scraper\cache');
-        $charset =  'utf-8';
-        $key     = md5($method.$url.$charset);
+        $key     = md5($method.$url);
         if (!isset($session[$key])) {
             $content       = file_get_contents($url);
-            $dom           = new \Zend\Dom\Query($content, $charset);
+            $content       = iconv('utf-8', 'iso-8859-1', $content);
+            $dom           = new \Zend\Dom\Query($content);
             $session[$key] = $dom;
         }
         $dom = $session[$key];
@@ -82,8 +79,6 @@ class Scraper
      *
      * @param int $id
      * @return array
-     *
-     * @todo getCachedUrl no está retornando el HTML como UTF-8 y no se puede leer bien si tiene contraseña o no
      */
     public function scrapProveedor($id)
     {
@@ -127,7 +122,7 @@ class Scraper
         $proveedor = ['id' => $id] + $this->fetchData($xpaths, $páginaDelProveedor);
         // después de capturar los datos, hacemos un postproceso
         $proveedor['status']               = ($proveedor['status'] == 'HABILITADO');
-        $proveedor['tiene_acceso_sistema'] = ($proveedor['tiene_acceso_sistema'] == 'CON CONTRASEÃA');
+        $proveedor['tiene_acceso_sistema'] = ($proveedor['tiene_acceso_sistema'] == 'CON CONTRASEÑA');
         // descartar direcciones vacías
         if ($proveedor['domicilio_fiscal']['direccion'] == '[--No Especificado--]' ||
             $proveedor['domicilio_fiscal']['municipio'] == '[--No Especificado--]') {
