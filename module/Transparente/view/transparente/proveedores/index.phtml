@@ -12,8 +12,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Nombre</th>
-            <th>Nit</th>
+            <th>nombre</th>
+            <th>nit</th>
+            <th>dirección fiscal</th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +26,11 @@
                 </a>
             </td>
             <td class="text-right"><?=$entity->getNit()?></td>
+            <td class="text-right">
+                <a target="_blank" href="http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=8&lprv=<?=$entity->getId()?>" >
+                    <?=($entity->getDomicilioFiscal()) ? '' : 'no detectada'?>
+                </a>
+            </td>
         </tr>
         <?php endforeach ?>
     </tbody>
