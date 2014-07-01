@@ -26,7 +26,7 @@ abstract class AbstractDoctrineEntity
      *
      * @param array $data
      *
-     * @see Zend\Db\ResultSet\ResultSet
+     * @todo usar setters en vez de mandar a llamar a la propiedad directamente
      */
     public function exchangeArray($data)
     {

@@ -23,10 +23,8 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Transparente\Controller\Domicilios'       => 'Transparente\Controller\DomiciliosController',
-            'Transparente\Controller\geoDepartamentos' => 'Transparente\Controller\geoDepartamentosController',
-            'Transparente\Controller\geoMunicipios'    => 'Transparente\Controller\geoMunicipiosController',
             'Transparente\Controller\Index'            => 'Transparente\Controller\Index',
-            'Transparente\Controller\Proveedores'      => 'Transparente\Controller\Proveedores',
+            'Transparente\Controller\Proveedores'      => 'Transparente\Controller\ProveedoresController',
             'Transparente\Controller\Scraper'          => 'Transparente\Controller\ScraperController',
        ),
     ),

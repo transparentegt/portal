@@ -1,0 +1,32 @@
+<?php
+/**
+ * Listar los proveedores
+ *
+ * @todo usar paginador para los proveedores
+ * @todo poder reordenar el listado
+ */
+
+/* @var $this Zend\View\Renderer\PhpRenderer */
+?>
+<h1>Proveedores</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Nit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($this->vars('entities') as $entity) : /* @var $entity Transparente\Model\Entity\Proveedor */?>
+        <tr>
+            <td>
+                <a href="<?=$this->basepath()?>/transparente/proveedores/detalles/<?=$entity->getId()?>">
+                    <?=$entity->getNombre()?>
+                </a>
+            </td>
+            <td class="text-right"><?=$entity->getNit()?></td>
+        </tr>
+        <?php endforeach ?>
+    </tbody>
+
+</table>

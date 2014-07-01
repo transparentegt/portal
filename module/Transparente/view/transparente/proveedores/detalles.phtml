@@ -1,0 +1,78 @@
+<?php
+/**
+ * Listar los proveedores
+ *
+ * @todo usar paginador para los proveedores
+ * @todo poder reordenar el listado
+ */
+
+/* @var $this Zend\View\Renderer\PhpRenderer */
+
+$entity = $this->vars('entity');
+/* @var $entity Transparente\Model\Entity\Proveedor */
+?>
+<h1>Proveedor: <?=$entity->getNombre()?></h1>
+
+<dl  class="dl-horizontal">
+    <dt>id<dt>
+        <dd><?=$entity->getId()?></dd>
+
+    <dt>nombre<dt>
+        <dd><?=$entity->getNombre()?></dd>
+
+    <dt>NIT<dt>
+        <dd><?=$entity->getNit()?></dd>
+
+    <dt>status<dt>
+        <dd><?=$entity->getStatus()?></dd>
+
+    <dt>tiene acceso al sistema<dt>
+        <dd><?=$entity->getTieneAccesoSistema()?></dd>
+
+    <?php if (($domicilio = $entity->getDomicilioFiscal()) != false) : /* @var $domicilio Transparente\Model\Entity\Domicilio */?>
+    <dt>domicilio fiscal<dt>
+        <dd>
+            <?=$domicilio->getDireccion()?><br />
+            <?=$domicilio->getMunicipio()->getNombre()?>, <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?>
+
+        </dd>
+    <?php endif ?>
+
+
+    <?php if (($domicilio = $entity->getDomicilioComercial()) != false) : /* @var $domicilio Transparente\Model\Entity\Domicilio */?>
+    <dt>domicilio comercial<dt>
+        <dd>
+            <?=$domicilio->getDireccion()?><br />
+            <?=$domicilio->getMunicipio()->getNombre()?>, <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?>
+
+        </dd>
+    <?php endif ?>
+
+    <dt>URL<dt>
+        <dd><?=$entity->getUrl()?></dd>
+
+    <dt>e-mail<dt>
+        <dd><?=$entity->getEmail()?></dd>
+
+    <dt>última fecha de actualización del representante legal<dt>
+        <dd><?=$entity->getRepLegalesUpdated()?></dd>
+
+    <dt>tipo de organización<dt>
+        <dd><?=$entity->getTipoOrganizacion()?></dd>
+
+    <dt>número de escritura de constitución<dt>
+        <dd><?=$entity->getConstNumEscritura()?></dd>
+
+    <dt>fecha de constitución<dt>
+        <dd><?=$entity->getConstFecha()?></dd>
+
+    <dt>fecha inscripción provisional<dt>
+        <dd><?=$entity->getInscripcionProvisional()?></dd>
+
+    <dt>fecha inscripción definitiva<dt>
+        <dd><?=$entity->getInscripcionDefinitiva()?></dd>
+
+    <dt>fecha inscripción en la SAT<dt>
+        <dd><?=$entity->getInscripcionSat()?></dd>
+
+</dl>

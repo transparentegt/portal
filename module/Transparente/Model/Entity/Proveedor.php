@@ -109,9 +109,18 @@ class Proveedor extends AbstractDoctrineEntity
         return $this;
     }
 
-    public function getNit ()
+    /**
+     * Se retorna el NIT con el guión del dígito verificador final
+     *
+     * @return string
+     *
+     * @todo validar cuando el nit es inválido
+     */
+    public function getNit()
     {
-        return $this->nit;
+        $nit = $this->nit;
+        $nit = substr($nit, 0, strlen($nit) -1) . '-' . substr($nit, -1, 1);
+        return $nit;
     }
 
     public function setNit ($nit)

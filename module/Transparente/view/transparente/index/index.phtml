@@ -4,46 +4,27 @@
 <div class="jumbotron">
     <h1>Guatecompras Transparente</h1>
     <p>
-        Guatecompras Transparente busca ayudar a los periodistas e investigadores a evidenciar prácticas de corrupción
-        por parte de las municipalidades y empresas oferentes que el portal de Guatecompras no hace ver tan fácilmente
+        El proyecto busca ayudar a los periodistas e investigadores a evidenciar prácticas de corrupción por parte de
+        las municipalidades y empresas oferentes que el portal de Guatecompras no hace ver tan fácilmente
         automatizando la comparación entre proyectos.  Guatecompras Transparente es un
-        <a href="http://es.wikipedia.org/wiki/Web_scraping" target="_blank">scraper</a> de datos que almacenará toda la
+        <a href="http://es.wikipedia.org/wiki/Web_scraping" target="_blank">scraper</a> de datos que almacena toda la
         información recopilada del portal de <a href="http://guatecompras.gt/" target="_blank">Guatecompras</a> para
         tener un acceso público y transparente.
     </p>
     <p>
-        <a class="btn btn-success btn-lg" href="https://github.com/str/guatecompras-transparente" target="_blank">
-            Ver el proyecto en GitHub »
+        Hemos empezado con recopilar los datos de los 50 primeros proveedores que más dinero han ganado este año (2014)
+        con proyectos adjudicados. Ya tenemos barridos los datos generales, nombres comerciales y representantes legales
+        y nuestra meta es poder tener todo almacenado para intetificar los problemas.
+    </p>
+    <p>
+        <a class="btn btn-success btn-lg" href="<?=$this->basepath()?>/transparente/proveedores">
+            Ver listado de proveedores »
         </a>
     </p>
 </div>
 
 <div class="row">
-
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Status actual</h3>
-            </div>
-            <div class="panel-body">
-                <p>
-                    Hemos empezado con recopilar los datos de los 50 primeros proveedores que más dinero han
-                    ganado este año (2014) con proyectos adjudicados. Ya tenemos barridos los datos generales, 
-                    nombres comerciales y representantes legales.
-                </p>
-                <p>
-                   Por el momento pueden correr el scraper (tarda aprox 2 minutos en correr).
-                </p>
-                <p>
-                    <a class="btn btn-success pull-right" href="<?php echo $this->url('transparente')?>/scraper">
-                        Correr el scraper »
-                    </a>
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
+    <div class="col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">¿Cómo colaborar?</h3>
@@ -55,7 +36,7 @@
                     <a href="https://github.com/str/guatecompras-transparente/issues?state=open" target="_blank">
                         manejador de incidencias
                     </a>
-                    donde publicamos las tareas que podríamos recibir ayuda.
+                    donde publicamos las tareas donde podríamos recibir ayuda.
                 </p>
                 <p>
                     ¿Encontraste un probleam y quieres reportarlo? También podés publicar la incidencia para que lo
@@ -70,7 +51,7 @@
         </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Software Libre</h3>
@@ -81,12 +62,11 @@
                     primero, el código fuente es libre para que cualquiera lo pueda ver, mejorar, y replicar.
                 </p>
                 <p>
-                    El acceso a los datos que tengamos recopilados también será libre. Por el momento se puede
-                    descargar el código fuente del sistema.
+                    El status del proyecto se puede seguir en la página en github.
                 </p>
                 <p>
-                    <a class="btn btn-success pull-right" href="https://github.com/str/guatecompras-transparente/archive/master.tar.gz">
-                        Descargar el proyecto »
+                    <a class="btn btn-success pull-right" href="https://github.com/str/guatecompras-transparente" target="_blank">
+                        Ver el proyecto en GitHub »
                     </a>
                 </p>
             </div>
