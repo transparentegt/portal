@@ -3,7 +3,6 @@ namespace Transparente\Controller;
 
 use Transparente\Model\ProveedorModel;
 use Transparente\Model\DomicilioModel;
-use Doctrine\ORM\UnitOfWork;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -34,30 +33,38 @@ class ScraperController extends AbstractActionController
             $proveedor = new \Transparente\Model\Entity\Proveedor();
             $proveedor->exchangeArray($data);
 
-            $domicilio = new \Transparente\Model\Entity\Domicilio();
-            $domicilio->exchangeArray($data['domicilio_fiscal']);
-            try {
-                $domicilio = $domicilioModel->createFromScrappedData($data['domicilio_fiscal']);
-                $proveedor->setDomicilioFiscal($domicilio);
-            } catch (\Exception $e) {
-                $proveedor->exchangeArray(['domicilio_fiscal' => null]);
+            if (!empty($data['domicilio_fiscal'])) {
+                $domicilio = new \Transparente\Model\Entity\Domicilio();
+                $domicilio->exchangeArray($data['domicilio_fiscal']);
+                try {
+                    $domicilio = $domicilioModel->createFromScrappedData($data['domicilio_fiscal']);
+                    if ($domicilio) {
+                        $proveedor->setDomicilioFiscal($domicilio);
+                    }
+                } catch (\Exception $e) {
+                    echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($data); die();
+                }
             }
 
-            $domicilio = new \Transparente\Model\Entity\Domicilio();
-            $domicilio->exchangeArray($data['domicilio_comercial']);
-            try {
-                $domicilio = $domicilioModel->createFromScrappedData($data['domicilio_comercial']);
-                $proveedor->setDomicilioComercial($domicilio);
-            } catch (\Exception $e) {
-                $proveedor->exchangeArray(['domicilio_comercial' => null]);
+            if (!empty($data['domicilio_comercial'])) {
+                $domicilio = new \Transparente\Model\Entity\Domicilio();
+                $domicilio->exchangeArray($data['domicilio_comercial']);
+                try {
+                    $domicilio = $domicilioModel->createFromScrappedData($data['domicilio_comercial']);
+                    if ($domicilio) {
+                        $proveedor->setDomicilioComercial($domicilio);
+                    }
+                } catch (\Exception $e) {
+                    echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($data); die();
+                }
             }
 
             try {
                 $proveedorModel->save($proveedor);
             } catch (\Exception $e) {
                 echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n";
-                    \Doctrine\Common\Util\Debug::dump($proveedor);
-                    var_dump($data);
+                \Doctrine\Common\Util\Debug::dump($proveedor);
+                var_dump($data);
                 die();
             }
         }

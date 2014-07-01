@@ -115,7 +115,7 @@ INSERT INTO geo_municipios VALUES(NULL, 'Tiquisate', 6);
 INSERT INTO geo_municipios VALUES(NULL, 'Amatitlán', 7);
 INSERT INTO geo_municipios VALUES(NULL, 'Chinautla', 7);
 INSERT INTO geo_municipios VALUES(NULL, 'Chuarrancho', 7);
-INSERT INTO geo_municipios VALUES(NULL, 'Ciudad de Guatemala', 7);
+INSERT INTO geo_municipios VALUES(NULL, 'Guatemala', 7);
 INSERT INTO geo_municipios VALUES(NULL, 'Fraijanes', 7);
 INSERT INTO geo_municipios VALUES(NULL, 'Mixco', 7);
 INSERT INTO geo_municipios VALUES(NULL, 'Palencia', 7);

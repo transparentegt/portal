@@ -128,13 +128,23 @@ class Scraper
         // después de capturar los datos, hacemos un postproceso
         $proveedor['status']               = ($proveedor['status'] == 'HABILITADO');
         $proveedor['tiene_acceso_sistema'] = ($proveedor['tiene_acceso_sistema'] == 'CON CONTRASEÃA');
+        // descartar direcciones vacías
+        if ($proveedor['domicilio_fiscal']['direccion'] == '[--No Especificado--]' ||
+            $proveedor['domicilio_fiscal']['municipio'] == '[--No Especificado--]') {
+            unset($proveedor['domicilio_fiscal']);
+        }
+        if ($proveedor['domicilio_comercial']['direccion'] == '[--No Especificado--]' ||
+            $proveedor['domicilio_comercial']['municipio'] == '[--No Especificado--]') {
+            unset($proveedor['domicilio_comercial']);
+        }
+
         // algunas fechas no están bien parseadas
         $proveedor['rep_legales_updated']  = strptime($proveedor['rep_legales_updated'], '(Datos recibidos de la SAT el: %d.%b.%Y %T ');
         $proveedor['rep_legales_updated']  = 1900+$proveedor['rep_legales_updated']['tm_year']
                                             . '-' . (1 + $proveedor['rep_legales_updated']['tm_mon'])
                                             . '-' . ($proveedor['rep_legales_updated']['tm_mday'])
                                             ;
-        $proveedor['url']                  = ($proveedor['url'] != '[--No Especificado--]') ? $proveedor['url'] : null;
+        $proveedor['url']                  = ($proveedor['url']   != '[--No Especificado--]') ? $proveedor['url'] : null;
         $proveedor['email']                = ($proveedor['email'] != '[--No Especificado--]') ? $proveedor['email'] : null;
         return $proveedor;
     }

@@ -13,7 +13,7 @@ class DomicilioModel extends EntityRepository
     public function createFromScrappedData($data)
     {
         if (empty($data['departamento']) || empty($data['municipio'])) {
-            throw new \Exception('No se detectó el departamento o municipio en modo texto');
+            return null;
         }
         $departamento = $data['departamento'];
         $departamento = strtolower($departamento);
