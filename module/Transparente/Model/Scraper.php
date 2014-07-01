@@ -54,6 +54,21 @@ class Scraper
         return $element;
     }
 
+    private function humanizarNombreDeEmpresa($nombre)
+    {
+        $nombre  = str_replace('SOCIEDAD ANONIMA', 'S.A.', $nombre);
+        $nombres = preg_split('/[\s,]+/', mb_strtolower($nombre, 'UTF-8'));
+        foreach ($nombres as $key => $nombre) {
+            if (preg_match('/\./', $nombre)) {
+                $nombres[$key] = strtoupper($nombre);
+            } else {
+                $nombres[$key] = ucfirst($nombre);
+            }
+        }
+        $nombre = implode(' ', $nombres);
+        return $nombre;
+    }
+
     /**
      * Obtiene los nombres comerciales de los proveedores
      *
@@ -67,8 +82,9 @@ class Scraper
         $nodos   = $página->queryXpath($xpath);
         $nombres = [];
         foreach($nodos as $nodo) {
-            if (in_array($nodo->nodeValue, $nombres)) continue;
-            $nombres[] = $nodo->nodeValue;
+            $nombre = $this->humanizarNombreDeEmpresa($nodo->nodeValue);
+            if (in_array($nombre, $nombres)) continue;
+            $nombres[] = $nombre;
         }
         sort($nombres);
         return $nombres;
@@ -120,7 +136,10 @@ class Scraper
         ];
 
         $proveedor = ['id' => $id] + $this->fetchData($xpaths, $páginaDelProveedor);
+
         // después de capturar los datos, hacemos un postproceso
+
+        $proveedor['nombre']               = $this->humanizarNombreDeEmpresa($proveedor['nombre']);
         $proveedor['status']               = ($proveedor['status'] == 'HABILITADO');
         $proveedor['tiene_acceso_sistema'] = ($proveedor['tiene_acceso_sistema'] == 'CON CONTRASEÑA');
         // descartar direcciones vacías
