@@ -2,7 +2,8 @@
 namespace Transparente\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use \Transparente\Model\Entity\AbstractDoctrineEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Transparente\Model\Entity\AbstractDoctrineEntity;
 
 /**
  * @ORM\Entity(repositoryClass="Transparente\Model\ProveedorModel")
@@ -93,6 +94,11 @@ class Proveedor extends AbstractDoctrineEntity
      */
     protected $inscripcion_sat;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ProveedorNombreComercial", mappedBy="proveedor", cascade="persist")
+     */
+    protected $nombres_comerciales;
+
     public function getId ()
     {
         return $this->id;
@@ -107,6 +113,23 @@ class Proveedor extends AbstractDoctrineEntity
     {
         $this->nombre = $nombre;
         return $this;
+    }
+
+    public function __construct()
+    {
+        $this->nombres_comerciales = new ArrayCollection();
+    }
+
+    public function appendNombreComercial(\Transparente\Model\Entity\ProveedorNombreComercial $nombreComercial)
+    {
+        $nombreComercial->setProveedor($this);
+        $this->nombres_comerciales[] = $nombreComercial;
+        return $this;
+    }
+
+    public function getNombresComerciales()
+    {
+        return $this->nombres_comerciales;
     }
 
     /**

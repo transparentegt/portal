@@ -59,14 +59,24 @@ class ScraperController extends AbstractActionController
                 }
             }
 
+            foreach ($data['nombres_comerciales'] as $nombre) {
+                $nombreComercial = new \Transparente\Model\Entity\ProveedorNombreComercial();
+                $nombreComercial->setNombre($nombre);
+                $proveedor->appendNombreComercial($nombreComercial);
+            }
+
+            $proveedorModel->save($proveedor);
+
+            /*
             try {
                 $proveedorModel->save($proveedor);
             } catch (\Exception $e) {
                 echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n";
-                \Doctrine\Common\Util\Debug::dump($proveedor);
-                var_dump($data);
+                    \Doctrine\Common\Util\Debug::dump($proveedor);
+                    var_dump($data);
                 die();
             }
+            */
         }
         return new ViewModel(compact('proveedores'));
     }

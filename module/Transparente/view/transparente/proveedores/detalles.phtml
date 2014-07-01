@@ -19,6 +19,12 @@ $entity = $this->vars('entity');
 
     <dt>nombre<dt>
         <dd><?=$entity->getNombre()?></dd>
+        <?php if (($nombresComerciales = $entity->getNombresComerciales()) != false) : ?>
+        <dt>nombres comerciales<dt>
+            <?php foreach($nombresComerciales as $nombreComercial) : /* @var $nombreComercial Transparente\Model\Entity\ProveedorNombreComercial */ ?>
+            <dd><?=$nombreComercial->getNombre()?></dd>
+            <?php endforeach ?>
+        <?php endif ?>
 
     <dt>NIT<dt>
         <dd><?=$entity->getNit()?></dd>

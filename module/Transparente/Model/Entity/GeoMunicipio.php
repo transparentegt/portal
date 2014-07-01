@@ -16,12 +16,10 @@ class GeoMunicipio extends AbstractDoctrineEntity
      */
     protected $id;
 
-
     /**
      * @ORM\Column(type="string")
      */
     protected $nombre;
-
 
     /**
      * @ORM\ManyToOne(targetEntity="GeoDepartamento", inversedBy="municipios")

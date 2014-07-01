@@ -95,7 +95,7 @@ CREATE TABLE proveedores (
 DROP TABLE IF EXISTS proveedor_nombres_comerciales;
 CREATE TABLE proveedor_nombres_comerciales (
     id             int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY -- necesitamos el ID?
-    , name         varchar(128) NOT NULL DEFAULT ''
+    , nombre       varchar(128) NOT NULL DEFAULT ''
     , id_proveedor INT UNSIGNED NOT NULL
     , FOREIGN KEY (id_proveedor) REFERENCES proveedores(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -110,6 +110,7 @@ CREATE TABLE proveedor_nombres_comerciales (
  *
  * @todo el ID debería de ser el NIT?
  */
+/*
 DROP TABLE IF EXISTS representante_legal;
 CREATE TABLE representante_legal (
     id            int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
@@ -124,11 +125,13 @@ CREATE TABLE representante_legal (
     , url                 varchar(255) NOT NULL DEFAULT '',
     , email               varchar(255) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+*/
 
 /**
  * Relación de muchos a muchos. Un representante legal puede representar muchas empresas. Una empresa puede estar
  * representada por muchos representantes.
  */
+/*
 DROP TABLE IF EXISTS provevedor_representado_por;
 CREATE TABLE provevedor_representado_por (
     , id_proveedor INT UNSIGNED NOT NULL
@@ -136,3 +139,4 @@ CREATE TABLE provevedor_representado_por (
     , id_representante_legal  INT UNSIGNED NOT NULL
     , FOREIGN KEY (id_representante_legal) REFERENCES foreign(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+*/

@@ -27,7 +27,6 @@ class Domicilio extends AbstractDoctrineEntity
      */
     protected $telefonos;
 
-
     /**
      * @ORM\Column(type="string")
      */
