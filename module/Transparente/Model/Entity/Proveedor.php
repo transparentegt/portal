@@ -152,9 +152,13 @@ class Proveedor extends AbstractDoctrineEntity
         return $this;
     }
 
-    public function getStatus ()
+    public function getStatus ($human = false)
     {
-        return $this->status;
+        $flag = $this->status;
+        if ($human) {
+            $flag = ($flag) ? 'activo' : 'inactivo';
+        }
+        return $flag;
     }
 
     public function setStatus ($status)
@@ -163,9 +167,13 @@ class Proveedor extends AbstractDoctrineEntity
         return $this;
     }
 
-    public function getTieneAccesoSistema ()
+    public function getTieneAccesoSistema ($human = false)
     {
-        return $this->tiene_acceso_sistema;
+        $flag = $this->tiene_acceso_sistema;
+        if ($human) {
+            $flag = ($flag) ? 'si' : 'no';
+        }
+        return $flag;
     }
 
     public function setTieneAccesoSistema ($tiene_acceso_sistema)

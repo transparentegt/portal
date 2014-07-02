@@ -11,48 +11,50 @@
 $entity = $this->vars('entity');
 /* @var $entity Transparente\Model\Entity\Proveedor */
 ?>
+<style>
+.dl-horizontal dt { width: 370px; }
+.dl-horizontal dd { margin-left: 380px;}
+</style>
 <h1>Proveedor: <?=$entity->getNombre()?></h1>
-
 <dl  class="dl-horizontal">
     <dt>id<dt>
         <dd><?=$entity->getId()?></dd>
 
     <dt>nombre<dt>
         <dd><?=$entity->getNombre()?></dd>
-        <?php if (($nombresComerciales = $entity->getNombresComerciales()) != false) : ?>
-        <dt>nombres comerciales<dt>
-            <?php foreach($nombresComerciales as $nombreComercial) : /* @var $nombreComercial Transparente\Model\Entity\ProveedorNombreComercial */ ?>
-            <dd><?=$nombreComercial->getNombre()?></dd>
-            <?php endforeach ?>
-        <?php endif ?>
 
     <dt>NIT<dt>
         <dd><?=$entity->getNit()?></dd>
 
-    <dt>status<dt>
-        <dd><?=$entity->getStatus()?></dd>
-
-    <dt>tiene acceso al sistema<dt>
-        <dd><?=$entity->getTieneAccesoSistema()?></dd>
-
     <?php if (($domicilio = $entity->getDomicilioFiscal()) != false) : /* @var $domicilio Transparente\Model\Entity\Domicilio */?>
     <dt>domicilio fiscal<dt>
         <dd>
-            <?=$domicilio->getDireccion()?><br />
-            <?=$domicilio->getMunicipio()->getNombre()?>, <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?>
-
+            <address>
+                <?=$domicilio->getDireccion()?><br />
+                <?=$domicilio->getMunicipio()->getNombre()?>, <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
+                <span class="glyphicon glyphicon-earphone"></span> tel: <?=$domicilio->getTelefonos()?><br />
+                <span class="glyphicon glyphicon-print"></span>    fax: <?=$domicilio->getFax()?><br />
+            </address>
         </dd>
     <?php endif ?>
-
 
     <?php if (($domicilio = $entity->getDomicilioComercial()) != false) : /* @var $domicilio Transparente\Model\Entity\Domicilio */?>
     <dt>domicilio comercial<dt>
         <dd>
-            <?=$domicilio->getDireccion()?><br />
-            <?=$domicilio->getMunicipio()->getNombre()?>, <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?>
-
+            <address>
+                <?=$domicilio->getDireccion()?><br />
+                <?=$domicilio->getMunicipio()->getNombre()?>, <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
+                <span class="glyphicon glyphicon-earphone"></span> tel: <?=$domicilio->getTelefonos()?><br />
+                <span class="glyphicon glyphicon-print"></span>    fax: <?=$domicilio->getFax()?><br />
+            </address>
         </dd>
     <?php endif ?>
+
+    <dt>status<dt>
+        <dd><?=$entity->getStatus($human = true)?></dd>
+
+    <dt>tiene acceso al sistema<dt>
+        <dd><?=$entity->getTieneAccesoSistema($human = true)?></dd>
 
     <dt>URL<dt>
         <dd><?=$entity->getUrl()?></dd>
@@ -80,5 +82,12 @@ $entity = $this->vars('entity');
 
     <dt>fecha inscripción en la SAT<dt>
         <dd><?=$entity->getInscripcionSat()?></dd>
+
+    <?php if (($nombresComerciales = $entity->getNombresComerciales()) != false) : ?>
+        <dt>nombres comerciales<dt>
+            <?php foreach($nombresComerciales as $nombreComercial) : /* @var $nombreComercial Transparente\Model\Entity\ProveedorNombreComercial */ ?>
+            <dd><?=$nombreComercial->getNombre()?></dd>
+            <?php endforeach ?>
+    <?php endif ?>
 
 </dl>
