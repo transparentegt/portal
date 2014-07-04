@@ -68,8 +68,12 @@ class Proveedor extends AbstractDoctrineEntity
     protected $rep_legales_updated;
 
     /**
-     * @ORM\ManyToMany(targetEntity="RepresentanteLegal", inversedBy="proveedores"), cascade="persist")
-     * @ORM\JoinTable(name="proveedor_representado_por")
+     * @ORM\ManyToMany ( targetEntity = "RepresentanteLegal", inversedBy = "proveedores", cascade = "persist" )
+     * @ORM\JoinTable (
+     *      name               = "proveedor_representado_por",
+     *      joinColumns        = { @ORM\JoinColumn (name = "id_proveedor",           referencedColumnName = "id") },
+     *      inverseJoinColumns = { @ORM\JoinColumn (name = "id_representante_legal", referencedColumnName = "id") }
+     * )
      *
      * @var ArrayCollection
      */
@@ -135,6 +139,7 @@ class Proveedor extends AbstractDoctrineEntity
     {
         $repLegal->representa($this);
         $this->representantes_legales[] = $repLegal;
+        return $this;
     }
 
     public function getId ()

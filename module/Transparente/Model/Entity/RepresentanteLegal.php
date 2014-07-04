@@ -4,7 +4,6 @@ namespace Transparente\Model\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Transparente\Model\Entity\AbstractDoctrineEntity;
-use Transparente;
 
 /**
  * El representante legal usa la misma estructura que el proveedor, incluso para scrapearlo usa la misma URL
@@ -345,7 +344,7 @@ class RepresentanteLegal extends AbstractDoctrineEntity
         return $this;
     }
 
-    public function representa(Transparente\Model\Entity\Proveedor $proveedor)
+    public function representa(Proveedor $proveedor)
     {
         $this->proveedores[] = $proveedor;
     }
