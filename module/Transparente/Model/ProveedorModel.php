@@ -18,7 +18,6 @@ class ProveedorModel extends EntityRepository
     {
         $em = $this->getEntityManager();
         $em->persist($entity);
-        $em->flush();
     }
 
 }

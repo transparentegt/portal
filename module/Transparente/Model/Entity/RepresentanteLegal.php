@@ -4,14 +4,20 @@ namespace Transparente\Model\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Transparente\Model\Entity\AbstractDoctrineEntity;
+use Transparente;
 
 /**
- * Entidad de proveedores
+ * El representante legal usa la misma estructura que el proveedor, incluso para scrapearlo usa la misma URL
  *
- * @ORM\Entity(repositoryClass="Transparente\Model\ProveedorModel")
- * @ORM\Table(name="proveedor")
+ * @ORM\Entity(repositoryClass="Transparente\Model\RepresentanteLegalModel")
+ * @ORM\Table(name="rep_legal")
+ *
+ * @link http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=10&lprv=421
+ *
+ * @todo Un representante legal puede tener nombres comerciales?
+ * @todo Un representante legal puede tener representantes legales?
  */
-class Proveedor extends AbstractDoctrineEntity
+class RepresentanteLegal extends AbstractDoctrineEntity
 {
     /**
      * @ORM\Id
@@ -20,15 +26,40 @@ class Proveedor extends AbstractDoctrineEntity
     protected $id;
 
     /**
-     * Nombre o razón social
+     * Datos recibidos de la SAT
+     * @ORM\Column(type="datetime")
+     */
+    protected $actualizado_sat;
+
+    /**
      * @ORM\Column(type="string")
      */
-    protected $nombre;
+    protected $nombre1;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $nombre2;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $apellido1;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $apellido2;
 
     /**
      * @ORM\Column(type="string")
      */
     protected $nit;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ProveedorNombreComercial", mappedBy="proveedor", cascade="persist")
+     */
+    protected $nombres_comerciales;
 
     /**
      * @ORM\Column(type="boolean")
@@ -38,7 +69,7 @@ class Proveedor extends AbstractDoctrineEntity
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $tiene_acceso_sistema;
+    protected $tiene_acceso_sistema = false;
 
     /**
      * @ORM\ManyToOne(targetEntity="Domicilio", cascade="persist")
@@ -63,17 +94,19 @@ class Proveedor extends AbstractDoctrineEntity
     protected $email;
 
     /**
-     * @ORM\Column(type="string")
-     */
-    protected $rep_legales_updated;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="RepresentanteLegal", inversedBy="proveedores"), cascade="persist")
+     * @ORM\ManyToMany(targetEntity="Proveedor", mappedBy="representantes_legales", cascade="persist")
      * @ORM\JoinTable(name="proveedor_representado_por")
      *
      * @var ArrayCollection
      */
-    protected $representantes_legales;
+    protected $proveedores;
+
+    /**
+     * (Datos recibidos de la SAT el: 01.jul.2014 16:45:44
+     *
+     * @ORM\Column(type="string")
+     */
+    protected $rep_legales_updated;
 
     /**
      * Los valores encontrados han sido: SOCIEDAD ANÓNIMA, INDIVIDUAL
@@ -81,12 +114,6 @@ class Proveedor extends AbstractDoctrineEntity
      * @ORM\Column(type="string")
      */
     protected $tipo_organizacion;
-
-    /**
-     * Datos recibidos de la SAT
-     * @ORM\Column(type="datetime")
-     */
-    protected $actualizado_sat;
 
     /**
      * @ORM\Column(type="string")
@@ -113,38 +140,15 @@ class Proveedor extends AbstractDoctrineEntity
      */
     protected $inscripcion_sat;
 
-    /**
-     * @ORM\OneToMany(targetEntity="ProveedorNombreComercial", mappedBy="proveedor", cascade="persist")
-     */
-    protected $nombres_comerciales;
-
     public function __construct()
     {
-        $this->nombres_comerciales    = new ArrayCollection();
-        $this->representantes_legales = new ArrayCollection();
-    }
-
-    public function appendNombreComercial(ProveedorNombreComercial $nombreComercial)
-    {
-        $nombreComercial->setProveedor($this);
-        $this->nombres_comerciales[] = $nombreComercial;
-        return $this;
-    }
-
-    public function appendRepresentanteLegal(RepresentanteLegal $repLegal)
-    {
-        $repLegal->representa($this);
-        $this->representantes_legales[] = $repLegal;
+        $this->nombres_comerciales = new ArrayCollection();
+        $this->proveedores         = new ArrayCollection();
     }
 
     public function getId ()
     {
         return $this->id;
-    }
-
-    public function getNombre ()
-    {
-        return $this->nombre;
     }
 
     public function setNombre ($nombre)
@@ -153,14 +157,16 @@ class Proveedor extends AbstractDoctrineEntity
         return $this;
     }
 
+    public function appendNombreComercial(\Transparente\Model\Entity\ProveedorNombreComercial $nombreComercial)
+    {
+        $nombreComercial->setProveedor($this);
+        $this->nombres_comerciales[] = $nombreComercial;
+        return $this;
+    }
+
     public function getNombresComerciales()
     {
         return $this->nombres_comerciales;
-    }
-
-    public function getRepresentantesLegales()
-    {
-        return $this->representantes_legales;
     }
 
     /**
@@ -257,6 +263,11 @@ class Proveedor extends AbstractDoctrineEntity
         return $this;
     }
 
+    public function getProveedores()
+    {
+        return $this->proveedores;
+    }
+
     public function getRepLegalesUpdated ()
     {
         return $this->rep_legales_updated;
@@ -332,5 +343,10 @@ class Proveedor extends AbstractDoctrineEntity
     {
         $this->inscripcion_sat = $inscripcion_sat;
         return $this;
+    }
+
+    public function representa(Transparente\Model\Entity\Proveedor $proveedor)
+    {
+        $this->proveedores[] = $proveedor;
     }
 }

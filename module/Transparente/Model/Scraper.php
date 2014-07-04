@@ -3,32 +3,12 @@ namespace Transparente\Model;
 
 class Scraper
 {
-    /**
-     * Returns a cached crawled URL
-     *
-     * @param string $url
-     * @param string $method
-     * @return \Zend\Dom\Query
-     */
-    private function getCachedUrl($url, $method='GET') {
-        $session = new \Zend\Session\Container('Transparente\Scraper\cache');
-        $key     = md5($method.$url);
-        if (!isset($session[$key])) {
-            $content       = file_get_contents($url);
-            $content       = iconv('utf-8', 'iso-8859-1', $content);
-            $dom           = new \Zend\Dom\Query($content);
-            $session[$key] = $dom;
-        }
-        $dom = $session[$key];
-        return $dom;
-    }
-
-    private function fetchData($xpaths, \Zend\Dom\Query $dom)
+    public static function fetchData($xpaths, \Zend\Dom\Query $dom)
     {
         $element = [];
         foreach($xpaths as $key => $path) {
             if (is_array($path)) {
-                $element[$key] = $this->fetchData($path, $dom);
+                $element[$key] = self::fetchData($path, $dom);
             } else {
                 if (!$path) {
                     $element[$key] = null;
@@ -52,6 +32,27 @@ class Scraper
             }
         }
         return $element;
+    }
+
+    /**
+     * Returns a cached crawled URL
+     *
+     * @param string $url
+     * @param string $method
+     *
+     * @return \Zend\Dom\Query
+     */
+    public static function getCachedUrl($url, $method='GET') {
+        $session = new \Zend\Session\Container('Transparente\Scraper\cache');
+        $key     = md5($method.$url.'0');
+        if (!isset($session[$key])) {
+            $content       = file_get_contents($url);
+            $content       = iconv('utf-8', 'iso-8859-1', $content);
+            $dom           = new \Zend\Dom\Query($content);
+            $session[$key] = $dom;
+        }
+        $dom = $session[$key];
+        return $dom;
     }
 
     private function humanizarNombreDeEmpresa($nombre)
@@ -193,13 +194,16 @@ class Scraper
 
     public function scrapRepresentantesLegales($id)
     {
-        $página    = $this->getCachedUrl('http://guatecompras.gt/proveedores/consultaprrepleg.aspx?rqp=8&lprv=' . $id);
-        $xpath     = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]';
+        $página    = self::getCachedUrl('http://guatecompras.gt/proveedores/consultaprrepleg.aspx?rqp=8&lprv=' . $id);
+        $xpath     = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]/a';
         $nodos     = $página->queryXpath($xpath);
         $elementos = [];
         foreach($nodos as $nodo) {
-            if (in_array($nodo->nodeValue, $elementos)) continue;
-            $elementos[] = trim($nodo->nodeValue);
+            $url         = parse_url($nodo->getAttribute('href'));
+            parse_str($url['query'], $url);
+            $id          = $url['lprv'];
+            if (in_array($id, $elementos)) continue;
+            $elementos[] = (int) $id;
         }
         sort($elementos);
         return $elementos;

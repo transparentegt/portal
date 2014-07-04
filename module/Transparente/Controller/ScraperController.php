@@ -65,19 +65,21 @@ class ScraperController extends AbstractActionController
                 $proveedor->appendNombreComercial($nombreComercial);
             }
 
-            $proveedorModel->save($proveedor);
-
-            /*
-            try {
-                $proveedorModel->save($proveedor);
-            } catch (\Exception $e) {
-                echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n";
-                    \Doctrine\Common\Util\Debug::dump($proveedor);
-                    var_dump($data);
-                die();
+            foreach ($data['representantes_legales'] as $idRep) {
+                $repModel = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');
+                /* @var $domicilioModel DomicilioModel */
+                $repLegal = $repModel->scrap($idRep);
+                $proveedor->appendRepresentanteLegal($repLegal);
             }
-            */
-        }
+
+            // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; Doctrine\Common\Util\Debug::dump($proveedor); die();
+            // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($data); die();
+
+            $proveedorModel->save($proveedor);
+       }
+        $db = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        /* @var $db Doctrine\ORM\EntityManager */
+        $db->flush();
         return new ViewModel(compact('proveedores'));
     }
 }

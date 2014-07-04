@@ -65,12 +65,13 @@ CREATE TABLE domicilios (
  *
  * @todo dejar de tener campos NOT NULL
  */
-DROP TABLE IF EXISTS proveedores;
-CREATE TABLE proveedores (
+DROP TABLE IF EXISTS proveedor;
+CREATE TABLE proveedor (
     id                       int UNSIGNED  NOT NULL PRIMARY KEY -- no es autoincrement para usaar el mismo ID que en GTC
     , nombre                 varchar(128)  NOT NULL DEFAULT ''
     , nit                    varchar(16)   NOT NULL DEFAULT ''
     , status                 bool          NOT NULL DEFAULT false -- GTC: HABILITADO / INHABILITADO
+    , actualizado_sat        datetime               DEFAULT NULL
     , tiene_acceso_sistema   bool          NOT NULL DEFAULT false -- En GTC se muestra como CON/SIN CONTRASEÑA
     , id_domicilio_fiscal    int UNSIGNED           DEFAULT NULL
     , FOREIGN KEY (id_domicilio_fiscal)    REFERENCES domicilios(id) ON DELETE SET NULL ON UPDATE CASCADE
@@ -97,8 +98,9 @@ CREATE TABLE proveedor_nombres_comerciales (
     id             int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY -- necesitamos el ID?
     , nombre       varchar(128) NOT NULL DEFAULT ''
     , id_proveedor INT UNSIGNED NOT NULL
-    , FOREIGN KEY (id_proveedor) REFERENCES proveedores(id) ON DELETE CASCADE ON UPDATE CASCADE
+    , FOREIGN KEY (id_proveedor) REFERENCES proveedor(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 /**
  * Representante Legal
@@ -110,33 +112,48 @@ CREATE TABLE proveedor_nombres_comerciales (
  *
  * @todo el ID debería de ser el NIT?
  */
-/*
-DROP TABLE IF EXISTS representante_legal;
-CREATE TABLE representante_legal (
-    id            int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
-    , nombre        varchar(128) NOT NULL DEFAULT ''
-    , nit                 varchar(32)  NOT NULL DEFAULT ''
-    , statsus
-    , tiene_acceso_sistema bool NOT NULL, -- En GTC se muestra como CON/SIN CONTRASEÑA
-    , id_domicilio_fiscal
-    , FOREIGN KEY (id_domicilo_fiscal) REFERENCES domicilios(id) ON DELETE CASCADE ON UPDATE CASCADE
-    , id_domicilio_comercial
-    , FOREIGN KEY (id_domicilo_comercial) REFERENCES domicilios(id) ON DELETE CASCADE ON UPDATE CASCADE
-    , url                 varchar(255) NOT NULL DEFAULT '',
-    , email               varchar(255) NOT NULL DEFAULT ''
+DROP TABLE IF EXISTS rep_legal;
+CREATE TABLE rep_legal (
+    id                       int UNSIGNED  NOT NULL PRIMARY KEY -- no es autoincrement para usaar el mismo ID que en GTC
+    , nombre1                varchar(128)  NOT NULL DEFAULT ''
+    , nombre2                varchar(128)  NOT NULL DEFAULT ''
+    , apellido1              varchar(128)  NOT NULL DEFAULT ''
+    , apellido2              varchar(128)  NOT NULL DEFAULT ''
+    , nit                    varchar(16)   NOT NULL DEFAULT ''
+    , status                 bool          NOT NULL DEFAULT false -- GTC: HABILITADO / INHABILITADO
+    , actualizado_sat        datetime               DEFAULT NULL
+    , tiene_acceso_sistema   bool          NOT NULL DEFAULT false -- En GTC se muestra como CON/SIN CONTRASEÑA
+    , id_domicilio_fiscal    int UNSIGNED           DEFAULT NULL
+    , FOREIGN KEY (id_domicilio_fiscal)    REFERENCES domicilios(id) ON DELETE SET NULL ON UPDATE CASCADE
+    , id_domicilio_comercial  int UNSIGNED          DEFAULT NULL
+    , FOREIGN KEY (id_domicilio_comercial) REFERENCES domicilios(id) ON DELETE SET NULL ON UPDATE CASCADE
+    , url                     varchar(255)          DEFAULT NULL -- está en domicilio comercial, pero no queremos meter eso en la tabla domicilios
+    , email                   varchar(255)          DEFAULT NULL -- está en domicilio comercial, pero no queremos meter eso en la tabla domicilios
+    , rep_legales_updated     datetime              DEFAULT NULL -- última fecha que se actualizaron los representantes legales
+    , tipo_organizacion       varchar(64)           DEFAULT NULL -- sociedad anónima, tiene que ser un listado limitado
+    , const_num_escritura     int UNSIGNED          DEFAULT 0    -- número de escritura de constitucioń (WTF? será número entero)
+    , const_fecha             date                  DEFAULT NULL
+    , inscripcion_provisional date                  DEFAULT NULL
+    , inscripcion_definitiva  date                  DEFAULT NULL
+    , inscripcion_sat         date                  DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-*/
+
+DROP TABLE IF EXISTS rep_legal_nombre_comercial;
+CREATE TABLE rep_legal_nombre_comercial (
+    id             int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY -- necesitamos el ID?
+    , nombre       varchar(128) NOT NULL DEFAULT ''
+    , id_rep_legal INT UNSIGNED NOT NULL
+    , FOREIGN KEY (id_rep_legal) REFERENCES rep_legal(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /**
  * Relación de muchos a muchos. Un representante legal puede representar muchas empresas. Una empresa puede estar
  * representada por muchos representantes.
  */
-/*
-DROP TABLE IF EXISTS provevedor_representado_por;
-CREATE TABLE provevedor_representado_por (
-    , id_proveedor INT UNSIGNED NOT NULL
-    , FOREIGN KEY (proveedor_id)           REFERENCES foreign(id) ON DELETE CASCADE ON UPDATE CASCADE
+DROP TABLE IF EXISTS proveedor_representado_por;
+CREATE TABLE proveedor_representado_por (
+      id_proveedor INT UNSIGNED NOT NULL
+    , FOREIGN KEY (id_proveedor)           REFERENCES proveedor(id) ON DELETE CASCADE ON UPDATE CASCADE
     , id_representante_legal  INT UNSIGNED NOT NULL
-    , FOREIGN KEY (id_representante_legal) REFERENCES foreign(id) ON DELETE CASCADE ON UPDATE CASCADE
+    , FOREIGN KEY (id_representante_legal) REFERENCES rep_legal(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-*/

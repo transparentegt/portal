@@ -32,7 +32,7 @@ abstract class AbstractDoctrineEntity
     {
         $props = $this->asArray();
         foreach ($props as $key => $value) {
-            if (!empty($data[$key]) && !is_array($data[$key])) {
+            if (isset($data[$key]) && !is_array($data[$key])) {
                 $this->$key = $data[$key];
             }
         }
