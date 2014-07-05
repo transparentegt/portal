@@ -47,6 +47,8 @@ class Module
     {
         return array(
             'factories' => [
+                'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
+
                 // DomicilioModel
                 'Transparente\Model\DomicilioModel' => function (ServiceManager $sm) {
                     $em    = $sm->get('Doctrine\ORM\EntityManager');

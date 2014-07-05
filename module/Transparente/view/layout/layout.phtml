@@ -1,4 +1,12 @@
-<?php echo $this->doctype(); ?>
+<?php
+/**
+ * Guatecompras Transparente layout
+ */
+
+/* @var $this Zend\View\Renderer\PhpRenderer */
+
+echo $this->doctype();
+?>
 <html lang="es">
     <head>
         <meta charset="utf-8">
@@ -22,35 +30,15 @@
             ->prependFile('//code.jquery.com/jquery-1.11.0.min.js')
             ->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
             ->prependFile($this->basePath() . '/js/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
-        ; ?>
-
+        ?>
+        <style>
+            footer > * {float: left; margin-right: 20px; margin-bottom: 10px;}
+        </style>
     </head>
     <body>
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>">
-                        <img alt="Guatecompras Transparente" src="<?=$this->basePath()?>/Transparente/img/logo-menu.png" style="height: 34px; margin-top: -12px;" />
-                        &nbsp; Guatecompras Transparente
-                    </a>
-                </div>
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
-                    </ul>
-                </div><!--/.nav-collapse -->
-            </div>
-        </nav>
+        <?=$this->navigation('navigation')->menu()->setPartial(array('partial/topmenu.phtml', 'default'));?>
         <div class="container">
             <?php echo $this->content; ?>
-            <style>
-                footer > * {float: left; margin-right: 20px; margin-bottom: 10px;}
-            </style>
             <hr>
             <footer>
                 <a href="http://framework.zend.com" title="Zend Framework Version: <?php echo \Zend\Version\Version::VERSION ?>" >

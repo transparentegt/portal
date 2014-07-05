@@ -1,0 +1,54 @@
+<?php
+/**
+ * @link http://stackoverflow.com/questions/14884572/zend-framework-2-navigation-menu-twitter-bootstrap-integration
+ *
+ * @todo Marcar como activo el menú padre
+ */
+?>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="<?php echo $this->url('home') ?>">
+                <img src="<?=$this->basePath()?>/Transparente/img/logo-menu.png" alt="Guatecompras Transparente" style="margin-top: -13px; margin-right: 10px;" />
+                Guatecompras Transparente
+            </a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+            <?php foreach ($this->container as $page) : ?>
+                <?php /* @var $page Zend\Navigation\Page\Mvc */ ?>
+                <?php // when using partials we need to manually check for ACL conditions ?>
+                <?php if (!$page->isVisible() || !$this->navigation()->accept($page)) { continue; } ?>
+                <?php $hasChildren = $page->hasPages(); ?>
+                <?php if (!$hasChildren) : ?>
+                     <li <?php if($page->isActive()) echo 'class="active"'?>>
+                        <a href="<?php echo $page->getHref() ?>">
+                            <?php echo $this->translate($page->getLabel()) ?>
+                        </a>
+                    </li>
+                <?php else : ?>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $this->translate($page->getLabel()) ?> <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <?php foreach ($page->getPages() as $child) : ?>
+                            <?php // when using partials we need to manually check for ACL conditions ?>
+                            <?php if(!$child->isVisible() || !$this->navigation()->accept($child)) { continue; } ?>
+                            <li <?php if($child->isActive()) echo 'class="active"'?>>
+                                <a href="<?php echo $child->getHref() ?>">
+                                    <?php echo $this->translate($child->getLabel()) ?>
+                                </a>
+                            </li>
+                        <?php endforeach ?>
+                    </ul>
+                </li>
+                <?php endif ?>
+            <?php endforeach ?>
+        </ul>
+        </div>
+    </div>
+</nav>
