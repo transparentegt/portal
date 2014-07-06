@@ -245,6 +245,17 @@ class Proveedor extends AbstractDoctrineEntity
         return $this->url;
     }
 
+    /**
+     * Retorna la URL para ver el detalle del proveedor en Guatecompras
+     *
+     * @return string
+     */
+    public function getUrlGuatecompras()
+    {
+        $url = 'http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=8&lprv=' . $this->getId();
+        return $url;
+    }
+
     public function setUrl ($url)
     {
         $this->url = $url;

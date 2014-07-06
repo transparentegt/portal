@@ -41,4 +41,19 @@ class ProveedoresController extends AbstractActionController
         return new ViewModel(compact('entity'));
     }
 
+
+    /**
+     * Listar proveedores sin dirección fiscal
+     *
+     * @todo paginar
+     * @todo ordenar por nombre pre-seleccionado
+     * @todo ordenar por columna seleccionada
+     */
+    public function noFiscalAction()
+    {
+        $proveedoresModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
+        $entities         = $proveedoresModel->findByNoDomicilioFiscal();
+        return new ViewModel(compact('entities'));
+    }
+
 }

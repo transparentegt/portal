@@ -14,6 +14,8 @@
         <tr>
             <th>nombre</th>
             <th class="text-right">nit</th>
+            <th>dirección fiscal</th>
+            <th>dirección comercial</th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +27,15 @@
                 </a>
             </td>
             <td class="text-right"><?=$entity->getNit()?></td>
+            <td>
+                <a target="_blank" href="<?=$entity->getUrlGuatecompras()?>" >
+                    <?=($entity->getDomicilioFiscal()) ? '' : 'no detectada'?>
+                    <span class="glyphicon glyphicon-new-window"></span>
+                </a>
+            </td>
+            <td>
+                <?=($entity->getDomicilioComercial()) ? 'si tiene' : 'no detectada'?>
+            </td>
         </tr>
         <?php endforeach ?>
     </tbody>

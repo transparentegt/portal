@@ -76,10 +76,10 @@ return array(
         'default' => [
             // ['route' => 'home', 'label' => 'Guatemala Transparente'],
             ['route' => 'transparente/default',     'controller' => 'proveedores', 'label' => 'proveedores', 'pages' => [
-                ['route' => 'transparente/default', 'controller' => 'proveedores',                      'label' => 'listar todos'],
+                ['route' => 'transparente/default', 'controller' => 'proveedores', 'action' => 'index',     'label' => 'listar todos'],
                 ['route' => 'transparente/default', 'controller' => 'proveedores', 'action' => 'no-fiscal', 'label' => 'sin domicilio fiscal']
             ]],
-            ['route' => 'transparente/default',     'controller' => 'representantes_legales',  'label' => 'representantes legales', 'pages' => [
+            ['route' => 'transparente/default',     'controller' => 'representantes_legales', 'label' => 'representantes legales', 'pages' => [
                 ['route' => 'transparente/default', 'controller' => 'representantes_legales', 'action' => 'index', 'label' => 'listar todos'],
                 ['route' => 'transparente/default', 'controller' => 'representantes_legales', 'action' => 'index', 'label' => 'con mas de 1 empresa proveedora']
             ]],
