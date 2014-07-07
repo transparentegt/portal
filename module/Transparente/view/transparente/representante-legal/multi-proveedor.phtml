@@ -9,11 +9,32 @@
 /* @var $this Zend\View\Renderer\PhpRenderer */
 ?>
 <h1>Representantes legales de más de un proveedor</h1>
+<p>
+    Este es el listado de los representantes legales que representan a más de una empresa.
+</p>
+<p>
+    <strong>¿Qué significa eso?</strong>
+</p>
+<p>
+    Desde mi punto de vista, el dinero obtenido por el representante legal (y demás socios en el caso de una S.A.) es la
+    suma de lo obtenido por todas las empresas a las que representa. Al diluirlo entre varias empresas, el total de
+    ingresos queda escondido.
+</p>
+<p>
+    También puede significar que existe algún favoritismo para que sean las empresas de la misma persona las que ganen
+    los concuros.
+</p>
+<p>
+    Puede significar también que para llenar requisitos (mínimo 3 ofertas de diferentes proveedores, por ejemplo),
+    hagan las ofertas con diferentes empresas del mismo representante legal. No importa que empresa seaa la ganadora,
+    el dueño es el mismo.
+</p>
 <table class="table">
     <thead>
         <tr>
             <th>nombre</th>
             <th class="text-right">nit</th>
+            <th>proveedor</th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +46,17 @@
                 </a>
             </td>
             <td class="text-right"><?=$entidad->getNit()?></td>
+            <td>
+                <ul>
+                <?php foreach ($entidad->getProveedores() as $proveedor) : /* @var $proveedor Transparente\Model\Entity\Proveedor */?>
+                    <li>
+                        <a href="<?=$this->basepath()?>/transparente/proveedores/detalles/<?=$proveedor->getId()?>">
+                            <?=$proveedor->getNombre()?>
+                        </a>
+                    </li>
+                <?php endforeach ?>
+                </ul>
+            </td>
         </tr>
         <?php endforeach ?>
     </tbody>
