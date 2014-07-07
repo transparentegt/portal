@@ -22,10 +22,11 @@ return array(
 
     'controllers' => array(
         'invokables' => array(
-            'Transparente\Controller\Domicilios'       => 'Transparente\Controller\DomiciliosController',
-            'Transparente\Controller\Index'            => 'Transparente\Controller\Index',
-            'Transparente\Controller\Proveedores'      => 'Transparente\Controller\ProveedoresController',
-            'Transparente\Controller\Scraper'          => 'Transparente\Controller\ScraperController',
+            'Transparente\Controller\Domicilios'         => 'Transparente\Controller\DomiciliosController',
+            'Transparente\Controller\Index'              => 'Transparente\Controller\Index',
+            'Transparente\Controller\Proveedores'        => 'Transparente\Controller\ProveedoresController',
+            'Transparente\Controller\Scraper'            => 'Transparente\Controller\ScraperController',
+            'Transparente\Controller\RepresentanteLegal' => 'Transparente\Controller\RepresentanteLegalController',
        ),
     ),
     'router' => array(
@@ -79,9 +80,9 @@ return array(
                 ['route' => 'transparente/default', 'controller' => 'proveedores', 'action' => 'index',     'label' => 'listar todos'],
                 ['route' => 'transparente/default', 'controller' => 'proveedores', 'action' => 'no-fiscal', 'label' => 'sin domicilio fiscal']
             ]],
-            ['route' => 'transparente/default',     'controller' => 'representantes_legales', 'label' => 'representantes legales', 'pages' => [
-                ['route' => 'transparente/default', 'controller' => 'representantes_legales', 'action' => 'index', 'label' => 'listar todos'],
-                ['route' => 'transparente/default', 'controller' => 'representantes_legales', 'action' => 'index', 'label' => 'con mas de 1 empresa proveedora']
+            ['route' => 'transparente/default',     'controller' => 'representante_legal', 'label' => 'representantes legales', 'pages' => [
+                ['route' => 'transparente/default', 'controller' => 'representante_legal', 'action' => 'index', 'label' => 'listar todos'],
+                ['route' => 'transparente/default', 'controller' => 'representante_legal', 'action' => 'multi-proveedor', 'label' => 'con mas de 1 empresa proveedora']
             ]],
         ],
     ],

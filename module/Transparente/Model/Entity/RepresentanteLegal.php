@@ -163,6 +163,14 @@ class RepresentanteLegal extends AbstractDoctrineEntity
         return $this;
     }
 
+    /**
+     * Retorna el nombre completo del representante legal
+     */ 
+    public function getNombre()
+    {
+        return "{$this->apellido1} {$this->apellido2}, {$this->nombre1} {$this->nombre2}";
+    }
+
     public function getNombresComerciales()
     {
         return $this->nombres_comerciales;

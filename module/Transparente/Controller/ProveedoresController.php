@@ -1,12 +1,4 @@
 <?php
-/**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
-
 namespace Transparente\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
@@ -20,7 +12,6 @@ class ProveedoresController extends AbstractActionController
      * Listar Proveedores
      *
      * @todo paginar
-     * @todo ordenar por nombre pre-seleccionado
      * @todo ordenar por columna seleccionada
      */
     public function indexAction()
@@ -40,7 +31,6 @@ class ProveedoresController extends AbstractActionController
         $entity           = $proveedoresModel->find($id);
         return new ViewModel(compact('entity'));
     }
-
 
     /**
      * Listar proveedores sin dirección fiscal

@@ -1,0 +1,32 @@
+<?php
+/**
+ * Listar los representantes legales
+ *
+ * @todo usar paginador para los proveedores
+ * @todo poder reordenar el listado
+ */
+
+/* @var $this Zend\View\Renderer\PhpRenderer */
+?>
+<h1>Representantes legales</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>nombre</th>
+            <th class="text-right">nit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($this->vars('entidades') as $entidad) : /* @var $entity Transparente\Model\Entity\RepresentanteLegal */?>
+        <tr>
+            <td>
+                <a href="<?=$this->basepath()?>/transparente/representante-legal/detalles/<?=$entidad->getId()?>">
+                    <?=$entidad->getNombre()?>
+                </a>
+            </td>
+            <td class="text-right"><?=$entidad->getNit()?></td>
+        </tr>
+        <?php endforeach ?>
+    </tbody>
+
+</table>

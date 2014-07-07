@@ -8,6 +8,33 @@ use Doctrine;
 class RepresentanteLegalModel extends EntityRepository
 {
     /**
+     * Retorna todos los representantes legales
+     *
+     * @return Transparente\Model\Entity\RepresentanteLegal[]
+     */
+    public function findAll()
+    {
+        return $this->findBy($criteria = [], $orderBy = ['apellido1' => 'ASC', 'apellido2' => 'ASC']);
+    }
+
+    /**
+     * Genera el reporte de los representantes legales asociados a más de un proveedor
+     *
+     * @return Transparente\Model\Entity\RepresentanteLegal[]
+     */
+    public function findByMultiProveedor()
+    {
+        $dql = 'SELECT RepresentanteLegal
+                FROM Transparente\Model\Entity\RepresentanteLegal  RepresentanteLegal
+                JOIN RepresentanteLegal.proveedores                Proveedor
+                GROUP BY RepresentanteLegal
+                HAVING COUNT(Proveedor) > 1
+                ';
+        $rs = $this->getEntityManager()->createQuery($dql)->execute();
+        return $rs;
+    }
+
+    /**
      * Partir el nombre para guardarlo ordenadamente.
      *
      * En GTC está en formato "$apellido1, $apellido2, $apellido3?, $nombre1, $nombre2"
@@ -16,8 +43,8 @@ class RepresentanteLegalModel extends EntityRepository
      */
     private function splitNombre(&$data)
     {
-        $nombres  = explode(',', $data['nombre']);
-        $nombre   = explode(',', $nombres[1]);
+        $nombres           = explode(',', $data['nombre']);
+        $nombre            = explode(',', $nombres[1]);
         $data['nombre1']   = $nombres[3];
         $data['nombre2']   = $nombres[4];
         $data['apellido1'] = $nombres[0];

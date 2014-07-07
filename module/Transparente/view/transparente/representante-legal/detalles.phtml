@@ -15,7 +15,7 @@ $entidad = $this->vars('entity');
 .dl-horizontal dt { width: 370px; }
 .dl-horizontal dd { margin-left: 380px;}
 </style>
-<h1>Proveedor: <?=$entidad->getNombre()?></h1>
+<h1>Representante Legal: <br /><?=$entidad->getNombre()?></h1>
 <dl  class="dl-horizontal">
     <dt>id<dt>
         <dd><?=$entidad->getId()?></dd>
@@ -89,4 +89,5 @@ $entidad = $this->vars('entity');
             <dd><?=$nombreComercial->getNombre()?></dd>
             <?php endforeach ?>
     <?php endif ?>
+
 </dl>
