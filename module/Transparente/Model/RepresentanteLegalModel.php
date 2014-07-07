@@ -14,7 +14,13 @@ class RepresentanteLegalModel extends EntityRepository
      */
     public function findAll()
     {
-        return $this->findBy($criteria = [], $orderBy = ['apellido1' => 'ASC', 'apellido2' => 'ASC']);
+        $rs = $this->findBy($criteria = [], $orderBy = [
+            'apellido1' => 'ASC',
+            'apellido2' => 'ASC',
+            'nombre1'   => 'ASC',
+            'nombre22'  => 'ASC',
+        ]);
+        return $rs;
     }
 
     /**
@@ -29,6 +35,11 @@ class RepresentanteLegalModel extends EntityRepository
                 JOIN RepresentanteLegal.proveedores                Proveedor
                 GROUP BY RepresentanteLegal
                 HAVING COUNT(Proveedor) > 1
+                ORDER BY
+                    RepresentanteLegal.apellido1 ASC,
+                    RepresentanteLegal.apellido2 ASC,
+                    RepresentanteLegal.nombre1 ASC,
+                    RepresentanteLegal.nombre2 ASC
                 ';
         $rs = $this->getEntityManager()->createQuery($dql)->execute();
         return $rs;
