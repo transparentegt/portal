@@ -18,7 +18,7 @@ class RepresentanteLegalModel extends EntityRepository
             'apellido1' => 'ASC',
             'apellido2' => 'ASC',
             'nombre1'   => 'ASC',
-            'nombre22'  => 'ASC',
+            'nombre2'   => 'ASC',
         ]);
         return $rs;
     }
