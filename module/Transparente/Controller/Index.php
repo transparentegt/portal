@@ -11,4 +11,8 @@ class Index extends AbstractActionController
         return new ViewModel();
     }
 
+    public function aboutAction()
+    {
+        return new ViewModel();
+    }
 }
