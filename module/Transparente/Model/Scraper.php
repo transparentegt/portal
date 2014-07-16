@@ -42,16 +42,28 @@ class Scraper
      *
      * @return \Zend\Dom\Query
      */
-    public static function getCachedUrl($url, $method='GET') {
-        $session = new \Zend\Session\Container('Transparente\Scraper\cache');
+    public static function getCachedUrl($url, $method='GET')
+    {
+        set_time_limit(0);
+        ini_set('max_execution_time', 0);
+
         $key     = md5($method.$url.'0');
-        if (!isset($session[$key])) {
+        $cache = \Zend\Cache\StorageFactory::factory([
+            'adapter' => [
+                'name'    => 'filesystem',
+                'ttl'     => PHP_INT_MAX,
+                'options' => ['cache_dir' => realpath('./data/cache')],
+            ],
+            'plugins' => array('serializer'),
+        ]);
+        if ($cache->hasItem($key)) {
+            $dom = $cache->getItem($key);
+        } else {
             $content       = file_get_contents($url);
             $content       = iconv('utf-8', 'iso-8859-1', $content);
             $dom           = new \Zend\Dom\Query($content);
-            $session[$key] = $dom;
+            $cache->setItem($key, $dom);
         }
-        $dom = $session[$key];
         return $dom;
     }
 
@@ -174,7 +186,7 @@ class Scraper
     public function scrapProveedores()
     {
         $year            = date('Y');
-        $proveedoresList = $this->getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year);
+        $proveedoresList = self::getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year);
         $xpath           = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";
         $proveedoresList = $proveedoresList->queryXpath($xpath);
         $proveedores     = [];

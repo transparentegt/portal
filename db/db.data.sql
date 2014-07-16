@@ -14,7 +14,7 @@ INSERT INTO geo_departamentos VALUES (null, 'Huehuetenango');
 INSERT INTO geo_departamentos VALUES (null, 'Izabal');
 INSERT INTO geo_departamentos VALUES (null, 'Jalapa');
 INSERT INTO geo_departamentos VALUES (null, 'Jutiapa');
-INSERT INTO geo_departamentos VALUES (null, 'Petén');
+INSERT INTO geo_departamentos VALUES (null, 'Peten');
 INSERT INTO geo_departamentos VALUES (null, 'Quetzaltenango');
 INSERT INTO geo_departamentos VALUES (null, 'Quiché');
 INSERT INTO geo_departamentos VALUES (null, 'Retalhuleu');
@@ -202,7 +202,7 @@ INSERT INTO geo_municipios VALUES(NULL, 'Zapotitlán', 11);
 -- Petén
 INSERT INTO geo_municipios VALUES(NULL, 'Dolores', 12);
 INSERT INTO geo_municipios VALUES(NULL, 'El Chal', 12);
-INSERT INTO geo_municipios VALUES(NULL, 'Flores', 12);
+INSERT INTO geo_municipios VALUES(NULL, 'Ciudad Flores', 12);
 INSERT INTO geo_municipios VALUES(NULL, 'La Libertad', 12);
 INSERT INTO geo_municipios VALUES(NULL, 'Las Cruces', 12);
 INSERT INTO geo_municipios VALUES(NULL, 'Melchor de Mencos', 12);
