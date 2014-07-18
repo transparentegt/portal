@@ -23,6 +23,13 @@ $entidad = $this->vars('entity');
     <dt>nombre<dt>
         <dd><?=$entidad->getNombre()?></dd>
 
+    <?php if (($nombresComerciales = $entidad->getNombresComerciales()) != false) : ?>
+        <dt>nombres comerciales<dt>
+            <?php foreach($nombresComerciales as $nombreComercial) : /* @var $nombreComercial Transparente\Model\Entity\ProveedorNombreComercial */ ?>
+            <dd><?=$nombreComercial->getNombre()?></dd>
+            <?php endforeach ?>
+    <?php endif ?>
+
     <dt>NIT<dt>
         <dd><?=$entidad->getNit()?></dd>
 
@@ -82,11 +89,4 @@ $entidad = $this->vars('entity');
 
     <dt>fecha inscripción en la SAT<dt>
         <dd><?=$entidad->getInscripcionSat()?></dd>
-
-    <?php if (($nombresComerciales = $entidad->getNombresComerciales()) != false) : ?>
-        <dt>nombres comerciales<dt>
-            <?php foreach($nombresComerciales as $nombreComercial) : /* @var $nombreComercial Transparente\Model\Entity\ProveedorNombreComercial */ ?>
-            <dd><?=$nombreComercial->getNombre()?></dd>
-            <?php endforeach ?>
-    <?php endif ?>
 </dl>

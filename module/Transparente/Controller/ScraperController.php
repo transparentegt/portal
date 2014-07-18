@@ -1,8 +1,10 @@
 <?php
 namespace Transparente\Controller;
 
-use Transparente\Model\ProveedorModel;
 use Transparente\Model\DomicilioModel;
+use Transparente\Model\ProveedorModel;
+use Transparente\Model\RepresentanteLegalModel;
+use Transparente\Model\ScraperModel;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -24,11 +26,13 @@ class ScraperController extends AbstractActionController
     {
         $proveedorModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
         /* @var $proveedorModel ProveedorModel */
+        $repModel    = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');
+        /* @var $repModel RepresentanteLegalModel */
         $domicilioModel = $this->getServiceLocator()->get('Transparente\Model\DomicilioModel');
         /* @var $domicilioModel DomicilioModel */
 
-        $scraper        = new \Transparente\Model\Scraper();
-        $proveedores    = $scraper->scrapProveedores();
+        $scraper     = new ScraperModel($repModel);
+        $proveedores = $scraper->scrapProveedores();
         foreach ($proveedores as $data) {
             $proveedor = new \Transparente\Model\Entity\Proveedor();
             $proveedor->exchangeArray($data);
@@ -66,12 +70,10 @@ class ScraperController extends AbstractActionController
             }
 
             foreach ($data['representantes_legales'] as $idRep) {
-                $repModel = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');
                 /* @var $domicilioModel DomicilioModel */
                 $repLegal = $repModel->scrap($idRep);
                 $proveedor->appendRepresentanteLegal($repLegal);
             }
-
             // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; Doctrine\Common\Util\Debug::dump($proveedor); die();
             // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($data); die();
 

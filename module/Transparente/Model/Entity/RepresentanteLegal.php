@@ -100,6 +100,19 @@ class RepresentanteLegal extends AbstractDoctrineEntity
      */
     protected $proveedores;
 
+
+    /**
+     * @ORM\ManyToMany ( targetEntity = "RepresentanteLegal", inversedBy = "represento", cascade = "persist" )
+     * @ORM\JoinTable (
+     *      name               = "representante_representado_por",
+     *      joinColumns        = { @ORM\JoinColumn (name = "id_representante_legal", referencedColumnName = "id") },
+     *      inverseJoinColumns = { @ORM\JoinColumn (name = "id_representado_por",    referencedColumnName = "id") }
+     * )
+     *
+     * @var ArrayCollection
+     */
+    protected $representantes_legales;
+
     /**
      * (Datos recibidos de la SAT el: 01.jul.2014 16:45:44
      *
@@ -163,9 +176,15 @@ class RepresentanteLegal extends AbstractDoctrineEntity
         return $this;
     }
 
+    public function appendRepresentanteLegal(RepresentanteLegal $repLegal)
+    {
+        $this->representantes_legales[] = $repLegal;
+        return $this;
+    }
+
     /**
      * Retorna el nombre completo del representante legal
-     */ 
+     */
     public function getNombre()
     {
         return "{$this->apellido1} {$this->apellido2}, {$this->nombre1} {$this->nombre2}";

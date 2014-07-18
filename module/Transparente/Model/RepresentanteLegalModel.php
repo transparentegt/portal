@@ -7,6 +7,8 @@ use Doctrine;
 
 class RepresentanteLegalModel extends EntityRepository
 {
+    protected static $scraped = [];
+
     /**
      * Retorna todos los representantes legales
      *
@@ -84,13 +86,12 @@ class RepresentanteLegalModel extends EntityRepository
      */
     public function scrap($id)
     {
-        $entity = $this->find($id);
-        if ($entity) {
-            return $entity;
+        if (isset(self::$scraped[$id])) {
+            return self::$scraped[$id];
         }
 
         $url    = "http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=10&lprv={$id}";
-        $página = Scraper::getCachedUrl($url);
+        $página = ScraperModel::getCachedUrl($url);
         $xpaths = [
             'nombre'               => '//*[@id="MasterGC_ContentBlockHolder_lblNombreProv"]',
             'nit'                  => '//*[@id="MasterGC_ContentBlockHolder_lblNIT"]',
@@ -117,7 +118,7 @@ class RepresentanteLegalModel extends EntityRepository
             'rep_legales_updated' => '//*[@id="MasterGC_ContentBlockHolder_divRepresentantesLegales"]//span/span',
         ];
 
-        $data = ['id' => $id] + Scraper::fetchData($xpaths, $página);
+        $data = ['id' => $id] + ScraperModel::fetchData($xpaths, $página);
         $this->splitNombre($data);
         // después de capturar los datos, hacemos un postproceso
         $data['status']               = ($data['status'] == 'HABILITADO');
@@ -143,7 +144,38 @@ class RepresentanteLegalModel extends EntityRepository
 
         $entity = new RepresentanteLegal();
         $entity->exchangeArray($data);
+
+        $repLegales = $this->scrapRepresentantesLegales($id);
+        foreach($repLegales as $newId) {
+            $newRep = $this->scrap($newId);
+            $entity->appendRepresentanteLegal($newRep);
+        }
+        self::$scraped[$id] = $entity;
         return $entity;
     }
 
+    /**
+     * Retorna el ID de los representantes legales de una entidad
+     *
+     * Esta función puede recibir tanto un ID de un proveedor como de un representante legal
+     *
+     * @param int $id
+     * @return int[]
+     */
+    public function scrapRepresentantesLegales($id)
+    {
+        $página    = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaprrepleg.aspx?rqp=8&lprv=' . $id);
+        $xpath     = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]/a';
+        $nodos     = $página->queryXpath($xpath);
+        $elementos = [];
+        foreach($nodos as $nodo) {
+            $url         = parse_url($nodo->getAttribute('href'));
+            parse_str($url['query'], $url);
+            $id          = $url['lprv'];
+            if (in_array($id, $elementos)) continue;
+            $elementos[] = (int) $id;
+        }
+        sort($elementos);
+        return $elementos;
+    }
 }

@@ -1,8 +1,17 @@
 <?php
 namespace Transparente\Model;
 
-class Scraper
+/**
+ * @property RepresentanteLegalModel $representanteLegalModel
+ */
+class ScraperModel
 {
+
+    public function __construct(RepresentanteLegalModel $representanteLegalModel)
+    {
+        $this->representanteLegalModel = $representanteLegalModel;
+    }
+
     public static function fetchData($xpaths, \Zend\Dom\Query $dom)
     {
         $element = [];
@@ -90,7 +99,7 @@ class Scraper
      */
     public function scrapNombresComercialesDelProveedor($id)
     {
-        $página  = $this->getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeNomCom.aspx?rqp=8&lprv='.$id);
+        $página  = self::getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeNomCom.aspx?rqp=8&lprv='.$id);
         $xpath   = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]';
         $nodos   = $página->queryXpath($xpath);
         $nombres = [];
@@ -112,7 +121,7 @@ class Scraper
     public function scrapProveedor($id)
     {
         $url               = "http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=8&lprv={$id}";
-        $páginaDelProveedor = $this->getCachedUrl($url);
+        $páginaDelProveedor = self::getCachedUrl($url);
 
         /**
          * Que valores vamos a buscar via xpath en la página del proveedor
@@ -198,27 +207,9 @@ class Scraper
             $idProveedor  = $url['lprv'];
             $data          = $this->scrapProveedor($idProveedor);
             $data         += ['nombres_comerciales'    => $this->scrapNombresComercialesDelProveedor($idProveedor)];
-            $data         += ['representantes_legales' => $this->scrapRepresentantesLegales($idProveedor)];
+            $data         += ['representantes_legales' => $this->representanteLegalModel->scrapRepresentantesLegales($idProveedor)];
             $proveedores[] = $data;
         }
         return $proveedores;
     }
-
-    public function scrapRepresentantesLegales($id)
-    {
-        $página    = self::getCachedUrl('http://guatecompras.gt/proveedores/consultaprrepleg.aspx?rqp=8&lprv=' . $id);
-        $xpath     = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]/a';
-        $nodos     = $página->queryXpath($xpath);
-        $elementos = [];
-        foreach($nodos as $nodo) {
-            $url         = parse_url($nodo->getAttribute('href'));
-            parse_str($url['query'], $url);
-            $id          = $url['lprv'];
-            if (in_array($id, $elementos)) continue;
-            $elementos[] = (int) $id;
-        }
-        sort($elementos);
-        return $elementos;
-    }
-
 }

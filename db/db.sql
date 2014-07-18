@@ -157,3 +157,15 @@ CREATE TABLE proveedor_representado_por (
     , id_representante_legal  INT UNSIGNED NOT NULL
     , FOREIGN KEY (id_representante_legal) REFERENCES rep_legal(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+/**
+ * Relación de muchos a muchos. Un representante legal puede tener muchos representantes legales.
+ */
+DROP TABLE IF EXISTS representante_representado_por;
+CREATE TABLE representante_representado_por (
+      id_representante_legal  INT UNSIGNED NOT NULL
+    , FOREIGN KEY (id_representante_legal) REFERENCES rep_legal(id) ON DELETE CASCADE ON UPDATE CASCADE
+    , id_representado_por  INT UNSIGNED NOT NULL
+    , FOREIGN KEY (id_representado_por) REFERENCES rep_legal(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
