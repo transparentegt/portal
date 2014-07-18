@@ -31,6 +31,13 @@ class RepresentanteLegalController extends AbstractActionController
         return new ViewModel(compact('entity'));
     }
 
+    public function nombresComercialesAction()
+    {
+        $modelo    = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');
+        $entidades = $modelo->findByNombresComerciales();
+        return new ViewModel(compact('entidades'));
+    }
+
     public function multiProveedorAction()
     {
         $modelo    = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');

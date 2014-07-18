@@ -80,10 +80,11 @@ return array(
                 ['route' => 'transparente/default', 'controller' => 'proveedores', 'action' => 'index',     'label' => 'listar todos'],
                 ['route' => 'transparente/default', 'controller' => 'proveedores', 'action' => 'no-fiscal', 'label' => 'sin domicilio fiscal']
             ]],
-            ['route' => 'transparente/default',     'controller' => 'representante_legal', 'label' => 'representantes legales', 'pages' => [
-                ['route' => 'transparente/default', 'controller' => 'representante_legal', 'action' => 'index',           'label' => 'listar todos'],
-                ['route' => 'transparente/default', 'controller' => 'representante_legal', 'action' => 'multi-proveedor', 'label' => 'con más de 1 empresa proveedora'],
-                ['route' => 'transparente/default', 'controller' => 'representante_legal', 'action' => 'multi-level',     'label' => 'con representantes legales'],
+            ['route' => 'transparente/default',     'controller' => 'representante-legal', 'label' => 'representantes legales', 'pages' => [
+                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'index',               'label' => 'listar todos'],
+                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-proveedor',     'label' => 'con más de 1 empresa proveedora'],
+                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'nombres-comerciales', 'label' => 'con nombres comerciales'],
+                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-level',         'label' => 'con representantes legales'],
             ]],
             ['route' => 'transparente/default', 'controller' => 'index', 'action' => 'about',  'label' => 'info'],
         ],

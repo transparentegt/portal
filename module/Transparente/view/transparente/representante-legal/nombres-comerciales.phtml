@@ -1,0 +1,55 @@
+<?php
+/**
+ * Listar los representantes legales
+ *
+ * @todo usar paginador para los proveedores
+ * @todo poder reordenar el listado
+ */
+
+/* @var $this Zend\View\Renderer\PhpRenderer */
+?>
+<h1>Representantes legales con nombres comerciales</h1>
+<p>
+    Este es el listado de los representantes legales que tienen nombres comerciales.
+</p>
+<p>
+    <strong>¿Qué significa eso?</strong>
+</p>
+<p>
+    Desde mi punto de vista, un representante legal es una persona física, no una emprea, y solo las empresas deberían
+    de poder tener nombres comerciales.
+</p>
+<p>
+    Puede que no sea algo intencional y solo sea un bug dentro de <a href="http://guatecompras.gt/">Guatecompras</a>.
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>nombre</th>
+            <th class="text-right">nit</th>
+            <th>proveedor</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($this->vars('entidades') as $entidad) : /* @var $entity Transparente\Model\Entity\RepresentanteLegal */?>
+        <tr>
+            <td>
+                <a href="<?=$this->basepath()?>/transparente/representante-legal/detalles/<?=$entidad->getId()?>">
+                    <?=$entidad->getNombre()?>
+                </a>
+            </td>
+            <td class="text-right"><?=$entidad->getNit()?></td>
+            <td>
+                <ul>
+                <?php foreach ($entidad->getNombresComerciales() as $nombreComercial) : /* @var $proveedor Transparente\Model\Entity\RepresentanteLegalNombreComercial */?>
+                    <li>
+                        <?=$nombreComercial->getNombre()?>
+                    </li>
+                <?php endforeach ?>
+                </ul>
+            </td>
+        </tr>
+        <?php endforeach ?>
+    </tbody>
+
+</table>

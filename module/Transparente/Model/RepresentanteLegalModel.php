@@ -82,6 +82,28 @@ class RepresentanteLegalModel extends EntityRepository
     }
 
     /**
+     * Genera el reporte de los representantes legales con nombres comerciales
+     *
+     * @return Transparente\Model\Entity\RepresentanteLegal[]
+     */
+    public function findByNombresComerciales()
+    {
+        $dql = 'SELECT RepresentanteLegal
+                FROM Transparente\Model\Entity\RepresentanteLegal  RepresentanteLegal
+                JOIN RepresentanteLegal.nombres_comerciales        NombreComercial
+                GROUP BY RepresentanteLegal
+                HAVING COUNT(NombreComercial) > 1
+                ORDER BY
+                    RepresentanteLegal.apellido1 ASC,
+                    RepresentanteLegal.apellido2 ASC,
+                    RepresentanteLegal.nombre1 ASC,
+                    RepresentanteLegal.nombre2 ASC
+                ';
+        $rs = $this->getEntityManager()->createQuery($dql)->execute();
+        return $rs;
+    }
+
+    /**
      * Partir el nombre para guardarlo ordenadamente.
      *
      * En GTC está en formato "$apellido1, $apellido2, $apellido3?, $nombre1, $nombre2"
