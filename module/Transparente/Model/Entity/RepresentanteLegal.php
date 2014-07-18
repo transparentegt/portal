@@ -4,6 +4,7 @@ namespace Transparente\Model\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Transparente\Model\Entity\AbstractDoctrineEntity;
+use Transparente\Model\Entity\RepresentanteLegalNombreComercial;
 
 /**
  * El representante legal usa la misma estructura que el proveedor, incluso para scrapearlo usa la misma URL
@@ -56,7 +57,7 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     protected $nit;
 
     /**
-     * @ORM\OneToMany(targetEntity="ProveedorNombreComercial", mappedBy="proveedor", cascade="persist")
+     * @ORM\OneToMany(targetEntity="RepresentanteLegalNombreComercial", mappedBy="representante_legal", cascade="persist")
      */
     protected $nombres_comerciales;
 
@@ -168,7 +169,7 @@ class RepresentanteLegal extends AbstractDoctrineEntity
         return $this;
     }
 
-    public function appendNombreComercial(\Transparente\Model\Entity\ProveedorNombreComercial $nombreComercial)
+    public function appendNombreComercial(RepresentanteLegalNombreComercial $nombreComercial)
     {
         $nombreComercial->setProveedor($this);
         $this->nombres_comerciales[] = $nombreComercial;
@@ -212,7 +213,6 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     {
         return $this->representantes_legales;
     }
-
 
     public function setNit ($nit)
     {

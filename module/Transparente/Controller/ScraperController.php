@@ -31,7 +31,7 @@ class ScraperController extends AbstractActionController
         $domicilioModel = $this->getServiceLocator()->get('Transparente\Model\DomicilioModel');
         /* @var $domicilioModel DomicilioModel */
 
-        $scraper     = new ScraperModel($repModel);
+        $scraper     = new ScraperModel($proveedorModel, $repModel);
         $proveedores = $scraper->scrapProveedores();
         foreach ($proveedores as $data) {
             $proveedor = new \Transparente\Model\Entity\Proveedor();

@@ -24,7 +24,6 @@ class RepresentanteLegalModel extends EntityRepository
         return $rs;
     }
 
-
     /**
      * Genera el reporte de los representantes legales que tienen representantes legales
      *
