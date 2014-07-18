@@ -1,0 +1,73 @@
+<?php
+/**
+ * Listar los representantes legales
+ *
+ * @todo usar paginador para los proveedores
+ * @todo poder reordenar el listado
+ */
+
+/* @var $this Zend\View\Renderer\PhpRenderer */
+?>
+<h1>Representantes legales con representantes</h1>
+<p>
+    Este es el listado de los representantes legales que tienen representantes legales.
+</p>
+<p>
+    <strong>¿Qué significa eso?</strong>
+</p>
+<p>
+    Desde mi punto de vista, un representante legal es una persona física, no una emprea, y solo las empresas deberían
+    de poder tener representantes legales. En caso de un problema legal con la empresa, ¿quién es el responsable? ¿El
+    representante legal, o su representante? ¿O el representante del representante?
+</p>
+<p>
+    También podrían hacer una cadena de múltiples niveles para esconder realmente que entre toda la cadena manejan las
+    mismas empresas que "compiten" por los proyectos.
+</p>
+<p>
+    Puede que no sea algo intencional y solo sea un bug dentro de <a href="http://guatecompras.gt/">Guatecompras</a>.
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>nombre</th>
+            <th>representa a</th>
+            <th>representado por</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($this->vars('entidades') as $entidad) : /* @var $entity Transparente\Model\Entity\RepresentanteLegal */?>
+        <tr>
+            <td>
+                <a href="<?=$this->basepath()?>/transparente/representante-legal/detalles/<?=$entidad->getId()?>">
+                    <?=$entidad->getNombre()?>
+                </a>
+            </td>
+            <td>
+                <ul>
+                <?php foreach ($entidad->getProveedores() as $proveedor) : /* @var $proveedor Transparente\Model\Entity\Proveedor */?>
+                    <li>
+                        <a href="<?=$this->basepath()?>/transparente/proveedores/detalles/<?=$proveedor->getId()?>">
+                            <?=$proveedor->getNombre()?>
+                        </a>
+                    </li>
+                <?php endforeach ?>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                <?php foreach ($entidad->getRepresentantesLegales() as $subRep) : /* @var $entity Transparente\Model\Entity\RepresentanteLegal */?>
+                    <li>
+                        <a href="<?=$this->basepath()?>/transparente/representante-legal/detalles/<?=$subRep->getId()?>">
+                            <?=$subRep->getNombre()?>
+                        </a>
+                    </li>
+                <?php endforeach ?>
+                </ul>
+            </td>
+
+        </tr>
+        <?php endforeach ?>
+    </tbody>
+
+</table>

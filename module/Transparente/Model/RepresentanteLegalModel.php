@@ -3,7 +3,6 @@ namespace Transparente\Model;
 
 use Doctrine\ORM\EntityRepository;
 use Transparente\Model\Entity\RepresentanteLegal;
-use Doctrine;
 
 class RepresentanteLegalModel extends EntityRepository
 {
@@ -22,6 +21,27 @@ class RepresentanteLegalModel extends EntityRepository
             'nombre1'   => 'ASC',
             'nombre2'   => 'ASC',
         ]);
+        return $rs;
+    }
+
+
+    /**
+     * Genera el reporte de los representantes legales que tienen representantes legales
+     *
+     * @return Transparente\Model\Entity\RepresentanteLegal[]
+     */
+    public function findByMultiLevel()
+    {
+        $dql = 'SELECT RepresentanteLegal
+                FROM Transparente\Model\Entity\RepresentanteLegal  RepresentanteLegal
+                JOIN RepresentanteLegal.representantes_legales     SubRepresentantes
+                ORDER BY
+                    RepresentanteLegal.apellido1 ASC,
+                    RepresentanteLegal.apellido2 ASC,
+                    RepresentanteLegal.nombre1 ASC,
+                    RepresentanteLegal.nombre2 ASC
+                ';
+        $rs = $this->getEntityManager()->createQuery($dql)->execute();
         return $rs;
     }
 

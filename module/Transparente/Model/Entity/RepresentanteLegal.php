@@ -100,7 +100,6 @@ class RepresentanteLegal extends AbstractDoctrineEntity
      */
     protected $proveedores;
 
-
     /**
      * @ORM\ManyToMany ( targetEntity = "RepresentanteLegal", inversedBy = "represento", cascade = "persist" )
      * @ORM\JoinTable (
@@ -208,6 +207,12 @@ class RepresentanteLegal extends AbstractDoctrineEntity
         $nit = substr($nit, 0, strlen($nit) -1) . '-' . substr($nit, -1, 1);
         return $nit;
     }
+
+    public function getRepresentantesLegales()
+    {
+        return $this->representantes_legales;
+    }
+
 
     public function setNit ($nit)
     {
