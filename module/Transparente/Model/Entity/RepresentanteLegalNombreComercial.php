@@ -38,7 +38,7 @@ class RepresentanteLegalNombreComercial extends AbstractDoctrineEntity
         $this->nombre = $nombre;
     }
 
-    public function setRepresentanteLegal(\Transparente\Model\Entity\Proveedor $representante_legal)
+    public function setRepresentanteLegal(RepresentanteLegal $representante_legal)
     {
         $this->representante_legal = $representante_legal;
     }

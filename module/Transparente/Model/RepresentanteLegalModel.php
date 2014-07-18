@@ -8,6 +8,21 @@ class RepresentanteLegalModel extends EntityRepository
 {
     protected static $scraped = [];
 
+    private function humanizarNombreDeEmpresa($nombre)
+    {
+        $nombre  = str_replace('SOCIEDAD ANONIMA', 'S.A.', $nombre);
+        $nombres = preg_split('/[\s,]+/', mb_strtolower($nombre, 'UTF-8'));
+        foreach ($nombres as $key => $nombre) {
+            if (preg_match('/\./', $nombre)) {
+                $nombres[$key] = strtoupper($nombre);
+            } else {
+                $nombres[$key] = ucfirst($nombre);
+            }
+        }
+        $nombre = implode(' ', $nombres);
+        return $nombre;
+    }
+
     /**
      * Retorna todos los representantes legales
      *
@@ -169,8 +184,38 @@ class RepresentanteLegalModel extends EntityRepository
             $newRep = $this->scrap($newId);
             $entity->appendRepresentanteLegal($newRep);
         }
+
+        $nombresComerciales = $this->scrapNombresComerciales($id);
+        foreach ($nombresComerciales as $nombre) {
+            $nombreComercial = new Entity\RepresentanteLegalNombreComercial();
+            $nombreComercial->setNombre($nombre);
+            $entity->appendNombreComercial($nombreComercial);
+        }
+
         self::$scraped[$id] = $entity;
         return $entity;
+    }
+
+
+    /**
+     * Obtiene los nombres comerciales de los proveedores
+     *
+     * @param int $id
+     * @return array
+     */
+    public function scrapNombresComerciales($id)
+    {
+        $página  = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeNomCom.aspx?rqp=8&lprv='.$id);
+        $xpath   = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]';
+        $nodos   = $página->queryXpath($xpath);
+        $nombres = [];
+        foreach ($nodos as $nodo) {
+            $nombre = $this->humanizarNombreDeEmpresa($nodo->nodeValue);
+            if (in_array($nombre, $nombres)) continue;
+            $nombres[] = $nombre;
+        }
+        sort($nombres);
+        return $nombres;
     }
 
     /**

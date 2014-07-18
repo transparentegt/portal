@@ -171,7 +171,7 @@ class RepresentanteLegal extends AbstractDoctrineEntity
 
     public function appendNombreComercial(RepresentanteLegalNombreComercial $nombreComercial)
     {
-        $nombreComercial->setProveedor($this);
+        $nombreComercial->setRepresentanteLegal($this);
         $this->nombres_comerciales[] = $nombreComercial;
         return $this;
     }
