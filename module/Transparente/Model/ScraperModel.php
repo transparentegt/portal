@@ -58,7 +58,7 @@ class ScraperModel
      *
      * @return \Zend\Dom\Query
      */
-    public static function getCachedUrl($url, $method='GET')
+    public static function getCachedUrl($url, $method='GET', $vars = null)
     {
         set_time_limit(0);
         ini_set('max_execution_time', 0);
@@ -75,10 +75,26 @@ class ScraperModel
         if ($cache->hasItem($key)) {
             $dom = $cache->getItem($key);
         } else {
-            $content       = file_get_contents($url);
-            $content       = iconv('utf-8', 'iso-8859-1', $content);
-            $dom           = new \Zend\Dom\Query($content);
-            $cache->setItem($key, $dom);
+            if ($method == 'GET') {
+                $content       = file_get_contents($url);
+                $content       = iconv('utf-8', 'iso-8859-1', $content);
+                $dom           = new \Zend\Dom\Query($content);
+                $cache->setItem($key, $dom);
+            } elseif ($method == 'POST') {
+
+                $postdata = http_build_query($vars);
+                $opts     = ['http' => [
+                        'method'  => 'POST',
+                        'header'  => 'Content-type: application/x-www-form-urlencoded',
+                        'content' => $postdata
+                    ]
+                ];
+
+                $context  = stream_context_create($opts);
+                $result   = file_get_contents($url, false, $context, -1, 40000);
+                echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($result); die();
+
+            }
         }
         return $dom;
     }

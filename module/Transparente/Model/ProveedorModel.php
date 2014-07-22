@@ -6,6 +6,26 @@ use Transparente\Model\Entity\Proveedor;
 
 class ProveedorModel extends EntityRepository
 {
+    private function scrapPagedData()
+    {
+        $year     = date('Y');
+        $postVars = [
+            '_body:MasterGC$ContentBlockHolder$ScriptManager1' => 'MasterGC$ContentBlockHolder$UpdatePanel1|MasterGC$ContentBlockHolder$dgResultado$ctl54$ctl',
+            '__EVENTTARGET'                                    => 'MasterGC$ContentBlockHolder$dgResultado$ctl54$ctl',
+            '__VIEWSTATE'                                      => '/wEPDwUKMTI4MzUzOTE3NA8WAh4CbFkC3g8WAmYPZBYCAgMPZBYCAgEPZBYCAgUPZBYCAgUPZBYCZg9kFgQCAw8WAh4EVGV4dAXNAjx0YWJsZSBjbGFzcz0iVGl0dWxvUGFnMSIgY2VsbFNwYWNpbmc9IjAiIGNlbGxQYWRkaW5nPSIyIiBhbGlnbj0iY2VudGVyIj48dHI+PHRkPjx0YWJsZSBjbGFzcz0iVGl0dWxvUGFnMiIgY2VsbFNwYWNpbmc9IjAiIGNlbGxQYWRkaW5nPSIyIj48dHI+PHRkIGNsYXNzPSJUaXR1bG9QYWczIiBhbGlnbj0iY2VudGVyIj48dGFibGUgY2xhc3M9IlRhYmxhRm9ybTMiIGNlbGxTcGFjaW5nPSIzIiBjZWxsUGFkZGluZz0iNCI+PHRyIGNsYXNzPSJFdGlxdWV0YUZvcm0yIj48dGQ+QcOxbzogMjAxNDwvdGQ+PC90cj48L3RhYmxlPjwvdGQ+PC90cj48L3RhYmxlPjwvdGQ+PC90cj48L3RhYmxlPmQCBw88KwALAQAPFgweC18hSXRlbUNvdW50AjIeCERhdGFLZXlzFgAeCVBhZ2VDb3VudAJNHhVfIURhdGFTb3VyY2VJdGVtQ291bnQC7B0eEFZpcnR1YWxJdGVtQ291bnQC7B0eEEN1cnJlbnRQYWdlSW5kZXgCAmRkZCE8gn3egStUa/LTQibKxHuPya2w',
+            '__EVENTVALIDATION'                                => '/wEdAA3AcNkZJZYBmgLzXKMKQAHCDgb8Uag+idZmhp4z8foPgz4xN15UhY4K7pA9ni2czGCFp+0LzW2X25e7x6qJGAGNdTQnfVZ2Bpjxj7ZAwLTUHggMop+g+rIcjfLnqU7sIEd1r49BNud9Gzhdq5Du6Cuaivj/J0Sb6VUF9yYCq0O32nVzQBnAbvzxCHDPy/dQNW4JRFkop3STShyOPuu+QjyFyEKGLUzsAW/S22pN4CQ1k/PmspiPnyFdAbsK7K0ZtyIv/uu03tEXAoLdp793x+CRLD0M5v5yDc5Uyh02d+27XEUbbAI=',
+            '__ASYNCPOST'                                      => 'true'
+        ];
+        for ($i = 1; $i <=2; $i++) {
+            $page =  sprintf("%02d", $i);
+            $postVars['_body:MasterGC$ContentBlockHolder$ScriptManager1'] .= $page;
+            $postVars['__EVENTTARGET']                                    .= $page;
+            $html  = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year, 'POST', $postVars);
+            echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($html); die();
+        }
+    }
+
+
     private function humanizarNombreDeEmpresa($nombre)
     {
         $nombre  = str_replace('SOCIEDAD ANONIMA', 'S.A.', $nombre);
@@ -124,6 +144,9 @@ class ProveedorModel extends EntityRepository
      */
     public function scrapList()
     {
+        $x = $this->scrapPagedData();
+        echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($x); die();
+
         $year            = date('Y');
         $proveedoresList = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year);
         $xpath           = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";

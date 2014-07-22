@@ -169,3 +169,44 @@ CREATE TABLE representante_representado_por (
     , id_representado_por  INT UNSIGNED NOT NULL
     , FOREIGN KEY (id_representado_por) REFERENCES rep_legal(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS tipo_comprador;
+CREATE TABLE tipo_comprador (
+    id            int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+    , name        varchar(128) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO tipo_comprador VALUES
+-- sector público
+  ( 4, 'Administración Central')
+, ( 5, 'Entidades Descentralizadas, Autónomas y de Seguridad Social')
+, ( 6, 'Gobiernos Locales (Municipalidades, Mancomunidades, etc.)')
+, ( 7, 'Empresas Públicas (Nacionales y Municipales)')
+-- fideicomisos y otras entidades
+, ( 8, 'Fideicomisos con fondos públicos')
+, ( 9, 'ONG''s, patronatos, comités, asociaciones y fundaciones')
+, (10, 'Consejos de desarrollo')
+, (11, 'Cooperativas')
+, (12, 'Entidades privadas')
+, (13, 'Otro tipo')
+-- Organizaciones Internacionales
+, (14, 'Organizaciones Internacionales')
+;
+
+/*
+comprador
+- nombre (entidad)
+- nit
+- id_tipo
+- origen_fondos
+- id_domicilio
+- url
+- email
+
+concurso
+- id (nog)
+- categoría
+- descripción
+- modalidad
+- tipo de concurso
+
+*/
