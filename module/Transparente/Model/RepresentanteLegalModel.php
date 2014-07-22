@@ -218,7 +218,6 @@ class RepresentanteLegalModel extends EntityRepository
         return $entity;
     }
 
-
     /**
      * Obtiene los nombres comerciales de los proveedores
      *

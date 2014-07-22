@@ -15,12 +15,13 @@ use Zend\View\Model\ViewModel;
  *
  * @property Transparente\Model\ProveedoresTable $proveedoresTable
  *
- * @todo Convertirlo en un CLI
  */
 class ScraperController extends AbstractActionController
 {
     /**
      * Iniciando el scraper
+     *
+     * @todo correr el scraper desde CLI
      */
     public function indexAction()
     {
@@ -90,10 +91,15 @@ class ScraperController extends AbstractActionController
             // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; Doctrine\Common\Util\Debug::dump($proveedor); die();
             // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($data); die();
 
+            set_time_limit(0);
+            ini_set('max_execution_time', 0);
             $proveedorModel->save($proveedor);
        }
         $db = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
         /* @var $db Doctrine\ORM\EntityManager */
+
+        set_time_limit(0);
+        ini_set('max_execution_time', 0);
         $db->flush();
         return new ViewModel(compact('totales'));
     }

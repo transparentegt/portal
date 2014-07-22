@@ -63,7 +63,7 @@ class ScraperModel
         set_time_limit(0);
         ini_set('max_execution_time', 0);
 
-        $key     = md5($method.$url.'0');
+        $key     = md5($method . $url . serialize($vars));
         $cache = \Zend\Cache\StorageFactory::factory([
             'adapter' => [
                 'name'    => 'filesystem',
@@ -91,38 +91,26 @@ class ScraperModel
                             ]
                         ];
                         $context  = stream_context_create($opts);
-                        $result   = file_get_contents($url, false, $context, -1, 40000);
+                        $result   = file_get_contents($url, false, $context, -1);
                         echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($result); die();
                     break;
-                case 'REST':
-
-                    //next example will insert new conversation
-                    $curl = curl_init($url);
-                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($curl, CURLOPT_POST, true);
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $vars);
-                    $curl_response = curl_exec($curl);
-                    if ($curl_response === false) {
-                        $info = curl_getinfo($curl);
-                        curl_close($curl);
-                        die('error occured during curl exec. Additioanl info: ' . var_export($info));
-                    }
-                    echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($curl_response, curl_getinfo($curl)); die();
-                    curl_close($curl);
-
-
-                    $decoded = json_decode($curl_response);
-                    if (isset($decoded->response->status) && $decoded->response->status == 'ERROR') {
-                        die('error occured: ' . $decoded->response->errormessage);
-                    }
-                    echo 'response ok!';
-                    var_export($decoded->response);
-
+                case 'AJAX.NET':
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, $url);
+                    curl_setopt($ch, CURLOPT_REFERER,        $url);
+                    curl_setopt($ch, CURLOPT_USERAGENT,      'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/533.2 (KHTML, like Gecko) Chrome/5.0.342.3 Safari/533.2');
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt($ch, CURLOPT_POST,           1);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS,     http_build_query($vars));
+                    curl_setopt($ch, CURLOPT_HTTPHEADER,     ['Content-Type: application/x-www-form-urlencoded']);
+                    $result = curl_exec ($ch);
+                    $result = explode('|', $result)[7];
+                    // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($result); die();
+                    $dom    = new \Zend\Dom\Query($result);
+                    $cache->setItem($key, $dom);
                     break;
-            }
-            if ($method == 'GET') {
-            } elseif ($method == 'POST') {
-
+                default:
+                    throw new \Exception("Cache type '$method' not defined");
             }
         }
         return $dom;
