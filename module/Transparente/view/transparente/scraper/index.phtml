@@ -1,89 +1,9 @@
 <?php
 /* @var $this Zend\View\Renderer\PhpRenderer */
 ?>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>id</th>
-            <th>nombre</th>
-            <th>nit</th>
-            <th>status</th>
-            <th>sistema</th> <!-- th>tiene acceso al sistema</th  -->
-            <th>url</th>
-            <th>email</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach($this->proveedores as $proveedor) :?>
-            <tr>
-                <td>
-                    <a href="http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=8&lprv=<?=$proveedor['id']?>">
-                        <?=$proveedor['id']?>
-                    </a>
-                </td>
-                <td><?=$proveedor['nombre']?></td>
-                <td><?=$proveedor['nit']?></td>
-                <td><?=($proveedor['status']) ? 'activo' : 'inactivo'?></td>
-                <td><?=($proveedor['tiene_acceso_sistema']) ? 'si' : 'no'?></td>
-                <td>
-                    <?php if ($proveedor['url']) :?>
-                        <a href="http://<?=$proveedor['url']?>"><?=$proveedor['url']?></a>
-                    <?php endif ?>
-                </td>
-                <td>
-                    <?php if ($proveedor['email']) :?>
-                        <a href="mailto:<?=$proveedor['email']?>"><?=$proveedor['email']?></a>
-                    <?php endif ?>
-                </td>
-                <td></td>
-            </tr>
-
-            <tr>
-                <td colspan="3">
-                    <a href="http://www.guatecompras.gt/proveedores/consultaProveeNomCom.aspx?rqp=8&lprv=<?=$proveedor['id']?>">
-                        nombres comerciales:
-                    </a>
-                    <ul>
-                        <?php foreach($proveedor['nombres_comerciales'] as $nombre) :?>
-                            <li><?=$nombre?></li>
-                        <?php endforeach?>
-                    </ul>
-                </td>
-                <td colspan="3">
-                    <a href="http://guatecompras.gt/proveedores/consultaprrepleg.aspx?rqp=8&lprv=<?=$proveedor['id']?>">
-                        (<?=count($proveedor['representantes_legales'])?>) representantes legales:
-                    </a>
-                    <ul>
-                        <?php foreach($proveedor['representantes_legales'] as $nombre) :?>
-                            <li><?=$nombre?></li>
-                        <?php endforeach?>
-                    </ul>
-                    (última actualización: <?=$proveedor['rep_legales_updated']?>)
-                </td>
-
-                <td colspan="1">
-
-                    <?php if (!empty($proveedor['domicilio_fiscal']['dirección'])) :?>
-                    domicilio fiscal:
-                    <p>
-                        <?=$proveedor['domicilio_fiscal']['dirección']?><br />
-                        <?=$proveedor['domicilio_fiscal']['municipio']?>,  <?=$proveedor['domicilio_fiscal']['departamento']?><br />
-                        tel: <?=$proveedor['domicilio_fiscal']['telefonos']?><br />
-                        fax: <?=$proveedor['domicilio_fiscal']['fax']?><br />
-                    </p>
-                    <?php endif ?>
-                    <?php if (!empty($proveedor['domicilio_comercial']['dirección'])) :?>
-                    domicilio comercial:
-                    <p>
-                        <?=$proveedor['domicilio_comercial']['dirección']?><br />
-                        <?=$proveedor['domicilio_comercial']['municipio']?>,  <?=$proveedor['domicilio_comercial']['departamento']?><br />
-                        tel: <?=$proveedor['domicilio_comercial']['telefonos']?><br />
-                        fax: <?=$proveedor['domicilio_comercial']['fax']?><br />
-                    </p>
-                    <?php endif ?>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+<h1>Total de datos scrapeados</h1>
+<dl>
+    <dt>Proveedores</dt>             <dd><?=$this->totales['proveedores']?></dd>
+    <dt>Domicilios</dt>              <dd><?=$this->totales['domicilios']?></dd>
+    <dt>Representantes Legales</dt>  <dd><?=$this->totales['repLegales']?></dd>
+</dl>

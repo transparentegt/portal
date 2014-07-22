@@ -31,13 +31,24 @@ class ScraperController extends AbstractActionController
         $domicilioModel = $this->getServiceLocator()->get('Transparente\Model\DomicilioModel');
         /* @var $domicilioModel DomicilioModel */
 
-        $scraper     = new ScraperModel($proveedorModel, $repModel);
-        $proveedores = $scraper->scrapProveedores();
-        foreach ($proveedores as $data) {
+        $scraper = new ScraperModel($proveedorModel, $repModel);
+        $totales = [
+            'proveedores' => 0,
+            'domicilios'  => 0,
+            'repLegales'  => 0,
+        ];
+
+        $proveedores = $proveedorModel->scrapList();
+        foreach ($proveedores as $idProveedor) {
+            $totales['proveedores']++;
+            $data      = $proveedorModel->scrap($idProveedor);
+            $data     += ['nombres_comerciales'    => $proveedorModel->scrapNombresComerciales($idProveedor)];
+            $data     += ['representantes_legales' => $repModel->scrapRepresentantesLegales($idProveedor)];
             $proveedor = new \Transparente\Model\Entity\Proveedor();
             $proveedor->exchangeArray($data);
 
             if (!empty($data['domicilio_fiscal'])) {
+                $totales['domicilios']++;
                 $domicilio = new \Transparente\Model\Entity\Domicilio();
                 $domicilio->exchangeArray($data['domicilio_fiscal']);
                 try {
@@ -51,6 +62,7 @@ class ScraperController extends AbstractActionController
             }
 
             if (!empty($data['domicilio_comercial'])) {
+                $totales['domicilios']++;
                 $domicilio = new \Transparente\Model\Entity\Domicilio();
                 $domicilio->exchangeArray($data['domicilio_comercial']);
                 try {
@@ -70,6 +82,7 @@ class ScraperController extends AbstractActionController
             }
 
             foreach ($data['representantes_legales'] as $idRep) {
+                $totales['repLegales']++;
                 /* @var $domicilioModel DomicilioModel */
                 $repLegal = $repModel->scrap($idRep);
                 $proveedor->appendRepresentanteLegal($repLegal);
@@ -82,6 +95,6 @@ class ScraperController extends AbstractActionController
         $db = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
         /* @var $db Doctrine\ORM\EntityManager */
         $db->flush();
-        return new ViewModel(compact('proveedores'));
+        return new ViewModel(compact('totales'));
     }
 }

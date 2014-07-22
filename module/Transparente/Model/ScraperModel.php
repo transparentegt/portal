@@ -82,32 +82,4 @@ class ScraperModel
         }
         return $dom;
     }
-
-    /**
-     * Conseguir todos los proveedores adjudicados del año en curso
-     *
-     * @return multitype:Ambigous <multitype:, number>
-     *
-     * @todo Solo los proveedores que no están en la DB son los que vamos a barrer
-     */
-    public function scrapProveedores()
-    {
-        $year            = date('Y');
-        $proveedoresList = self::getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year);
-        $xpath           = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";
-        $proveedoresList = $proveedoresList->queryXpath($xpath);
-        $proveedores     = [];
-        foreach($proveedoresList as $nodo) {
-            /* @var $proveedor DOMElement */
-            // El link apunta a las adjudicaciones/projectos del proveedor, pero de aquí sacamos el ID del proveedor
-            $url = parse_url($nodo->getAttribute('href'));
-            parse_str($url['query'], $url);
-            $idProveedor  = $url['lprv'];
-            $data          = $this->proveedorModel->scrap($idProveedor);
-            $data         += ['nombres_comerciales'    => $this->proveedorModel->scrapNombresComerciales($idProveedor)];
-            $data         += ['representantes_legales' => $this->representanteLegalModel->scrapRepresentantesLegales($idProveedor)];
-            $proveedores[] = $data;
-        }
-        return $proveedores;
-    }
 }

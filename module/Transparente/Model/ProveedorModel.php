@@ -118,6 +118,28 @@ class ProveedorModel extends EntityRepository
     }
 
     /**
+     * Conseguir todos los proveedores adjudicados del año en curso
+     *
+     * @return int[]
+     */
+    public function scrapList()
+    {
+        $year            = date('Y');
+        $proveedoresList = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year);
+        $xpath           = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";
+        $proveedoresList = $proveedoresList->queryXpath($xpath);
+        $proveedores     = [];
+        foreach($proveedoresList as $nodo) {
+            /* @var $proveedor DOMElement */
+            // El link apunta a las adjudicaciones/projectos del proveedor, pero de aquí sacamos el ID del proveedor
+            $url           = parse_url($nodo->getAttribute('href'));
+            parse_str($url['query'], $url);
+            $proveedores[] = (int) $url['lprv'];
+        }
+        return $proveedores;
+    }
+
+    /**
      * Obtiene los nombres comerciales de los proveedores
      *
      * @param int $id
