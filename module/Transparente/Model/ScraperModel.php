@@ -75,24 +75,53 @@ class ScraperModel
         if ($cache->hasItem($key)) {
             $dom = $cache->getItem($key);
         } else {
+            switch ($method) {
+                case 'GET':
+                        $content       = file_get_contents($url);
+                        $content       = iconv('utf-8', 'iso-8859-1', $content);
+                        $dom           = new \Zend\Dom\Query($content);
+                        $cache->setItem($key, $dom);
+                    break;
+                case 'POST':
+                        $postdata = http_build_query($vars);
+                        $opts     = ['http' => [
+                                'method'  => 'POST',
+                                'header'  => 'Content-type: application/x-www-form-urlencoded',
+                                'content' => $postdata
+                            ]
+                        ];
+                        $context  = stream_context_create($opts);
+                        $result   = file_get_contents($url, false, $context, -1, 40000);
+                        echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($result); die();
+                    break;
+                case 'REST':
+
+                    //next example will insert new conversation
+                    $curl = curl_init($url);
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($curl, CURLOPT_POST, true);
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $vars);
+                    $curl_response = curl_exec($curl);
+                    if ($curl_response === false) {
+                        $info = curl_getinfo($curl);
+                        curl_close($curl);
+                        die('error occured during curl exec. Additioanl info: ' . var_export($info));
+                    }
+                    echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($curl_response, curl_getinfo($curl)); die();
+                    curl_close($curl);
+
+
+                    $decoded = json_decode($curl_response);
+                    if (isset($decoded->response->status) && $decoded->response->status == 'ERROR') {
+                        die('error occured: ' . $decoded->response->errormessage);
+                    }
+                    echo 'response ok!';
+                    var_export($decoded->response);
+
+                    break;
+            }
             if ($method == 'GET') {
-                $content       = file_get_contents($url);
-                $content       = iconv('utf-8', 'iso-8859-1', $content);
-                $dom           = new \Zend\Dom\Query($content);
-                $cache->setItem($key, $dom);
             } elseif ($method == 'POST') {
-
-                $postdata = http_build_query($vars);
-                $opts     = ['http' => [
-                        'method'  => 'POST',
-                        'header'  => 'Content-type: application/x-www-form-urlencoded',
-                        'content' => $postdata
-                    ]
-                ];
-
-                $context  = stream_context_create($opts);
-                $result   = file_get_contents($url, false, $context, -1, 40000);
-                echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($result); die();
 
             }
         }
