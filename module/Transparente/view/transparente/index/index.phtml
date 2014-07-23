@@ -17,18 +17,39 @@
         servicios y productos al gobierno.
     </p>
     <p>
-        Hemos empezado con recopilar los datos de los 50 proveedores que más dinero les ha dado el gobierno este año (2014).
+        Actualmente ya recopilamos los datos de los 200 proveedores que más dinero les ha dado el gobierno este año (2014).
         Ya tenemos barridos los datos generales, nombres comerciales y representantes legales y nuestra meta es poder
         tener todo almacenado para intetificar los problemas.
-    </p>
-    <p class="text-right">
-        <a class="btn btn-success btn-lg" href="<?=$this->basepath()?>/transparente/proveedores">
-            Ver los resultados »
-        </a>
     </p>
 </div>
 
 <div class="row">
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Resumen de datos recopilados</h3>
+            </div>
+            <div class="panel-body">
+                <p>
+                    Estos son los datos recopilados hasta el momento:
+                </p>
+                <ul>
+                    <li>200 proveedores</li>
+                    <li>211 domicilios registrados</li>
+                    <li>311 representantes legales</li>
+                    <li>4 reportes de inconsistencias</li>
+                </ul>
+                <p>¿Es realmente transparente? ¿Van a liberar la base de datos?</p>
+
+                <a class="btn btn-success pull-right" href="<?=$this->basepath()?>/Transparente/db-latest.sql.bz2">
+                    Descarga la base de datos »
+                </a>
+            </div>
+        </div>
+    </div>
+
+
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -79,27 +100,4 @@
     </div>
 
 
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Hacks/Hackers</h3>
-            </div>
-            <div class="panel-body">
-                <p>
-                    GTCT surgió como la idea más interesante para el evento de
-                    <a href="http://larutadeldinero.info/" target="_blank">La Ruta del Dinero</a>, hackatón latinoamericano. Un mes
-                    después de esa reunión se saca la primvera versión 0.1-alpha gracias al esfuerzo y sacrificación de
-                    horas libres
-                </p>
-                <p>
-                    Para saber más sobre el proyecto del evento pueden ver la página en:
-                </p>
-                <p>
-                    <a class="btn btn-success pull-right" href="http://larutadeldinero.info/" target="_blank">
-                        <img src="http://larutadeldinero.info/imagenes/hh.png" alt="hacks/hackers" />
-                    </a>
-                </p>
-            </div>
-        </div>
-    </div>
 </div>

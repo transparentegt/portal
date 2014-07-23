@@ -122,7 +122,7 @@ class ProveedorModel extends EntityRepository
      *
      * @return int[]
      *
-     * @todo   En el ciclo del paginado, hay 50 que se pierden, no entiendo por qué.
+     * @todo   No retorna datos de la página 3
      * @todo   Correr el paginado hasta que no retorne resultados
      */
     public function scrapList()
@@ -137,7 +137,7 @@ class ProveedorModel extends EntityRepository
             '__EVENTVALIDATION'                                => '/wEdAA3AcNkZJZYBmgLzXKMKQAHCDgb8Uag+idZmhp4z8foPgz4xN15UhY4K7pA9ni2czGCFp+0LzW2X25e7x6qJGAGNdTQnfVZ2Bpjxj7ZAwLTUHggMop+g+rIcjfLnqU7sIEd1r49BNud9Gzhdq5Du6Cuaivj/J0Sb6VUF9yYCq0O32nVzQBnAbvzxCHDPy/dQNW4JRFkop3STShyOPuu+QjyFyEKGLUzsAW/S22pN4CQ1k/PmspiPnyFdAbsK7K0ZtyIv/uu03tEXAoLdp793x+CRLD0M5v5yDc5Uyh02d+27XEUbbAI=',
             '__ASYNCPOST'                                      => 'true'
         ];
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $page     =  sprintf("%02d", $i);
             $postVars = $postVarsKey;
             $postVars['_body:MasterGC$ContentBlockHolder$ScriptManager1'] .= $page;
@@ -145,13 +145,18 @@ class ProveedorModel extends EntityRepository
             $html            = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year, 'AJAX.NET', $postVars);
             $xpath           = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";
             $proveedoresList = $html->queryXpath($xpath);
+            echo 'Encontrados '.count($proveedoresList)." de 50\n";
+
             foreach ($proveedoresList as $nodo) {
                 /* @var $proveedor DOMElement */
                 // El link apunta a las adjudicaciones/projectos del proveedor, pero de aquí sacamos el ID del proveedor
                 $url           = parse_url($nodo->getAttribute('href'));
                 parse_str($url['query'], $url);
                 $idProveedor   = (int) $url['lprv'];
-                if (in_array($idProveedor, $proveedores)) continue;
+                if (in_array($idProveedor, $proveedores)) {
+                    echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump('No se pudo leer la página '.$i, $postVars); die();
+
+                }
                 $proveedores[] = $idProveedor;
             }
         }
