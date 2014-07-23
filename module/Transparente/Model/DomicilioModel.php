@@ -24,7 +24,7 @@ class DomicilioModel extends EntityRepository
 
         $dql = 'SELECT municipio
                 FROM Transparente\Model\Entity\GeoMunicipio municipio
-                JOIN Transparente\Model\Entity\GeoDepartamento departamento
+                JOIN municipio.departamento departamento
                 WHERE departamento.nombre = ?1 AND municipio.nombre = ?2 ';
         $rs = $this->getEntityManager()->createQuery($dql)
             ->setParameter(1, $departamento)
@@ -33,13 +33,14 @@ class DomicilioModel extends EntityRepository
         $municipio = NULL;
         switch (count($rs)) {
             case 0:
-                throw new \Exception("No se encontró un municipio con los datos: departamento=$departamento, municipio=$municipio");
+                throw new \Exception("No se encontró un municipio con los datos: departamento = '$departamento', municipio = '$municipio'\n");
                 break;
             case 1;
                 $municipio = $rs[0];
                 break;
             default:
-                throw new \Exception("Se se encontró más de un municipio con los datos: departamento=$departamento, municipio=$municipio");
+                echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump(\Doctrine\Common\Util\Debug::dump($rs)); die();
+                throw new \Exception("Se se encontró más de un municipio con los datos: departamento = '$departamento', municipio = '$municipio'\n");
         }
         $domicilio = new \Transparente\Model\Entity\Domicilio();
         $domicilio->exchangeArray($data);

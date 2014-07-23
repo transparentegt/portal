@@ -27,7 +27,8 @@
         <tr>
             <th>nombre</th>
             <th class="text-right">nit</th>
-            <th>proveedor</th>
+            <th>repersenta a los proveedores</th>
+            <th>nombres comerciales del representante</th>
         </tr>
     </thead>
     <tbody>
@@ -39,6 +40,17 @@
                 </a>
             </td>
             <td class="text-right"><?=$entidad->getNit()?></td>
+            <td>
+                <ul>
+                <?php foreach ($entidad->getProveedores() as $proveedor) : /* @var $proveedor Transparente\Model\Entity\Proveedor */?>
+                    <li>
+                        <a href="<?=$this->basepath()?>/transparente/proveedores/detalles/<?=$proveedor->getId()?>">
+                            <?=$proveedor->getNombre()?>
+                        </a>
+                    </li>
+                <?php endforeach ?>
+                </ul>
+            </td>
             <td>
                 <ul>
                 <?php foreach ($entidad->getNombresComerciales() as $nombreComercial) : /* @var $proveedor Transparente\Model\Entity\RepresentanteLegalNombreComercial */?>

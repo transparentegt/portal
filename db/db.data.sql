@@ -249,7 +249,7 @@ INSERT INTO geo_municipios VALUES(NULL, 'Chiché', 14);
 INSERT INTO geo_municipios VALUES(NULL, 'Chichicastenango', 14);
 INSERT INTO geo_municipios VALUES(NULL, 'Chinique', 14);
 INSERT INTO geo_municipios VALUES(NULL, 'Cunén', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'Ixcán', 14);
+INSERT INTO geo_municipios VALUES(NULL, 'Ixcan Playa Grande', 14);
 INSERT INTO geo_municipios VALUES(NULL, 'Joyabaj', 14);
 INSERT INTO geo_municipios VALUES(NULL, 'Nebaj', 14);
 INSERT INTO geo_municipios VALUES(NULL, 'Pachalum', 14);

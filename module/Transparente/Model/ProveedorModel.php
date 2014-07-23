@@ -164,6 +164,7 @@ class ProveedorModel extends EntityRepository
                 $proveedores[] = $idProveedor;
             }
         }
+        // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump(count($proveedores)); die();
         return $proveedores;
     }
 
