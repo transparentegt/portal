@@ -9,16 +9,6 @@ namespace Transparente\Model;
  */
 class ScraperModel
 {
-
-    public function __construct(
-            ProveedorModel          $proveedorModel,
-            RepresentanteLegalModel $representanteLegalModel
-    )
-    {
-        $this->proveedorModel          = $proveedorModel;
-        $this->representanteLegalModel = $representanteLegalModel;
-    }
-
     public static function fetchData($xpaths, \Zend\Dom\Query $dom)
     {
         $element = [];
@@ -30,7 +20,13 @@ class ScraperModel
                     $element[$key] = null;
                 } else {
                     if ($path[0] == '/') {
-                        $nodes = $dom->queryXpath($path);
+                        try {
+                            $nodes = $dom->queryXpath($path);
+                        } catch (\Exception $e) {
+                            echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($dom->getDocument()); die();
+
+                            throw new \Exception("No se encontríó el path '$path'", null, $e);
+                        }
                     } else {
                         $nodes = $dom->execute($path);
                     }
@@ -60,10 +56,7 @@ class ScraperModel
      */
     public static function getCachedUrl($url, $method='GET', $vars = null)
     {
-        set_time_limit(0);
-        ini_set('max_execution_time', 0);
-
-        $key     = md5($method . $url . serialize($vars));
+        $key   = md5($method . $url . serialize($vars));
         $cache = \Zend\Cache\StorageFactory::factory([
             'adapter' => [
                 'name'    => 'filesystem',
@@ -73,14 +66,22 @@ class ScraperModel
             'plugins' => array('serializer'),
         ]);
         if ($cache->hasItem($key)) {
-            $dom = $cache->getItem($key);
+            echo "Leyendo del cache:\t $url\n";
+            $content = $cache->getItem($key);
         } else {
+            echo "Leyendo del sitio original:\t $url\n";
             switch ($method) {
                 case 'GET':
-                        $content       = file_get_contents($url);
-                        $content       = iconv('utf-8', 'iso-8859-1', $content);
-                        $dom           = new \Zend\Dom\Query($content);
-                        $cache->setItem($key, $dom);
+                        $content = null;
+                        while(!$content) {
+                            try {
+                                $content = file_get_contents($url);
+                            } catch (\Exception $e) {
+                                echo "No se pudo leer la página: $url. Deteniendo el sistema 2 segundos\n";
+                                sleep(2);
+                            }
+                        }
+                        $content = iconv('utf-8', 'iso-8859-1', $content);
                     break;
                 case 'POST':
                         $postdata = http_build_query($vars);
@@ -103,16 +104,20 @@ class ScraperModel
                     curl_setopt($ch, CURLOPT_POST,           1);
                     curl_setopt($ch, CURLOPT_POSTFIELDS,     http_build_query($vars));
                     curl_setopt($ch, CURLOPT_HTTPHEADER,     ['Content-Type: application/x-www-form-urlencoded']);
-                    $result = curl_exec ($ch);
-                    $result = explode('|', $result)[7];
+                    $content = curl_exec ($ch);
+                    $content = explode('|', $content)[7];
                     // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($result); die();
-                    $dom    = new \Zend\Dom\Query($result);
-                    $cache->setItem($key, $dom);
                     break;
                 default:
                     throw new \Exception("Cache type '$method' not defined");
             }
         }
+
+        if (!$content) {
+            throw new \Exception("No se pudo leer la URL $url");
+        }
+        $cache->setItem($key, $content);
+        $dom = new \Zend\Dom\Query($content);
         return $dom;
     }
 }

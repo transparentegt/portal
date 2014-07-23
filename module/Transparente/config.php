@@ -118,6 +118,15 @@ return array(
     'console' => array(
         'router' => array(
             'routes' => array(
+                'scraper' => [
+                    'options' => [
+                        'route'    => 'scraper',
+                        'defaults' => [
+                            'controller' => 'Transparente\Controller\Scraper',
+                            'action'     => 'index'
+                        ]
+                    ]
+                ]
             ),
         ),
     ),
