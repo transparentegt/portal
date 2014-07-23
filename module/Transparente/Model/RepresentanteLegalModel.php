@@ -247,9 +247,9 @@ class RepresentanteLegalModel extends EntityRepository
      * @param int $id
      * @return int[]
      */
-    public function scrapRepresentantesLegales($id)
+    public function scrapRepresentantesLegales($parentId)
     {
-        $página    = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaprrepleg.aspx?rqp=8&lprv=' . $id);
+        $página    = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaprrepleg.aspx?rqp=8&lprv=' . $parentId);
         $xpath     = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]/a';
         $nodos     = $página->queryXpath($xpath);
         $elementos = [];
@@ -257,7 +257,7 @@ class RepresentanteLegalModel extends EntityRepository
             $url         = parse_url($nodo->getAttribute('href'));
             parse_str($url['query'], $url);
             $id          = $url['lprv'];
-            if (in_array($id, $elementos)) continue;
+            if ( ($parentId == $id) || in_array($id, $elementos)) continue;
             $elementos[] = (int) $id;
         }
         sort($elementos);

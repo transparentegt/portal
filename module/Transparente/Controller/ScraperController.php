@@ -77,7 +77,7 @@ class ScraperController extends AbstractActionController
                         $proveedor->setDomicilioComercial($domicilio);
                     }
                 } catch (\Exception $e) {
-                    echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($data); die();
+                    echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($e->getMessage(), $data); die();
                 }
             }
 
