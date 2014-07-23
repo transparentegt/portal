@@ -54,9 +54,11 @@ class ScraperModel
      *
      * @return \Zend\Dom\Query
      */
-    public static function getCachedUrl($url, $method='GET', $vars = null)
+    public static function getCachedUrl($url, $method='GET', $vars = null, $key = null)
     {
-        $key   = md5($method . $url . serialize($vars));
+        if (!$key) {
+            $key = md5($method . $url . serialize($vars));
+        }
         $cache = \Zend\Cache\StorageFactory::factory([
             'adapter' => [
                 'name'    => 'filesystem',

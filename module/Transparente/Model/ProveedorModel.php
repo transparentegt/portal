@@ -137,7 +137,7 @@ class ProveedorModel extends EntityRepository
             '__EVENTVALIDATION'                                => '/wEdAA14XElF3qXk6b0iXGg7E00zDgb8Uag+idZmhp4z8foPgz4xN15UhY4K7pA9ni2czGB1NCd9VnYGmPGPtkDAtNQeEDIBsVJcI17AvX4wvuIJ5AgMop+g+rIcjfLnqU7sIEd1r49BNud9Gzhdq5Du6Cuaivj/J0Sb6VUF9yYCq0O32nVzQBnAbvzxCHDPy/dQNW4JRFkop3STShyOPuu+QjyFyEKGLUzsAW/S22pN4CQ1k/PmspiPnyFdAbsK7K0ZtyIv/uu03tEXAoLdp793x+CRlm7Yn37MSDqo7lpN9Z9v4u6Js8E=',
             '__ASYNCPOST'                                      => 'true'
         ];
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 20; $i++) {
             $page     =  sprintf("%02d", $i);
             $postVars = $postVarsKey;
             $postVars['_body:MasterGC$ContentBlockHolder$ScriptManager1'] .= $page;
@@ -145,7 +145,7 @@ class ProveedorModel extends EntityRepository
             if ($i == 1) {
                 $html = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year, 'GET');
             } else {
-                $html = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year, 'AJAX.NET', $postVars);
+                $html = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year, 'AJAX.NET', $postVars, "proveedores-list-page-$page");
             }
             $xpath           = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";
             $proveedoresList = $html->queryXpath($xpath);
@@ -164,7 +164,7 @@ class ProveedorModel extends EntityRepository
                 $proveedores[] = $idProveedor;
             }
         }
-        // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump(count($proveedores)); die();
+        echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump(count($proveedores)); die();
         return $proveedores;
     }
 
