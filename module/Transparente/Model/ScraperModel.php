@@ -52,10 +52,11 @@ class ScraperModel
      * @param string $url
      * @param string $method
      *
-     * @return \Zend\Dom\Query
+     * @return Array Request
      */
     public static function getCachedUrl($url, $method='GET', $vars = null, $key = null)
     {
+        $data = array('body' => '', '__VIEWSTATE' => '', '__EVENTVALIDATION' => '');
         if (!$key) {
             $key = md5($method . $url . serialize($vars));
         }
@@ -69,21 +70,21 @@ class ScraperModel
         ]);
         if ($cache->hasItem($key)) {
             echo "Leyendo del cache:\t $url\n";
-            $content = $cache->getItem($key);
+            $data = $cache->getItem($key);
         } else {
             echo "Leyendo del sitio original:\t $url\n";
             switch ($method) {
                 case 'GET':
-                        $content = null;
-                        while(!$content) {
+                        $request = null;
+                        while(!$request) {
                             try {
-                                $content = file_get_contents($url);
+                                $request = file_get_contents($url);
                             } catch (\Exception $e) {
                                 echo "No se pudo leer la página: $url. Deteniendo el sistema 2 segundos\n";
                                 sleep(2);
                             }
                         }
-                        $content = iconv('utf-8', 'iso-8859-1', $content);
+                        $data['body'] = iconv('utf-8', 'iso-8859-1', $request);
                     break;
                 case 'POST':
                         $postdata = http_build_query($vars);
@@ -94,10 +95,11 @@ class ScraperModel
                             ]
                         ];
                         $context  = stream_context_create($opts);
-                        $result   = file_get_contents($url, false, $context, -1);
-                        echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($result); die();
+                        $data['body']   = file_get_contents($url, false, $context, -1);
+                        //echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($data['content']); die();
                     break;
                 case 'AJAX.NET':
+                    
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $url);
                     curl_setopt($ch, CURLOPT_REFERER,        $url);
@@ -106,20 +108,24 @@ class ScraperModel
                     curl_setopt($ch, CURLOPT_POST,           1);
                     curl_setopt($ch, CURLOPT_POSTFIELDS,     http_build_query($vars));
                     curl_setopt($ch, CURLOPT_HTTPHEADER,     ['Content-Type: application/x-www-form-urlencoded']);
-                    $content = curl_exec ($ch);
-                    $content = explode('|', $content)[7];
+                    $request = curl_exec ($ch);
+
+                    $request = explode('|', $request);
+                    $data['body']               = $request[7];
+                    $data['__VIEWSTATE']        = $request[19];
+                    $data['__EVENTVALIDATION']  = $request[23];
                     // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($result); die();
                     break;
                 default:
                     throw new \Exception("Cache type '$method' not defined");
             }
         }
-
-        if (!$content) {
+       
+        //echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($data); die();
+        if (!$data['body']) {
             throw new \Exception("No se pudo leer la URL $url");
         }
-        $cache->setItem($key, $content);
-        $dom = new \Zend\Dom\Query($content);
-        return $dom;
+        $cache->setItem($key, $data);
+        return $data;
     }
 }
