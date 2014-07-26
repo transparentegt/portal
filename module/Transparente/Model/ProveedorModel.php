@@ -6,6 +6,8 @@ use Transparente\Model\Entity\Proveedor;
 
 class ProveedorModel extends EntityRepository
 {
+    const PAGE_MAX = 78;
+
     private function humanizarNombreDeEmpresa($nombre)
     {
         $nombre  = str_replace('SOCIEDAD ANONIMA', 'S.A.', $nombre);
@@ -122,14 +124,22 @@ class ProveedorModel extends EntityRepository
      *
      * @return int[]
      *
-     * @todo   No retorna datos de la página 3
-     * @todo   Correr el paginado hasta que no retorne resultados
+     * @todo Detectar cuantas páginas hay que leer. No necesitar usar una constante para saber si llegamos al final.
+     *       Al parar cuando recibimos una página con solo proveedores que ya leimos, contamos 2,550 proveedores
+     *       Al parar hasta la página 78, contamos 3,950 proveedores, lo cual no tiene sentido pues, a 50 proveedores
+     *       por página, se necesitan 78 páginas, pero deberían de ser menos para no incluir los duplicados.
+     *
+     * @todo Hay diferentes páginas donde sale el mismo proveedor, hay que hacer un reporte de eso (issue #21)
+     *       ERROR: Se encontró proveedor duplicado (2025239)  en las páginas 49 y  50.
+     *
+     * @todo Reducir las variables de las llaves que son constantes entre diferentes paginadores, seteándolas en el
+     *       scraper, y seteando solo las que son diferentes por paginador como parámetros.
      */
     public function scrapList()
     {
         $year        = date('Y');
         $proveedores = [];
-        $postVarsKey = [
+        $pagerKeys   = [
             '_body:MasterGC$ContentBlockHolder$ScriptManager1' => 'MasterGC$ContentBlockHolder$UpdatePanel1|MasterGC$ContentBlockHolder$dgResultado$ctl54$ctl',
             '__EVENTTARGET'                                    => 'MasterGC$ContentBlockHolder$dgResultado$ctl54$ctl',
             '__EVENTARGUMENT'                                  => '',
@@ -137,53 +147,41 @@ class ProveedorModel extends EntityRepository
             '__EVENTVALIDATION'                                => '/wEdAA14XElF3qXk6b0iXGg7E00zDgb8Uag+idZmhp4z8foPgz4xN15UhY4K7pA9ni2czGB1NCd9VnYGmPGPtkDAtNQeEDIBsVJcI17AvX4wvuIJ5AgMop+g+rIcjfLnqU7sIEd1r49BNud9Gzhdq5Du6Cuaivj/J0Sb6VUF9yYCq0O32nVzQBnAbvzxCHDPy/dQNW4JRFkop3STShyOPuu+QjyFyEKGLUzsAW/S22pN4CQ1k/PmspiPnyFdAbsK7K0ZtyIv/uu03tEXAoLdp793x+CRlm7Yn37MSDqo7lpN9Z9v4u6Js8E=',
             '__ASYNCPOST'                                      => 'true'
         ];
-        $countTens = 0;
-        for ($i = 1; $i <= 30; $i++) {
-
-            if ($i > 11) {
-                $countTens++;
-                $pageNumber = $countTens  + 2;
-                if ($countTens == 10){
-                    $countTens = 0;
-                }
-            }else{
-                $pageNumber = $i;
-            }
-            $page     =  sprintf("%02d", $pageNumber);
-            $postVars = $postVarsKey;
-            $postVars['_body:MasterGC$ContentBlockHolder$ScriptManager1'] .= $page;
-            $postVars['__EVENTTARGET']                                    .= $page;
-
-
-            if ($i == 1) {
-                $request = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year, 'GET');
-            } else {                
-                $request                            = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year, 'AJAX.NET', $postVars, "proveedores-list-page-$i");    
-                $postVarsKey['__VIEWSTATE']         = ($request['__VIEWSTATE'] != '')?$request['__VIEWSTATE']:$postVarsKey['__VIEWSTATE'];
-                $postVarsKey['__EVENTVALIDATION']   = ($request['__EVENTVALIDATION'] != '')?$request['__EVENTVALIDATION']:$postVarsKey['__EVENTVALIDATION'] ;
-            
-
-            }
+        $proveedorEnPágina = [];
+        $encontrados       = false;
+        $duplicados        = 0;
+        $page = 0;
+        do {
+            $page++;
+            $html = ScraperModel::getCachedUrl(
+                    'http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year,
+                    ScraperModel::PAGE_MODE_PAGER,
+                    $pagerKeys,
+                    "proveedores-list-page-$page"
+            );
             $xpath           = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";
-            $html = new \Zend\Dom\Query($request['body']);
-            //echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($html); die();
             $proveedoresList = $html->queryXpath($xpath);
-            echo 'Encontrados '.count($proveedoresList)." de 50\n";
-
+            $encontrados     = count($proveedoresList);
             foreach ($proveedoresList as $nodo) {
                 /* @var $proveedor DOMElement */
                 // El link apunta a las adjudicaciones/projectos del proveedor, pero de aquí sacamos el ID del proveedor
                 $url           = parse_url($nodo->getAttribute('href'));
                 parse_str($url['query'], $url);
                 $idProveedor   = (int) $url['lprv'];
-                if (in_array($idProveedor, $proveedores)) {
-                    echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump('No se pudo leer la página '.$i, $postVars); die();
-
+                if (!in_array($idProveedor, $proveedores)) {
+                    $proveedorEnPágina[$idProveedor] = $page;
+                } else {
+                    $duplicados++;
+                    $encontrados--;
+                    $páginaOriginal = $proveedorEnPágina[$idProveedor];
+                    echo "ERROR: Se encontró proveedor duplicado ($idProveedor)  en las páginas $páginaOriginal y $page\n";
                 }
                 $proveedores[] = $idProveedor;
             }
-        }
-        echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump(count($proveedores)); die();
+        // } while($encontrados > 0);
+        } while ($page <= self::PAGE_MAX);
+        $total = count($proveedores);
+        echo "LOG: proveedores por leer: $total, proveedores duplicados: $duplicados\n";
         return $proveedores;
     }
 
