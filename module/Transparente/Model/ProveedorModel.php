@@ -126,8 +126,6 @@ class ProveedorModel extends EntityRepository
      *
      * @todo Detectar cuantas páginas hay que leer. No necesitar usar una constante para saber si llegamos al final.
      *       Al parar cuando recibimos una página con solo proveedores que ya leimos, contamos 2,550 proveedores
-     *       Al parar hasta la página 78, contamos 3,950 proveedores, lo cual no tiene sentido pues, a 50 proveedores
-     *       por página, se necesitan 78 páginas, pero deberían de ser menos para no incluir los duplicados.
      *
      * @todo Hay diferentes páginas donde sale el mismo proveedor, hay que hacer un reporte de eso (issue #21)
      *       ERROR: Se encontró proveedor duplicado (2025239)  en las páginas 49 y  50.
@@ -170,13 +168,13 @@ class ProveedorModel extends EntityRepository
                 $idProveedor   = (int) $url['lprv'];
                 if (!in_array($idProveedor, $proveedores)) {
                     $proveedorEnPágina[$idProveedor] = $page;
+                    $proveedores[]                   = $idProveedor;
                 } else {
                     $duplicados++;
                     $encontrados--;
                     $páginaOriginal = $proveedorEnPágina[$idProveedor];
                     echo "ERROR: Se encontró proveedor duplicado ($idProveedor)  en las páginas $páginaOriginal y $page\n";
                 }
-                $proveedores[] = $idProveedor;
             }
         // } while($encontrados > 0);
         } while ($page <= self::PAGE_MAX);

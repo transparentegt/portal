@@ -120,7 +120,7 @@ return array(
             'routes' => array(
                 'scraper' => [
                     'options' => [
-                        'route'    => 'scraper',
+                        'route'    => 'scraper [--verbose|-v]',
                         'defaults' => [
                             'controller' => 'Transparente\Controller\Scraper',
                             'action'     => 'index'

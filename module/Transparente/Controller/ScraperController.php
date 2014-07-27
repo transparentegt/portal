@@ -29,6 +29,7 @@ class ScraperController extends AbstractActionController
         if (!$request instanceof \Zend\Console\Request){
             throw new \RuntimeException('Scraper solo puede ser corrido desde linea de comando.');
         }
+        ini_set('memory_limit', -1);
 
         $proveedorModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
         /* @var $proveedorModel ProveedorModel */
@@ -37,7 +38,6 @@ class ScraperController extends AbstractActionController
         $domicilioModel = $this->getServiceLocator()->get('Transparente\Model\DomicilioModel');
         /* @var $domicilioModel DomicilioModel */
 
-        $scraper = new ScraperModel($proveedorModel, $repModel);
         $totales = [
             'proveedores' => 0,
             'domicilios'  => 0,

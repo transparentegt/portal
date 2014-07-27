@@ -3,7 +3,7 @@
  */
 
 
-INSERT INTO geo_departamentos VALUES (null, 'Alta Verapaz');
+INSERT INTO geo_departamentos VALUES (null, 'Alta verapaz');
 INSERT INTO geo_departamentos VALUES (null, 'Baja Verapaz');
 INSERT INTO geo_departamentos VALUES (null, 'Chimaltenango');
 INSERT INTO geo_departamentos VALUES (null, 'Chiquimula');
@@ -14,7 +14,7 @@ INSERT INTO geo_departamentos VALUES (null, 'Huehuetenango');
 INSERT INTO geo_departamentos VALUES (null, 'Izabal');
 INSERT INTO geo_departamentos VALUES (null, 'Jalapa');
 INSERT INTO geo_departamentos VALUES (null, 'Jutiapa');
-INSERT INTO geo_departamentos VALUES (null, 'Peten');
+INSERT INTO geo_departamentos VALUES (null, 'Petén');
 INSERT INTO geo_departamentos VALUES (null, 'Quetzaltenango');
 INSERT INTO geo_departamentos VALUES (null, 'Quiché');
 INSERT INTO geo_departamentos VALUES (null, 'Retalhuleu');
@@ -26,385 +26,387 @@ INSERT INTO geo_departamentos VALUES (null, 'Suchitepéquez');
 INSERT INTO geo_departamentos VALUES (null, 'Totonicapán');
 INSERT INTO geo_departamentos VALUES (null, 'Zacapa');
 
+INSERT INTO `geo_municipios` (`id`, `nombre`, `id_geo_departamento`, `nombre_guatecompras`) VALUES
+
 -- Alta Verapaz
-INSERT INTO geo_municipios VALUES(NULL, 'Chahal', 1);
-INSERT INTO geo_municipios VALUES(NULL, 'Chisec', 1);
-INSERT INTO geo_municipios VALUES(NULL, 'Cobán', 1);
-INSERT INTO geo_municipios VALUES(NULL, 'Fray Bartolomé de las Casas', 1);
-INSERT INTO geo_municipios VALUES(NULL, 'La Tinta', 1);
-INSERT INTO geo_municipios VALUES(NULL, 'Lanquín', 1);
-INSERT INTO geo_municipios VALUES(NULL, 'Panzós', 1);
-INSERT INTO geo_municipios VALUES(NULL, 'Raxruhá', 1);
-INSERT INTO geo_municipios VALUES(NULL, 'San Cristóbal Verapaz', 1);
-INSERT INTO geo_municipios VALUES(NULL, 'San Juan Chamelco', 1);
-INSERT INTO geo_municipios VALUES(NULL, 'San Pedro Carchá', 1);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Cruz Verapaz', 1);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa María Cahabón', 1);
-INSERT INTO geo_municipios VALUES(NULL, 'Senahú', 1);
-INSERT INTO geo_municipios VALUES(NULL, 'Tamahú', 1);
-INSERT INTO geo_municipios VALUES(NULL, 'Tactic', 1);
-INSERT INTO geo_municipios VALUES(NULL, 'Tucurú', 1);
+(NULL, 'Chahal', 1, 'Chahal'),
+(NULL, 'Chisec', 1, 'Chisec'),
+(NULL, 'Cobán', 1, 'Cobán'),
+(NULL, 'Fray Bartolomé de las Casas', 1, 'Bartolome de la casas'),
+(NULL, 'La Tinta', 1, 'La Tinta'),
+(NULL, 'Lanquín', 1, 'Lanquín'),
+(NULL, 'Panzós', 1, 'Panzós'),
+(NULL, 'Raxruhá', 1, 'Raxruhá'),
+(NULL, 'San Cristóbal Verapaz', 1, 'San Cristóbal Verapaz'),
+(NULL, 'San Juan Chamelco', 1, 'San Juan Chamelco'),
+(NULL, 'San Pedro Carchá', 1, 'San Pedro Carchá'),
+(NULL, 'Santa Cruz Verapaz', 1, 'Santa Cruz Verapaz'),
+(NULL, 'Santa María Cahabón', 1, 'Santa María Cahabón'),
+(NULL, 'Senahú', 1, 'Senahú'),
+(NULL, 'Tamahú', 1, 'Tamahú'),
+(NULL, 'Tactic', 1, 'Tactic'),
+(NULL, 'Tucurú', 1, 'Tucurú'),
 
 -- Baja Verapaz
-INSERT INTO geo_municipios VALUES(NULL, 'Cubulco', 2);
-INSERT INTO geo_municipios VALUES(NULL, 'Granados', 2);
-INSERT INTO geo_municipios VALUES(NULL, 'Purulhá', 2);
-INSERT INTO geo_municipios VALUES(NULL, 'Rabinal', 2);
-INSERT INTO geo_municipios VALUES(NULL, 'Salamá', 2);
-INSERT INTO geo_municipios VALUES(NULL, 'San Jerónimo', 2);
-INSERT INTO geo_municipios VALUES(NULL, 'San Miguel Chicaj', 2);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Cruz el Chol', 2);
+(NULL, 'Cubulco', 2, 'Cubulco'),
+(NULL, 'Granados', 2, 'Granados'),
+(NULL, 'Purulhá', 2, 'Purulhá'),
+(NULL, 'Rabinal', 2, 'Rabinal'),
+(NULL, 'Salamá', 2, 'Salamá'),
+(NULL, 'San Jerónimo', 2, 'San Jerónimo'),
+(NULL, 'San Miguel Chicaj', 2, 'San Miguel Chicaj'),
+(NULL, 'Santa Cruz el Chol', 2, 'Santa Cruz el Chol'),
 
 -- Chimaltenango
-INSERT INTO geo_municipios VALUES(NULL, 'Acatenango', 3);
-INSERT INTO geo_municipios VALUES(NULL, 'Chimaltenango', 3);
-INSERT INTO geo_municipios VALUES(NULL, 'El Tejar', 3);
-INSERT INTO geo_municipios VALUES(NULL, 'Parramos', 3);
-INSERT INTO geo_municipios VALUES(NULL, 'Patzicía', 3);
-INSERT INTO geo_municipios VALUES(NULL, 'Patzún', 3);
-INSERT INTO geo_municipios VALUES(NULL, 'Pochuta', 3);
-INSERT INTO geo_municipios VALUES(NULL, 'San Andrés Itzapa', 3);
-INSERT INTO geo_municipios VALUES(NULL, 'San José Poaquíl', 3);
-INSERT INTO geo_municipios VALUES(NULL, 'San Juan Comalapa', 3);
-INSERT INTO geo_municipios VALUES(NULL, 'San Martín Jilotepeque', 3);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Apolonia', 3);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Cruz Balanyá', 3);
-INSERT INTO geo_municipios VALUES(NULL, 'Tecpán', 3);
-INSERT INTO geo_municipios VALUES(NULL, 'Yepocapa', 3);
-INSERT INTO geo_municipios VALUES(NULL, 'Zaragoza', 3);
+(NULL, 'Acatenango', 3, 'Acatenango'),
+(NULL, 'Chimaltenango', 3, 'Chimaltenango'),
+(NULL, 'El Tejar', 3, 'El Tejar'),
+(NULL, 'Parramos', 3, 'Parramos'),
+(NULL, 'Patzicía', 3, 'Patzicía'),
+(NULL, 'Patzún', 3, 'Patzún'),
+(NULL, 'Pochuta', 3, 'Pochuta'),
+(NULL, 'San Andrés Itzapa', 3, 'San Andrés Itzapa'),
+(NULL, 'San José Poaquíl', 3, 'San José Poaquíl'),
+(NULL, 'San Juan Comalapa', 3, 'San Juan Comalapa'),
+(NULL, 'San Martín Jilotepeque', 3, 'San Martín Jilotepeque'),
+(NULL, 'Santa Apolonia', 3, 'Santa Apolonia'),
+(NULL, 'Santa Cruz Balanyá', 3, 'Santa Cruz Balanyá'),
+(NULL, 'Tecpán', 3, 'Tecpán'),
+(NULL, 'Yepocapa', 3, 'Yepocapa'),
+(NULL, 'Zaragoza', 3, 'Zaragoza'),
 
 -- Chiquimula
-INSERT INTO geo_municipios VALUES(NULL, 'Camotán', 4);
-INSERT INTO geo_municipios VALUES(NULL, 'Chiquimula', 4);
-INSERT INTO geo_municipios VALUES(NULL, 'Concepción Las Minas', 4);
-INSERT INTO geo_municipios VALUES(NULL, 'Esquipulas', 4);
-INSERT INTO geo_municipios VALUES(NULL, 'Ipala', 4);
-INSERT INTO geo_municipios VALUES(NULL, 'Jocotán', 4);
-INSERT INTO geo_municipios VALUES(NULL, 'Olopa', 4);
-INSERT INTO geo_municipios VALUES(NULL, 'Quezaltepeque', 4);
-INSERT INTO geo_municipios VALUES(NULL, 'San Jacinto', 4);
-INSERT INTO geo_municipios VALUES(NULL, 'San José la Arada', 4);
-INSERT INTO geo_municipios VALUES(NULL, 'San Juan Ermita', 4);
+(NULL, 'Camotán', 4, 'Camotán'),
+(NULL, 'Chiquimula', 4, 'Chiquimula'),
+(NULL, 'Concepción Las Minas', 4, 'Concepción Las Minas'),
+(NULL, 'Esquipulas', 4, 'Esquipulas'),
+(NULL, 'Ipala', 4, 'Ipala'),
+(NULL, 'Jocotán', 4, 'Jocotán'),
+(NULL, 'Olopa', 4, 'Olopa'),
+(NULL, 'Quezaltepeque', 4, 'Quetzaltepeque'),
+(NULL, 'San Jacinto', 4, 'San Jacinto'),
+(NULL, 'San José la Arada', 4, 'San José la Arada'),
+(NULL, 'San Juan Ermita', 4, 'San Juan Ermita'),
 
 -- El Progreso
-INSERT INTO geo_municipios VALUES(NULL, 'El Jícaro', 5);
-INSERT INTO geo_municipios VALUES(NULL, 'Guastatoya', 5);
-INSERT INTO geo_municipios VALUES(NULL, 'Morazán', 5);
-INSERT INTO geo_municipios VALUES(NULL, 'San Agustín Acasaguastlán', 5);
-INSERT INTO geo_municipios VALUES(NULL, 'San Antonio La Paz', 5);
-INSERT INTO geo_municipios VALUES(NULL, 'San Cristóbal Acasaguastlán', 5);
-INSERT INTO geo_municipios VALUES(NULL, 'Sanarate', 5);
-INSERT INTO geo_municipios VALUES(NULL, 'Sansare', 5);
+(NULL, 'El Jícaro', 5, 'El Jícaro'),
+(NULL, 'Guastatoya', 5, 'Guastatoya'),
+(NULL, 'Morazán', 5, 'Morazán'),
+(NULL, 'San Agustín Acasaguastlán', 5, 'San Agustín Acasaguastlán'),
+(NULL, 'San Antonio La Paz', 5, 'San Antonio La Paz'),
+(NULL, 'San Cristóbal Acasaguastlán', 5, 'San Cristóbal Acasaguastlán'),
+(NULL, 'Sanarate', 5, 'Sanarate'),
+(NULL, 'Sansare', 5, 'Sansare'),
 
 -- Escuintla
-INSERT INTO geo_municipios VALUES(NULL, 'Escuintla', 6);
-INSERT INTO geo_municipios VALUES(NULL, 'Guanagazapa', 6);
-INSERT INTO geo_municipios VALUES(NULL, 'Iztapa', 6);
-INSERT INTO geo_municipios VALUES(NULL, 'La Democracia', 6);
-INSERT INTO geo_municipios VALUES(NULL, 'La Gomera', 6);
-INSERT INTO geo_municipios VALUES(NULL, 'Masagua', 6);
-INSERT INTO geo_municipios VALUES(NULL, 'Nueva Concepción', 6);
-INSERT INTO geo_municipios VALUES(NULL, 'Palín', 6);
-INSERT INTO geo_municipios VALUES(NULL, 'San José', 6);
-INSERT INTO geo_municipios VALUES(NULL, 'San Vicente Pacaya', 6);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Lucía Cotzumalguapa', 6);
-INSERT INTO geo_municipios VALUES(NULL, 'Siquinalá', 6);
-INSERT INTO geo_municipios VALUES(NULL, 'Tiquisate', 6);
+(NULL, 'Escuintla', 6, 'Escuintla'),
+(NULL, 'Guanagazapa', 6, 'Guanagazapa'),
+(NULL, 'Iztapa', 6, 'Iztapa'),
+(NULL, 'La Democracia', 6, 'La Democracia'),
+(NULL, 'La Gomera', 6, 'La Gomera'),
+(NULL, 'Masagua', 6, 'Masagua'),
+(NULL, 'Nueva Concepción', 6, 'Nueva Concepción'),
+(NULL, 'Palín', 6, 'Palín'),
+(NULL, 'San José', 6, 'San José'),
+(NULL, 'San Vicente Pacaya', 6, 'San Vicente Pacaya'),
+(NULL, 'Santa Lucía Cotzumalguapa', 6, 'Santa luc!a cotzumalguapa'),
+(NULL, 'Siquinalá', 6, 'Siquinal'),
+(NULL, 'Tiquisate', 6, 'Tiquisate'),
 
 -- Guatemala
-INSERT INTO geo_municipios VALUES(NULL, 'Amatitlán', 7);
-INSERT INTO geo_municipios VALUES(NULL, 'Chinautla', 7);
-INSERT INTO geo_municipios VALUES(NULL, 'Chuarrancho', 7);
-INSERT INTO geo_municipios VALUES(NULL, 'Guatemala', 7);
-INSERT INTO geo_municipios VALUES(NULL, 'Fraijanes', 7);
-INSERT INTO geo_municipios VALUES(NULL, 'Mixco', 7);
-INSERT INTO geo_municipios VALUES(NULL, 'Palencia', 7);
-INSERT INTO geo_municipios VALUES(NULL, 'San José del Golfo', 7);
-INSERT INTO geo_municipios VALUES(NULL, 'San José Pinula', 7);
-INSERT INTO geo_municipios VALUES(NULL, 'San Juan Sacatepéquez', 7);
-INSERT INTO geo_municipios VALUES(NULL, 'San Miguel Petapa', 7);
-INSERT INTO geo_municipios VALUES(NULL, 'San Pedro Ayampuc', 7);
-INSERT INTO geo_municipios VALUES(NULL, 'San Pedro Sacatepéquez', 7);
-INSERT INTO geo_municipios VALUES(NULL, 'San Raymundo', 7);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Catarina Pinula', 7);
-INSERT INTO geo_municipios VALUES(NULL, 'Villa Canales', 7);
-INSERT INTO geo_municipios VALUES(NULL, 'Villa Nueva', 7);
+(NULL, 'Amatitlán', 7, 'Amatitlán'),
+(NULL, 'Chinautla', 7, 'Chinautla'),
+(NULL, 'Chuarrancho', 7, 'Chuarrancho'),
+(NULL, 'Guatemala', 7, 'Guatemala'),
+(NULL, 'Fraijanes', 7, 'Fraijanes'),
+(NULL, 'Mixco', 7, 'Mixco'),
+(NULL, 'Palencia', 7, 'Palencia'),
+(NULL, 'San José del Golfo', 7, 'San José del Golfo'),
+(NULL, 'San José Pinula', 7, 'San José Pinula'),
+(NULL, 'San Juan Sacatepéquez', 7, 'San Juan Sacatepéquez'),
+(NULL, 'San Miguel Petapa', 7, 'San Miguel Petapa'),
+(NULL, 'San Pedro Ayampuc', 7, 'San Pedro Ayampuc'),
+(NULL, 'San Pedro Sacatepéquez', 7, 'San Pedro Sacatepéquez'),
+(NULL, 'San Raymundo', 7, 'San Raymundo'),
+(NULL, 'Santa Catarina Pinula', 7, 'Santa Catarina Pinula'),
+(NULL, 'Villa Canales', 7, 'Villa Canales'),
+(NULL, 'Villa Nueva', 7, 'Villa Nueva'),
 
 -- Huehuetenango
-INSERT INTO geo_municipios VALUES(NULL, 'Aguacatán', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'Chiantla', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'Colotenango', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'Concepción Huista', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'Cuilco', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'Huehuetenango', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'Jacaltenango', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'La Democracia', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'La Libertad', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'Malacatancito', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'Nentón', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'San Antonio Huista', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'San Gaspar Ixchil', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'San Ildefonso Ixtahuacán', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'San Juan Atitán', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'San Juan Ixcoy', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'San Mateo Ixtatán', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'San Miguel Acatán', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'San Pedro Nécta', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'San Pedro Soloma', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'San Rafael La Independencia', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'San Rafael Pétzal', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'San Sebastián Coatán', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'San Sebastián Huehuetenango', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Ana Huista', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Bárbara', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Cruz Barillas', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Eulalia', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'Santiago Chimaltenango', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'Tectitán', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'Todos Santos Cuchumatán', 8);
-INSERT INTO geo_municipios VALUES(NULL, 'Unión Cantinil', 8);
+(NULL, 'Aguacatán', 8, 'Aguacatán'),
+(NULL, 'Chiantla', 8, 'Chiantla'),
+(NULL, 'Colotenango', 8, 'Colotenango'),
+(NULL, 'Concepción Huista', 8, 'Concepción Huista'),
+(NULL, 'Cuilco', 8, 'Cuilco'),
+(NULL, 'Huehuetenango', 8, 'Huehuetenango'),
+(NULL, 'Jacaltenango', 8, 'Jacaltenango'),
+(NULL, 'La Democracia', 8, 'La Democracia'),
+(NULL, 'La Libertad', 8, 'La Libertad'),
+(NULL, 'Malacatancito', 8, 'Malacatancito'),
+(NULL, 'Nentón', 8, 'Nentón'),
+(NULL, 'San Antonio Huista', 8, 'San Antonio Huista'),
+(NULL, 'San Gaspar Ixchil', 8, 'San Gaspar Ixchil'),
+(NULL, 'San Ildefonso Ixtahuacán', 8, 'San Ildefonso Ixtahuacán'),
+(NULL, 'San Juan Atitán', 8, 'San Juan Atitán'),
+(NULL, 'San Juan Ixcoy', 8, 'San Juan Ixcoy'),
+(NULL, 'San Mateo Ixtatán', 8, 'San Mateo Ixtatán'),
+(NULL, 'San Miguel Acatán', 8, 'San Miguel Acatán'),
+(NULL, 'San Pedro Nécta', 8, 'San Pedro Nécta'),
+(NULL, 'San Pedro Soloma', 8, 'San Pedro Soloma'),
+(NULL, 'San Rafael La Independencia', 8, 'San Rafael La Independencia'),
+(NULL, 'San Rafael Pétzal', 8, 'San Rafael Pétzal'),
+(NULL, 'San Sebastián Coatán', 8, 'San Sebastián Coatán'),
+(NULL, 'San Sebastián Huehuetenango', 8, 'San Sebastián Huehuetenango'),
+(NULL, 'Santa Ana Huista', 8, 'Santa Ana Huista'),
+(NULL, 'Santa Bárbara', 8, 'Santa Bárbara'),
+(NULL, 'Santa Cruz Barillas', 8, 'Santa Cruz Barillas'),
+(NULL, 'Santa Eulalia', 8, 'Santa Eulalia'),
+(NULL, 'Santiago Chimaltenango', 8, 'Santiago Chimaltenango'),
+(NULL, 'Tectitán', 8, 'Tectitán'),
+(NULL, 'Todos Santos Cuchumatán', 8, 'Todos Santos Cuchumatán'),
+(NULL, 'Unión Cantinil', 8, 'Unión Cantinil'),
 
 -- Izabal
-INSERT INTO geo_municipios VALUES(NULL, 'El Estor', 9);
-INSERT INTO geo_municipios VALUES(NULL, 'Livingston', 9);
-INSERT INTO geo_municipios VALUES(NULL, 'Los Amates', 9);
-INSERT INTO geo_municipios VALUES(NULL, 'Morales', 9);
-INSERT INTO geo_municipios VALUES(NULL, 'Puerto Barrios', 9);
+(NULL, 'El Estor', 9, 'El Estor'),
+(NULL, 'Livingston', 9, 'Livingston'),
+(NULL, 'Los Amates', 9, 'Los Amates'),
+(NULL, 'Morales', 9, 'Morales'),
+(NULL, 'Puerto Barrios', 9, 'Puerto Barrios'),
 
 -- Jalapa
-INSERT INTO geo_municipios VALUES(NULL, 'Jalapa', 10);
-INSERT INTO geo_municipios VALUES(NULL, 'Mataquescuintla', 10);
-INSERT INTO geo_municipios VALUES(NULL, 'Monjas', 10);
-INSERT INTO geo_municipios VALUES(NULL, 'San Carlos Alzatate', 10);
-INSERT INTO geo_municipios VALUES(NULL, 'San Luis Jilotepeque', 10);
-INSERT INTO geo_municipios VALUES(NULL, 'San Manuel Chaparrón', 10);
-INSERT INTO geo_municipios VALUES(NULL, 'San Pedro Pinula', 10);
+(NULL, 'Jalapa', 10, 'Jalapa'),
+(NULL, 'Mataquescuintla', 10, 'Mataquescuintla'),
+(NULL, 'Monjas', 10, 'Monjas'),
+(NULL, 'San Carlos Alzatate', 10, 'San Carlos Alzatate'),
+(NULL, 'San Luis Jilotepeque', 10, 'San Luis Jilotepeque'),
+(NULL, 'San Manuel Chaparrón', 10, 'San Manuel Chaparrón'),
+(NULL, 'San Pedro Pinula', 10, 'San Pedro Pinula'),
 
 -- Jutiapa
-INSERT INTO geo_municipios VALUES(NULL, 'Agua Blanca', 11);
-INSERT INTO geo_municipios VALUES(NULL, 'Asunción Mita', 11);
-INSERT INTO geo_municipios VALUES(NULL, 'Atescatempa', 11);
-INSERT INTO geo_municipios VALUES(NULL, 'Comapa', 11);
-INSERT INTO geo_municipios VALUES(NULL, 'Conguaco', 11);
-INSERT INTO geo_municipios VALUES(NULL, 'El Adelanto', 11);
-INSERT INTO geo_municipios VALUES(NULL, 'El Progreso', 11);
-INSERT INTO geo_municipios VALUES(NULL, 'Jalpatagua', 11);
-INSERT INTO geo_municipios VALUES(NULL, 'Jerez', 11);
-INSERT INTO geo_municipios VALUES(NULL, 'Jutiapa', 11);
-INSERT INTO geo_municipios VALUES(NULL, 'Moyuta', 11);
-INSERT INTO geo_municipios VALUES(NULL, 'Pasaco', 11);
-INSERT INTO geo_municipios VALUES(NULL, 'Quesada', 11);
-INSERT INTO geo_municipios VALUES(NULL, 'San José Acatempa', 11);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Catarina Mita', 11);
-INSERT INTO geo_municipios VALUES(NULL, 'Yupiltepeque', 11);
-INSERT INTO geo_municipios VALUES(NULL, 'Zapotitlán', 11);
+(NULL, 'Agua Blanca', 11, 'Agua Blanca'),
+(NULL, 'Asunción Mita', 11, 'Asunción Mita'),
+(NULL, 'Atescatempa', 11, 'Atescatempa'),
+(NULL, 'Comapa', 11, 'Comapa'),
+(NULL, 'Conguaco', 11, 'Conguaco'),
+(NULL, 'El Adelanto', 11, 'El Adelanto'),
+(NULL, 'El Progreso', 11, 'El Progreso'),
+(NULL, 'Jalpatagua', 11, 'Jalpatagua'),
+(NULL, 'Jerez', 11, 'Jerez'),
+(NULL, 'Jutiapa', 11, 'Jutiapa'),
+(NULL, 'Moyuta', 11, 'Moyuta'),
+(NULL, 'Pasaco', 11, 'Pasaco'),
+(NULL, 'Quesada', 11, 'Quesada'),
+(NULL, 'San José Acatempa', 11, 'San José Acatempa'),
+(NULL, 'Santa Catarina Mita', 11, 'Santa Catarina Mita'),
+(NULL, 'Yupiltepeque', 11, 'Yupiltepeque'),
+(NULL, 'Zapotitlán', 11, 'Zapotitlán'),
 
 -- Petén
-INSERT INTO geo_municipios VALUES(NULL, 'Dolores', 12);
-INSERT INTO geo_municipios VALUES(NULL, 'El Chal', 12);
-INSERT INTO geo_municipios VALUES(NULL, 'Ciudad Flores', 12);
-INSERT INTO geo_municipios VALUES(NULL, 'La Libertad', 12);
-INSERT INTO geo_municipios VALUES(NULL, 'Las Cruces', 12);
-INSERT INTO geo_municipios VALUES(NULL, 'Melchor de Mencos', 12);
-INSERT INTO geo_municipios VALUES(NULL, 'Poptún', 12);
-INSERT INTO geo_municipios VALUES(NULL, 'San Andrés', 12);
-INSERT INTO geo_municipios VALUES(NULL, 'San Benito', 12);
-INSERT INTO geo_municipios VALUES(NULL, 'San Francisco', 12);
-INSERT INTO geo_municipios VALUES(NULL, 'San José', 12);
-INSERT INTO geo_municipios VALUES(NULL, 'San Luis', 12);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Ana', 12);
-INSERT INTO geo_municipios VALUES(NULL, 'Sayaxché', 12);
+(NULL, 'Dolores', 12, 'Dolores'),
+(NULL, 'El Chal', 12, 'El Chal'),
+(NULL, 'Ciudad Flores', 12, 'Ciudad Flores'),
+(NULL, 'La Libertad', 12, 'La Libertad'),
+(NULL, 'Las Cruces', 12, 'Las Cruces'),
+(NULL, 'Melchor de Mencos', 12, 'Melchor de Mencos'),
+(NULL, 'Poptún', 12, 'Poptún'),
+(NULL, 'San Andrés', 12, 'San Andrés'),
+(NULL, 'San Benito', 12, 'San Benito'),
+(NULL, 'San Francisco', 12, 'San Francisco'),
+(NULL, 'San José', 12, 'San José'),
+(NULL, 'San Luis', 12, 'San Luis'),
+(NULL, 'Santa Ana', 12, 'Santa Ana'),
+(NULL, 'Sayaxché', 12, 'Sayaxché'),
 
 -- Quetzaltenango
-INSERT INTO geo_municipios VALUES(NULL, 'Almolonga', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'Cabricán', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'Cajolá', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'Cantel', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'Coatepeque', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'Colomba Costa Cuca', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'Concepción Chiquirichapa', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'El Palmar', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'Flores Costa Cuca', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'Génova', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'Huitán', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'La Esperanza', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'Olintepeque', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'Palestina de Los Altos', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'Quetzaltenango', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'Salcajá', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'San Carlos Sija', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'San Francisco La Unión', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'San Juan Ostuncalco', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'San Martín Sacatepéquez', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'San Mateo', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'San Miguel Sigüilá', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'Sibilia', 13);
-INSERT INTO geo_municipios VALUES(NULL, 'Zunil', 13);
+(NULL, 'Almolonga', 13, 'Almolonga'),
+(NULL, 'Cabricán', 13, 'Cabricán'),
+(NULL, 'Cajolá', 13, 'Cajol'),
+(NULL, 'Cantel', 13, 'Cantel'),
+(NULL, 'Coatepeque', 13, 'Coatepeque'),
+(NULL, 'Colomba Costa Cuca', 13, 'Colomba Costa Cuca'),
+(NULL, 'Concepción Chiquirichapa', 13, 'Concepción Chiquirichapa'),
+(NULL, 'El Palmar', 13, 'El Palmar'),
+(NULL, 'Flores Costa Cuca', 13, 'Flores Costa Cuca'),
+(NULL, 'Génova', 13, 'Génova'),
+(NULL, 'Huitán', 13, 'Huitán'),
+(NULL, 'La Esperanza', 13, 'La Esperanza'),
+(NULL, 'Olintepeque', 13, 'Olintepeque'),
+(NULL, 'Palestina de Los Altos', 13, 'Palestina de Los Altos'),
+(NULL, 'Quetzaltenango', 13, 'Quetzaltenango'),
+(NULL, 'Salcajá', 13, 'Salcajá'),
+(NULL, 'San Carlos Sija', 13, 'San Carlos Sija'),
+(NULL, 'San Francisco La Unión', 13, 'San Francisco La Unión'),
+(NULL, 'San Juan Ostuncalco', 13, 'San Juan Ostuncalco'),
+(NULL, 'San Martín Sacatepéquez', 13, 'San Martín Sacatepéquez'),
+(NULL, 'San Mateo', 13, 'San Mateo'),
+(NULL, 'San Miguel Sigüilá', 13, 'San Miguel Sigüilá'),
+(NULL, 'Sibilia', 13, 'Sibilia'),
+(NULL, 'Zunil', 13, 'Zunil'),
 
 -- Quiché
-INSERT INTO geo_municipios VALUES(NULL, 'Canillá', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'Chajul', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'Chicamán', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'Chiché', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'Chichicastenango', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'Chinique', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'Cunén', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'Ixcan Playa Grande', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'Joyabaj', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'Nebaj', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'Pachalum', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'Patzité', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'Sacapulas', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'San Andrés Sajcabajá', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'San Antonio Ilotenango', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'San Bartolomé Jocotenango', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'San Juan Cotzal', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'San Pedro Jocopilas', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Cruz del Quiché', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'Uspantán', 14);
-INSERT INTO geo_municipios VALUES(NULL, 'Zacualpa', 14);
+(NULL, 'Canillá', 14, 'Canillá'),
+(NULL, 'Chajul', 14, 'Chajul'),
+(NULL, 'Chicamán', 14, 'Chicamán'),
+(NULL, 'Chiché', 14, 'Chiché'),
+(NULL, 'Chichicastenango', 14, 'Chichicastenango'),
+(NULL, 'Chinique', 14, 'Chinique'),
+(NULL, 'Cunén', 14, 'Cunén'),
+(NULL, 'Ixcán Playa Grande', 14, 'Ixcán Playa Grande'),
+(NULL, 'Joyabaj', 14, 'Joyabaj'),
+(NULL, 'Nebaj', 14, 'Nebaj'),
+(NULL, 'Pachalum', 14, 'Pachalum'),
+(NULL, 'Patzité', 14, 'Patzité'),
+(NULL, 'Sacapulas', 14, 'Sacapulas'),
+(NULL, 'San Andrés Sajcabajá', 14, 'San Andrés Sajcabajá'),
+(NULL, 'San Antonio Ilotenango', 14, 'San Antonio Ilotenango'),
+(NULL, 'San Bartolomé Jocotenango', 14, 'San Bartolomé Jocotenango'),
+(NULL, 'San Juan Cotzal', 14, 'San Juan Cotzal'),
+(NULL, 'San Pedro Jocopilas', 14, 'San Pedro Jocopilas'),
+(NULL, 'Santa Cruz del Quiché', 14, 'Santa Cruz del Quiché'),
+(NULL, 'Uspantán', 14, 'Uspantán'),
+(NULL, 'Zacualpa', 14, 'Zacualpa'),
 
 -- Retalhuleu
-INSERT INTO geo_municipios VALUES(NULL, 'Champerico', 15);
-INSERT INTO geo_municipios VALUES(NULL, 'El Asintal', 15);
-INSERT INTO geo_municipios VALUES(NULL, 'Nuevo San Carlos', 15);
-INSERT INTO geo_municipios VALUES(NULL, 'Retalhuleu', 15);
-INSERT INTO geo_municipios VALUES(NULL, 'San Andrés Villa Seca', 15);
-INSERT INTO geo_municipios VALUES(NULL, 'San Felipe Reu', 15);
-INSERT INTO geo_municipios VALUES(NULL, 'San Martín Zapotitlán', 15);
-INSERT INTO geo_municipios VALUES(NULL, 'San Sebastián', 15);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Cruz Muluá', 15);
+(NULL, 'Champerico', 15, 'Champerico'),
+(NULL, 'El Asintal', 15, 'El Asintal'),
+(NULL, 'Nuevo San Carlos', 15, 'Nuevo San Carlos'),
+(NULL, 'Retalhuleu', 15, 'Retalhuleu'),
+(NULL, 'San Andrés Villa Seca', 15, 'San Andrés Villa Seca'),
+(NULL, 'San Felipe Reu', 15, 'San Felipe Reu'),
+(NULL, 'San Martín Zapotitlán', 15, 'San Martín Zapotitlán'),
+(NULL, 'San Sebastián', 15, 'San Sebastián'),
+(NULL, 'Santa Cruz Muluá', 15, 'Santa Cruz Muluá'),
 
 -- Sacatepéquez
-INSERT INTO geo_municipios VALUES(NULL, 'Alotenango', 16);
-INSERT INTO geo_municipios VALUES(NULL, 'Ciudad Vieja', 16);
-INSERT INTO geo_municipios VALUES(NULL, 'Jocotenango', 16);
-INSERT INTO geo_municipios VALUES(NULL, 'Antigua Guatemala', 16);
-INSERT INTO geo_municipios VALUES(NULL, 'Magdalena Milpas Altas', 16);
-INSERT INTO geo_municipios VALUES(NULL, 'Pastores', 16);
-INSERT INTO geo_municipios VALUES(NULL, 'San Antonio Aguas Calientes', 16);
-INSERT INTO geo_municipios VALUES(NULL, 'San Bartolomé Milpas Altas', 16);
-INSERT INTO geo_municipios VALUES(NULL, 'San Lucas Sacatepéquez', 16);
-INSERT INTO geo_municipios VALUES(NULL, 'San Miguel Dueñas', 16);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Catarina Barahona', 16);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Lucía Milpas Altas', 16);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa María de Jesús', 16);
-INSERT INTO geo_municipios VALUES(NULL, 'Santiago Sacatepéquez', 16);
-INSERT INTO geo_municipios VALUES(NULL, 'Santo Domingo Xenacoj', 16);
-INSERT INTO geo_municipios VALUES(NULL, 'Sumpango', 16);
+(NULL, 'Alotenango', 16, 'Alotenango'),
+(NULL, 'Ciudad Vieja', 16, 'Ciudad Vieja'),
+(NULL, 'Jocotenango', 16, 'Jocotenango'),
+(NULL, 'Antigua Guatemala', 16, 'Antigua Guatemala'),
+(NULL, 'Magdalena Milpas Altas', 16, 'Magdalena Milpas Altas'),
+(NULL, 'Pastores', 16, 'Pastores'),
+(NULL, 'San Antonio Aguas Calientes', 16, 'San Antonio Aguas Calientes'),
+(NULL, 'San Bartolomé Milpas Altas', 16, 'San Bartolomé Milpas Altas'),
+(NULL, 'San Lucas Sacatepéquez', 16, 'San Lucas Sacatepéquez'),
+(NULL, 'San Miguel Dueñas', 16, 'San Miguel Dueñas'),
+(NULL, 'Santa Catarina Barahona', 16, 'Santa Catarina Barahona'),
+(NULL, 'Santa Lucía Milpas Altas', 16, 'Santa Lucía Milpas Altas'),
+(NULL, 'Santa María de Jesús', 16, 'Santa María de Jesús'),
+(NULL, 'Santiago Sacatepéquez', 16, 'Santiago Sacatepéquez'),
+(NULL, 'Santo Domingo Xenacoj', 16, 'Santo Domingo Xenacoj'),
+(NULL, 'Sumpango', 16, 'Sumpango'),
 
 -- San Marcos
-INSERT INTO geo_municipios VALUES(NULL, 'Ayutla', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'Catarina', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'Comitancillo', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'Concepción Tutuapa', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'El Quetzal', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'El Tumbador', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'Esquipulas Palo Gordo', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'Ixchiguán', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'La Blanca', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'La Reforma', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'Malacatán', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'Nuevo Progreso', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'Ocós', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'Pajapita', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'Río Blanco', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'San Antonio Sacatepéquez', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'San Cristóbal Cucho', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'San José El Rodeo', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'San José Ojetenam', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'San Lorenzo', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'San Marcos', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'San Miguel Ixtahuacán', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'San Pablo', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'San Pedro Sacatepéquez', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'San Rafael Pie de la Cuesta', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'Sibinal', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'Sipacapa', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'Tacaná', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'Tajumulco', 17);
-INSERT INTO geo_municipios VALUES(NULL, 'Tejutla', 17);
+(NULL, 'Ayutla', 17, 'Ayutla'),
+(NULL, 'Catarina', 17, 'Catarina'),
+(NULL, 'Comitancillo', 17, 'Comitancillo'),
+(NULL, 'Concepción Tutuapa', 17, 'Concepción Tutuapa'),
+(NULL, 'El Quetzal', 17, 'El Quetzal'),
+(NULL, 'El Tumbador', 17, 'El Tumbador'),
+(NULL, 'Esquipulas Palo Gordo', 17, 'Esquipulas Palo Gordo'),
+(NULL, 'Ixchiguán', 17, 'Ixchiguán'),
+(NULL, 'La Blanca', 17, 'La Blanca'),
+(NULL, 'La Reforma', 17, 'La Reforma'),
+(NULL, 'Malacatán', 17, 'Malacatán'),
+(NULL, 'Nuevo Progreso', 17, 'Nuevo Progreso'),
+(NULL, 'Ocós', 17, 'Ocós'),
+(NULL, 'Pajapita', 17, 'Pajapita'),
+(NULL, 'Río Blanco', 17, 'Río Blanco'),
+(NULL, 'San Antonio Sacatepéquez', 17, 'San Antonio Sacatepéquez'),
+(NULL, 'San Cristóbal Cucho', 17, 'San Cristóbal Cucho'),
+(NULL, 'San José El Rodeo', 17, 'San José El Rodeo'),
+(NULL, 'San José Ojetenam', 17, 'San José Ojetenam'),
+(NULL, 'San Lorenzo', 17, 'San Lorenzo'),
+(NULL, 'San Marcos', 17, 'San Marcos'),
+(NULL, 'San Miguel Ixtahuacán', 17, 'San Miguel Ixtahuacán'),
+(NULL, 'San Pablo', 17, 'San Pablo'),
+(NULL, 'San Pedro Sacatepéquez', 17, 'San Pedro Sacatepéquez'),
+(NULL, 'San Rafael Pie de la Cuesta', 17, 'San Rafael Pie de la Cuesta'),
+(NULL, 'Sibinal', 17, 'Sibinal'),
+(NULL, 'Sipacapa', 17, 'Sipacapa'),
+(NULL, 'Tacaná', 17, 'Tacaná'),
+(NULL, 'Tajumulco', 17, 'Tajumulco'),
+(NULL, 'Tejutla', 17, 'Tejutla'),
 
 -- Santa Rosa
-INSERT INTO geo_municipios VALUES(NULL, 'Barberena', 18);
-INSERT INTO geo_municipios VALUES(NULL, 'Casillas', 18);
-INSERT INTO geo_municipios VALUES(NULL, 'Chiquimulilla', 18);
-INSERT INTO geo_municipios VALUES(NULL, 'Cuilapa', 18);
-INSERT INTO geo_municipios VALUES(NULL, 'Guazacapán', 18);
-INSERT INTO geo_municipios VALUES(NULL, 'Nueva Santa Rosa', 18);
-INSERT INTO geo_municipios VALUES(NULL, 'Oratorio', 18);
-INSERT INTO geo_municipios VALUES(NULL, 'Pueblo Nuevo Viñas', 18);
-INSERT INTO geo_municipios VALUES(NULL, 'San Juan Tecuaco', 18);
-INSERT INTO geo_municipios VALUES(NULL, 'San Rafael las Flores', 18);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Cruz Naranjo', 18);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa María Ixhuatán', 18);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Rosa de Lima', 18);
-INSERT INTO geo_municipios VALUES(NULL, 'Taxisco', 18);
+(NULL, 'Barberena', 18, 'Barberena'),
+(NULL, 'Casillas', 18, 'Casillas'),
+(NULL, 'Chiquimulilla', 18, 'Chiquimulilla'),
+(NULL, 'Cuilapa', 18, 'Cuilapa'),
+(NULL, 'Guazacapán', 18, 'Guazacapán'),
+(NULL, 'Nueva Santa Rosa', 18, 'Nueva Santa Rosa'),
+(NULL, 'Oratorio', 18, 'Oratorio'),
+(NULL, 'Pueblo Nuevo Viñas', 18, 'Pueblo Nuevo Viñas'),
+(NULL, 'San Juan Tecuaco', 18, 'San Juan Tecuaco'),
+(NULL, 'San Rafael las Flores', 18, 'San Rafael las Flores'),
+(NULL, 'Santa Cruz Naranjo', 18, 'Santa Cruz Naranjo'),
+(NULL, 'Santa María Ixhuatán', 18, 'Santa María Ixhuatán'),
+(NULL, 'Santa Rosa de Lima', 18, 'Santa Rosa de Lima'),
+(NULL, 'Taxisco', 18, 'Taxisco'),
 
 -- Sololá
-INSERT INTO geo_municipios VALUES(NULL, 'Concepción', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'Nahualá', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'Panajachel', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'San Andrés Semetabaj', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'San Antonio Palopó', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'San José Chacayá', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'San Juan La Laguna', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'San Lucas Tolimán', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'San Marcos La Laguna', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'San Pablo La Laguna', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'San Pedro La Laguna', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Catarina Ixtahuacán', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Catarina Palopó', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Clara La Laguna', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Cruz La Laguna', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Lucía Utatlán', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa María Visitación', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'Santiago Atitlán', 19);
-INSERT INTO geo_municipios VALUES(NULL, 'Sololá', 19);
+(NULL, 'Concepción', 19, 'Concepción'),
+(NULL, 'Nahualá', 19, 'Nahualá'),
+(NULL, 'Panajachel', 19, 'Panajachel'),
+(NULL, 'San Andrés Semetabaj', 19, 'San Andrés Semetabaj'),
+(NULL, 'San Antonio Palopó', 19, 'San Antonio Palopó'),
+(NULL, 'San José Chacayá', 19, 'San José Chacayá'),
+(NULL, 'San Juan La Laguna', 19, 'San Juan La Laguna'),
+(NULL, 'San Lucas Tolimán', 19, 'San Lucas Tolimán'),
+(NULL, 'San Marcos La Laguna', 19, 'San Marcos La Laguna'),
+(NULL, 'San Pablo La Laguna', 19, 'San Pablo La Laguna'),
+(NULL, 'San Pedro La Laguna', 19, 'San Pedro La Laguna'),
+(NULL, 'Santa Catarina Ixtahuacán', 19, 'Santa Catarina Ixtahuacán'),
+(NULL, 'Santa Catarina Palopó', 19, 'Santa Catarina Palopó'),
+(NULL, 'Santa Clara La Laguna', 19, 'Santa Clara La Laguna'),
+(NULL, 'Santa Cruz La Laguna', 19, 'Santa Cruz La Laguna'),
+(NULL, 'Santa Lucía Utatlán', 19, 'Santa Lucía Utatlán'),
+(NULL, 'Santa María Visitación', 19, 'Santa María Visitación'),
+(NULL, 'Santiago Atitlán', 19, 'SANTIAGO ATITL AN'),
+(NULL, 'Sololá', 19, 'Sololá'),
 
 -- Suchitepéquez
-INSERT INTO geo_municipios VALUES(NULL, 'Chicacao', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'Cuyotenango', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'Mazatenango', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'Patulul', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'Pueblo Nuevo', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'Río Bravo', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'Samayac', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'San Antonio Suchitepéquez', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'San Bernardino', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'San Francisco Zapotitlán', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'San Gabriel', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'San José El Idolo', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'San José La Maquina', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'San Juan Bautista', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'San Lorenzo', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'San Miguel Panán', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'San Pablo Jocopilas', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Bárbara', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'Santo Domingo Suchitepéquez', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'Santo Tomás La Unión', 20);
-INSERT INTO geo_municipios VALUES(NULL, 'Zunilito', 20);
+(NULL, 'Chicacao', 20, 'Chicacao'),
+(NULL, 'Cuyotenango', 20, 'Cuyotenango'),
+(NULL, 'Mazatenango', 20, 'Mazatenango'),
+(NULL, 'Patulul', 20, 'Patulul'),
+(NULL, 'Pueblo Nuevo', 20, 'Pueblo Nuevo'),
+(NULL, 'Río Bravo', 20, 'Río Bravo'),
+(NULL, 'Samayac', 20, 'Samayac'),
+(NULL, 'San Antonio Suchitepéquez', 20, 'San Antonio Suchitepéquez'),
+(NULL, 'San Bernardino', 20, 'San Bernardino'),
+(NULL, 'San Francisco Zapotitlán', 20, 'San Francisco Zapotitlán'),
+(NULL, 'San Gabriel', 20, 'San Gabriel'),
+(NULL, 'San José El Idolo', 20, 'San José El Idolo'),
+(NULL, 'San José La Maquina', 20, 'San José La Maquina'),
+(NULL, 'San Juan Bautista', 20, 'San Juan Bautista'),
+(NULL, 'San Lorenzo', 20, 'San Lorenzo'),
+(NULL, 'San Miguel Panán', 20, 'San Miguel Panán'),
+(NULL, 'San Pablo Jocopilas', 20, 'San Pablo Jocopilas'),
+(NULL, 'Santa Bárbara', 20, 'Santa Bárbara'),
+(NULL, 'Santo Domingo Suchitepéquez', 20, 'Santo Domingo Suchitepéquez'),
+(NULL, 'Santo Tomás La Unión', 20, 'Santo Tomás La Unión'),
+(NULL, 'Zunilito', 20, 'Zunilito'),
 
 -- Totonicapán
-INSERT INTO geo_municipios VALUES(NULL, 'Momostenango', 21);
-INSERT INTO geo_municipios VALUES(NULL, 'San Andrés Xecul', 21);
-INSERT INTO geo_municipios VALUES(NULL, 'San Bartolo', 21);
-INSERT INTO geo_municipios VALUES(NULL, 'San Cristóbal Totonicapán', 21);
-INSERT INTO geo_municipios VALUES(NULL, 'San Francisco El Alto', 21);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa Lucía La Reforma', 21);
-INSERT INTO geo_municipios VALUES(NULL, 'Santa María Chiquimula', 21);
-INSERT INTO geo_municipios VALUES(NULL, 'Totonicapán', 21);
+(NULL, 'Momostenango', 21, 'Momostenango'),
+(NULL, 'San Andrés Xecul', 21, 'San Andrés Xecul'),
+(NULL, 'San Bartolo', 21, 'San Bartolo'),
+(NULL, 'San Cristóbal Totonicapán', 21, 'San Cristóbal Totonicapán'),
+(NULL, 'San Francisco El Alto', 21, 'San Francisco El Alto'),
+(NULL, 'Santa Lucía La Reforma', 21, 'Santa Lucía La Reforma'),
+(NULL, 'Santa María Chiquimula', 21, 'Santa María Chiquimula'),
+(NULL, 'Totonicapán', 21, 'Totonicapán'),
 
 -- Zacapa
-INSERT INTO geo_municipios VALUES(NULL, 'Cabañas', 22);
-INSERT INTO geo_municipios VALUES(NULL, 'Estanzuela', 22);
-INSERT INTO geo_municipios VALUES(NULL, 'Gualán', 22);
-INSERT INTO geo_municipios VALUES(NULL, 'Huité', 22);
-INSERT INTO geo_municipios VALUES(NULL, 'La Unión', 22);
-INSERT INTO geo_municipios VALUES(NULL, 'Río Hondo', 22);
-INSERT INTO geo_municipios VALUES(NULL, 'San Diego', 22);
-INSERT INTO geo_municipios VALUES(NULL, 'San Jorge', 22);
-INSERT INTO geo_municipios VALUES(NULL, 'Teculután', 22);
-INSERT INTO geo_municipios VALUES(NULL, 'Usumatlán', 22);
-INSERT INTO geo_municipios VALUES(NULL, 'Zacapa', 22);
+(NULL, 'Cabañas', 22, 'Cabañas'),
+(NULL, 'Estanzuela', 22, 'Estanzuela'),
+(NULL, 'Gualán', 22, 'Gualán'),
+(NULL, 'Huité', 22, 'Huité'),
+(NULL, 'La Unión', 22, 'La Unión'),
+(NULL, 'Río Hondo', 22, 'Río Hondo'),
+(NULL, 'San Diego', 22, 'San Diego'),
+(NULL, 'San Jorge', 22, 'San Jorge'),
+(NULL, 'Teculután', 22, 'Teculután'),
+(NULL, 'Usumatlán', 22, 'Usumatlán'),
+(NULL, 'Zacapa', 22, 'Zacapa');
 

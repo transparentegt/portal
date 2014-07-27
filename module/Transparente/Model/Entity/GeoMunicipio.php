@@ -22,6 +22,11 @@ class GeoMunicipio extends AbstractDoctrineEntity
     protected $nombre;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    protected $nombre_guatecompras;
+
+    /**
      * @ORM\ManyToOne(targetEntity="GeoDepartamento", inversedBy="municipios")
      * @ORM\JoinColumn(name="id_geo_departamento", referencedColumnName="id")
      */

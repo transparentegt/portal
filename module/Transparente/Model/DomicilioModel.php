@@ -25,15 +25,14 @@ class DomicilioModel extends EntityRepository
         $dql = 'SELECT municipio
                 FROM Transparente\Model\Entity\GeoMunicipio municipio
                 JOIN municipio.departamento departamento
-                WHERE departamento.nombre = ?1 AND municipio.nombre = ?2 ';
+                WHERE departamento.nombre = ?1 AND municipio.nombre_guatecompras = ?2 ';
         $rs = $this->getEntityManager()->createQuery($dql)
             ->setParameter(1, $departamento)
             ->setParameter(2, $municipio)
             ->getResult();
-        $municipio = NULL;
         switch (count($rs)) {
             case 0:
-                throw new \Exception("No se encontró un municipio con los datos: departamento = '$departamento', municipio = '$municipio'\n");
+                throw new \Exception("No se encontró '$departamento', '$municipio' (datos originales: {$data['municipio']}, {$data['departamento']})\n");
                 break;
             case 1;
                 $municipio = $rs[0];

@@ -29,6 +29,7 @@ CREATE TABLE geo_municipios (
     , nombre               varchar(128) NOT NULL DEFAULT ''
     , id_geo_departamento  INT UNSIGNED NOT NULL
     , FOREIGN KEY (id_geo_departamento) REFERENCES geo_departamentos(id) ON DELETE CASCADE ON UPDATE CASCADE
+    , nombre_guatecompras  varchar(128) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /**
@@ -115,10 +116,10 @@ CREATE TABLE proveedor_nombres_comerciales (
 DROP TABLE IF EXISTS rep_legal;
 CREATE TABLE rep_legal (
     id                       int UNSIGNED  NOT NULL PRIMARY KEY -- no es autoincrement para usaar el mismo ID que en GTC
-    , nombre1                varchar(128)  NOT NULL DEFAULT ''
-    , nombre2                varchar(128)  NOT NULL DEFAULT ''
-    , apellido1              varchar(128)  NOT NULL DEFAULT ''
-    , apellido2              varchar(128)  NOT NULL DEFAULT ''
+    , nombre1                varchar(128)           DEFAULT NULL
+    , nombre2                varchar(128)           DEFAULT NULL
+    , apellido1              varchar(128)           DEFAULT NULL
+    , apellido2              varchar(128)           DEFAULT NULL
     , nit                    varchar(16)   NOT NULL DEFAULT ''
     , status                 bool          NOT NULL DEFAULT false -- GTC: HABILITADO / INHABILITADO
     , actualizado_sat        datetime               DEFAULT NULL
