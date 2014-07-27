@@ -7,6 +7,16 @@
  */
 
 /* @var $this Zend\View\Renderer\PhpRenderer */
+$pager = $this->paginationControl(
+        // the paginator object
+        $this->paginator,
+        // the scrolling style
+        'sliding',
+        // the partial to use to render the control
+        'partial/paginator.phtml',
+        // the route to link to when a user clicks a control link
+        ['route' => 'transparente/default', 'routeParams' => ['controller' => 'representante-legal']]
+);
 ?>
 <h1>Representantes legales</h1>
 <p>
@@ -21,7 +31,7 @@
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($this->vars('entidades') as $entidad) : /* @var $entity Transparente\Model\Entity\RepresentanteLegal */?>
+        <?php foreach ($this->paginator as $entidad) : /* @var $entity Transparente\Model\Entity\RepresentanteLegal */?>
         <tr>
             <td>
                 <a href="<?=$this->basepath()?>/transparente/representante-legal/detalles/<?=$entidad->getId()?>">
@@ -43,5 +53,5 @@
         </tr>
         <?php endforeach ?>
     </tbody>
-
 </table>
+<?=$pager?>

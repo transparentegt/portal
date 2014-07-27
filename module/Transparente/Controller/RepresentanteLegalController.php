@@ -1,9 +1,11 @@
 <?php
 namespace Transparente\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use DoctrineModule\Paginator\Adapter\Collection as Adapter;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Paginator\Paginator;
 use Zend\View\Model\ViewModel;
-use Doctrine;
 
 class RepresentanteLegalController extends AbstractActionController
 {
@@ -17,7 +19,11 @@ class RepresentanteLegalController extends AbstractActionController
     {
         $modelo    = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');
         $entidades = $modelo->findAll();
-        return new ViewModel(compact('entidades'));
+        $paginator        = new Paginator(new Adapter(new ArrayCollection($entidades)));
+        if (!empty($_GET['page'])) {
+            $paginator->setCurrentPageNumber($_GET['page']);
+        }
+        return new ViewModel(compact('paginator'));
     }
 
     /**
@@ -35,14 +41,22 @@ class RepresentanteLegalController extends AbstractActionController
     {
         $modelo    = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');
         $entidades = $modelo->findByNombresComerciales();
-        return new ViewModel(compact('entidades'));
+        $paginator        = new Paginator(new Adapter(new ArrayCollection($entidades)));
+        if (!empty($_GET['page'])) {
+            $paginator->setCurrentPageNumber($_GET['page']);
+        }
+        return new ViewModel(compact('paginator'));
     }
 
     public function multiProveedorAction()
     {
         $modelo    = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');
         $entidades = $modelo->findByMultiProveedor();
-        return new ViewModel(compact('entidades'));
+        $paginator        = new Paginator(new Adapter(new ArrayCollection($entidades)));
+        if (!empty($_GET['page'])) {
+            $paginator->setCurrentPageNumber($_GET['page']);
+        }
+        return new ViewModel(compact('paginator'));
     }
 
     public function multiLevelAction()
