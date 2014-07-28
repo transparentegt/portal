@@ -15,7 +15,7 @@ $pager = $this->paginationControl(
         // the partial to use to render the control
         'partial/paginator.phtml',
         // the route to link to when a user clicks a control link
-        ['route' => 'transparente/default', 'routeParams' => ['controller' => 'proveedores']]
+        ['route' => 'transparente/default', 'routeParams' => ['controller' => 'proveedores', 'action' => 'no-fiscal']]
 );
 ?>
 <h1>Proveedores sin domicilio fiscal</h1>
