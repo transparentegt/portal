@@ -163,9 +163,21 @@ class Proveedor extends AbstractDoctrineEntity
         return $this->nombres_comerciales;
     }
 
+    /**
+     * Retorna todos los representantes legales del proveedor
+     *
+     * @return RepresentanteLegal[]
+     */
     public function getRepresentantesLegales()
     {
-        return $this->representantes_legales;
+        $desordenados = $this->representantes_legales;
+        $ordenados    = [];
+        foreach ($desordenados as $entidad) {
+            if (in_array($entidad->getNombre(), $ordenados)) throw new \Exception('Nombre duplocado');
+            $ordenados[$entidad->getNombre()] = $entidad;
+        }
+        ksort($ordenados);
+        return $ordenados;
     }
 
     /**
