@@ -32,6 +32,12 @@ class GeoMunicipio extends AbstractDoctrineEntity
      */
     protected $departamento;
 
+    /**
+     * @ORM\OneToMany(targetEntity="EmpleadoMunicipal", mappedBy="municipio")
+     */
+    private $empleados_municipales;
+
+
     public function getId()
     {
         return $this->id;

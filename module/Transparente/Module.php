@@ -55,6 +55,13 @@ class Module
                     return $model;
                 },
 
+                // PartidoPoliticoModel
+                'Transparente\Model\PartidoPoliticoModel' => function (ServiceManager $sm) {
+                    $em    = $sm->get('Doctrine\ORM\EntityManager');
+                    $model = $em->getRepository('Transparente\Model\Entity\PartidoPolitico');
+                    return $model;
+                },
+
                 // ProveedorModel
                 'Transparente\Model\ProveedorModel' => function (ServiceManager $sm) {
                     $em    = $sm->get('Doctrine\ORM\EntityManager');

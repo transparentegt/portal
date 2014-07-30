@@ -5,9 +5,47 @@ use Doctrine\ORM\EntityRepository;
 
 class DomicilioModel extends EntityRepository
 {
-
-    private function detectarMunicipio($data)
+    private function nombresPropios($string)
     {
+        $nombre  = [];
+        $nombres = explode(' ', $string);
+        foreach($nombres as $string) {
+            $nombre[] = ucfirst(strtolower($string));
+        }
+        $nombre = implode(' ', $nombre);
+        return $nombre;
+    }
+
+    public  function detectarMunicipio($departamento, $municipio, $municipioField = 'nombre_guatecompras')
+    {
+        $original = [
+            'departamento' => $departamento,
+            'municipio'    => $municipio,
+        ];
+
+        $departamento = $this->nombresPropios($departamento);
+        $municipio    = $this->nombresPropios($municipio);
+
+        $dql = "SELECT municipio
+                FROM Transparente\Model\Entity\GeoMunicipio municipio
+                JOIN municipio.departamento departamento
+                WHERE departamento.nombre = ?1 AND municipio.$municipioField = ?2 ";
+        $rs = $this->getEntityManager()->createQuery($dql)
+            ->setParameter(1, $departamento)
+            ->setParameter(2, $municipio)
+            ->getResult();
+        switch (count($rs)) {
+            case 0:
+                throw new \Exception("No se encontró '$municipio', '$departamento' (datos originales: {$original['municipio']}, {$original['departamento']})\nDQL: $dql");
+                break;
+            case 1;
+            $municipio = $rs[0];
+            break;
+            default:
+                echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump(\Doctrine\Common\Util\Debug::dump($rs)); die();
+                throw new \Exception("Se se encontró más de un municipio con los datos: departamento = '$departamento', municipio = '$municipio'\n");
+        }
+        return $municipio;
     }
 
     public function createFromScrappedData($data)
@@ -15,32 +53,8 @@ class DomicilioModel extends EntityRepository
         if (empty($data['departamento']) || empty($data['municipio'])) {
             return null;
         }
-        $departamento = $data['departamento'];
-        $departamento = strtolower($departamento);
-        $departamento = ucfirst($departamento);
-        $municipio    = $data['municipio'];
-        $municipio    = strtolower($municipio);
-        $municipio    = ucfirst($municipio);
+        $municipio = $this->detectarMunicipio($data['departamento'], $data['municipio']);
 
-        $dql = 'SELECT municipio
-                FROM Transparente\Model\Entity\GeoMunicipio municipio
-                JOIN municipio.departamento departamento
-                WHERE departamento.nombre = ?1 AND municipio.nombre_guatecompras = ?2 ';
-        $rs = $this->getEntityManager()->createQuery($dql)
-            ->setParameter(1, $departamento)
-            ->setParameter(2, $municipio)
-            ->getResult();
-        switch (count($rs)) {
-            case 0:
-                throw new \Exception("No se encontró '$departamento', '$municipio' (datos originales: {$data['municipio']}, {$data['departamento']})\n");
-                break;
-            case 1;
-                $municipio = $rs[0];
-                break;
-            default:
-                echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump(\Doctrine\Common\Util\Debug::dump($rs)); die();
-                throw new \Exception("Se se encontró más de un municipio con los datos: departamento = '$departamento', municipio = '$municipio'\n");
-        }
         $domicilio = new \Transparente\Model\Entity\Domicilio();
         $domicilio->exchangeArray($data);
         $domicilio->setMunicipio($municipio);
