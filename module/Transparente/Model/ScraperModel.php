@@ -155,4 +155,22 @@ class ScraperModel
         $dom = new \Zend\Dom\Query($content);
         return $dom;
     }
+
+    /**
+     * Retorna el texto en modo nombre propio
+     *
+     * @param string $string
+     * @return string
+     */
+    public static function nombresPropios($string)
+    {
+        $nombre  = [];
+        $nombres = explode(' ', $string);
+        foreach($nombres as $string) {
+            $nombre[] = ucfirst(strtolower($string));
+        }
+        $nombre = implode(' ', $nombre);
+        return $nombre;
+    }
+
 }

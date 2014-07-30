@@ -3,6 +3,7 @@ namespace Transparente\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Transparente\Model\Entity\AbstractDoctrineEntity;
+use Transparente\Model\ScraperModel;
 
 /**
  * Empleado municipal, miembro del consejo municipal
@@ -66,17 +67,41 @@ class EmpleadoMunicipal extends AbstractDoctrineEntity
      */
     protected $partido_político;
 
-
     public function getId()
     {
         return $this->id;
     }
 
 
+    public function setApellido1($apellido1)
+    {
+        $this->apellido1 = ScraperModel::nombresPropios($apellido1);
+    }
+
+    public function setApellido2($apellido2)
+    {
+        $this->apellido2 = ScraperModel::nombresPropios($apellido2);
+    }
+
+    public function setApellido3($apellido3)
+    {
+        $this->apellido3 = ScraperModel::nombresPropios($apellido3);
+    }
+
     public function setMunicipio(GeoMunicipio $municipio)
     {
         $this->municipio = $municipio;
         return $this;
+    }
+
+    public function setNombre1($nombre1)
+    {
+        $this->nombre1 = ScraperModel::nombresPropios($nombre1);
+    }
+
+    public function setNombre2($nombre2)
+    {
+        $this->nombre2 = ScraperModel::nombresPropios($nombre2);
     }
 
     public function setPartidoPolitico(PartidoPolitico $partido_político)

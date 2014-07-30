@@ -5,17 +5,6 @@ use Doctrine\ORM\EntityRepository;
 
 class DomicilioModel extends EntityRepository
 {
-    private function nombresPropios($string)
-    {
-        $nombre  = [];
-        $nombres = explode(' ', $string);
-        foreach($nombres as $string) {
-            $nombre[] = ucfirst(strtolower($string));
-        }
-        $nombre = implode(' ', $nombre);
-        return $nombre;
-    }
-
     public  function detectarMunicipio($departamento, $municipio, $municipioField = 'nombre_guatecompras')
     {
         $original = [
@@ -23,8 +12,8 @@ class DomicilioModel extends EntityRepository
             'municipio'    => $municipio,
         ];
 
-        $departamento = $this->nombresPropios($departamento);
-        $municipio    = $this->nombresPropios($municipio);
+        $departamento = ScraperModel::nombresPropios($departamento);
+        $municipio    = ScraperModel::nombresPropios($municipio);
 
         $dql = "SELECT municipio
                 FROM Transparente\Model\Entity\GeoMunicipio municipio

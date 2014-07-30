@@ -22,18 +22,25 @@ abstract class AbstractDoctrineEntity
     }
 
     /**
-     * Requerimiento del ResultSet
+     * Aplica los valores del arreglo de datos a la entidad
+     *
+     * Requerimiento del ResultSet. Retorna los nuevos valores actuales de la entidad
      *
      * @param array $data
      *
-     * @todo usar setters en vez de mandar a llamar a la propiedad directamente
+     * @return array
      */
     public function exchangeArray($data)
     {
         $props = $this->asArray();
         foreach ($props as $key => $value) {
-            if (isset($data[$key]) && !is_array($data[$key])) {
-                $this->$key = $data[$key];
+            if (isset($data[$key])) {
+                $setter = 'set'.ucfirst($key);
+                if (method_exists($this, $setter)) {
+                    $this->$setter($data[$key]);
+                } elseif (!is_array($data[$key])) {
+                    $this->$key = $data[$key];
+                }
             }
         }
         return $this->asArray();
