@@ -3,6 +3,7 @@ namespace Transparente\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use \Transparente\Model\Entity\AbstractDoctrineEntity;
+use Transparente\Model\ScraperModel;
 
 /**
  * @ORM\Entity(repositoryClass="Transparente\Model\DomicilioModel")
@@ -55,7 +56,7 @@ class Domicilio extends AbstractDoctrineEntity
 
     public function setDireccion ($direccion)
     {
-        $this->direccion = $direccion;
+        $this->direccion = ScraperModel::nombresPropios($direccion);
         return $this;
     }
 

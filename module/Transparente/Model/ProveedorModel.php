@@ -8,21 +8,6 @@ class ProveedorModel extends EntityRepository
 {
     const PAGE_MAX = 78;
 
-    private function humanizarNombreDeEmpresa($nombre)
-    {
-        $nombre  = str_replace('SOCIEDAD ANONIMA', 'S.A.', $nombre);
-        $nombres = preg_split('/[\s,]+/', mb_strtolower($nombre, 'UTF-8'));
-        foreach ($nombres as $key => $nombre) {
-            if (preg_match('/\./', $nombre)) {
-                $nombres[$key] = strtoupper($nombre);
-            } else {
-                $nombres[$key] = ucfirst($nombre);
-            }
-        }
-        $nombre = implode(' ', $nombres);
-        return $nombre;
-    }
-
     public function findAll()
     {
         return $this->findBy($criteria = [], $orderBy = ['nombre' => 'ASC']);
@@ -95,7 +80,6 @@ class ProveedorModel extends EntityRepository
 
         // después de capturar los datos, hacemos un postproceso
 
-        $proveedor['nombre']               = $this->humanizarNombreDeEmpresa($proveedor['nombre']);
         $proveedor['status']               = ($proveedor['status'] == 'HABILITADO');
         $proveedor['tiene_acceso_sistema'] = ($proveedor['tiene_acceso_sistema'] == 'CON CONTRASEÑA');
         // descartar direcciones vacías
@@ -196,7 +180,7 @@ class ProveedorModel extends EntityRepository
         $nodos   = $página->queryXpath($xpath);
         $nombres = [];
         foreach ($nodos as $nodo) {
-            $nombre = $this->humanizarNombreDeEmpresa($nodo->nodeValue);
+            $nombre = $nodo->nodeValue;
             if (in_array($nombre, $nombres)) continue;
             $nombres[] = $nombre;
         }

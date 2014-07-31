@@ -148,8 +148,7 @@ class ScraperController extends AbstractActionController
         }
         ini_set('memory_limit', -1);
 
-
-        // $this->scrapProveedores();
+        $this->scrapProveedores();
         $this->scrapEmpleadosMunicipales();
     }
 

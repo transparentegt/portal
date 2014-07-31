@@ -8,21 +8,6 @@ class RepresentanteLegalModel extends EntityRepository
 {
     protected static $scraped = [];
 
-    private function humanizarNombreDeEmpresa($nombre)
-    {
-        $nombre  = str_replace('SOCIEDAD ANONIMA', 'S.A.', $nombre);
-        $nombres = preg_split('/[\s,]+/', mb_strtolower($nombre, 'UTF-8'));
-        foreach ($nombres as $key => $nombre) {
-            if (preg_match('/\./', $nombre)) {
-                $nombres[$key] = strtoupper($nombre);
-            } else {
-                $nombres[$key] = ucfirst($nombre);
-            }
-        }
-        $nombre = implode(' ', $nombres);
-        return $nombre;
-    }
-
     /**
      * Retorna todos los representantes legales
      *
@@ -118,6 +103,7 @@ class RepresentanteLegalModel extends EntityRepository
         $data['nombre2']   = $nombres[4];
         $data['apellido1'] = $nombres[0];
         $data['apellido2'] = $nombres[1];
+        $data['apellido3'] = $nombres[2];
         unset($data['nombre']);
     }
 
@@ -231,7 +217,7 @@ class RepresentanteLegalModel extends EntityRepository
         $nodos   = $página->queryXpath($xpath);
         $nombres = [];
         foreach ($nodos as $nodo) {
-            $nombre = $this->humanizarNombreDeEmpresa($nodo->nodeValue);
+            $nombre = $nodo->nodeValue;
             if (in_array($nombre, $nombres)) continue;
             $nombres[] = $nombre;
         }

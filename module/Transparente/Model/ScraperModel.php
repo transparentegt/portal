@@ -164,13 +164,8 @@ class ScraperModel
      */
     public static function nombresPropios($string)
     {
-        $nombre  = [];
-        $nombres = explode(' ', $string);
-        foreach($nombres as $string) {
-            $nombre[] = ucfirst(strtolower($string));
-        }
-        $nombre = implode(' ', $nombre);
-        return $nombre;
+        $string = mb_convert_case(trim($string), MB_CASE_TITLE, 'UTF-8');
+        return $string;
     }
 
 }

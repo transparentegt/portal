@@ -4,6 +4,7 @@ namespace Transparente\Model\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Transparente\Model\Entity\AbstractDoctrineEntity;
+use Transparente\Model\ScraperModel;
 
 /**
  * Entidad de proveedores
@@ -154,6 +155,8 @@ class Proveedor extends AbstractDoctrineEntity
 
     public function setNombre ($nombre)
     {
+        $nombre = ScraperModel::nombresPropios($nombre);
+        $nombre = str_replace('Sociedad Anonima', 'S.A.', $nombre);
         $this->nombre = $nombre;
         return $this;
     }

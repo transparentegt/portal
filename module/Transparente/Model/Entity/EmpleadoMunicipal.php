@@ -49,7 +49,6 @@ class EmpleadoMunicipal extends AbstractDoctrineEntity
      */
     protected $apellido3;
 
-
     /**
      * @ORM\Column(type="string")
      */
@@ -76,16 +75,19 @@ class EmpleadoMunicipal extends AbstractDoctrineEntity
     public function setApellido1($apellido1)
     {
         $this->apellido1 = ScraperModel::nombresPropios($apellido1);
+        return $this;
     }
 
     public function setApellido2($apellido2)
     {
         $this->apellido2 = ScraperModel::nombresPropios($apellido2);
+        return $this;
     }
 
     public function setApellido3($apellido3)
     {
         $this->apellido3 = ScraperModel::nombresPropios($apellido3);
+        return $this;
     }
 
     public function setMunicipio(GeoMunicipio $municipio)
@@ -97,11 +99,13 @@ class EmpleadoMunicipal extends AbstractDoctrineEntity
     public function setNombre1($nombre1)
     {
         $this->nombre1 = ScraperModel::nombresPropios($nombre1);
+        return $this;
     }
 
     public function setNombre2($nombre2)
     {
         $this->nombre2 = ScraperModel::nombresPropios($nombre2);
+        return $this;
     }
 
     public function setPartidoPolitico(PartidoPolitico $partido_político)

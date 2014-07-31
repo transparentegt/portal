@@ -120,6 +120,7 @@ CREATE TABLE rep_legal (
     , nombre2                varchar(128)           DEFAULT NULL
     , apellido1              varchar(128)           DEFAULT NULL
     , apellido2              varchar(128)           DEFAULT NULL
+    , apellido3              varchar(128)           DEFAULT NULL
     , nit                    varchar(16)   NOT NULL DEFAULT ''
     , status                 bool          NOT NULL DEFAULT false -- GTC: HABILITADO / INHABILITADO
     , actualizado_sat        datetime               DEFAULT NULL
