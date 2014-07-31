@@ -187,7 +187,7 @@ class RepresentanteLegal extends AbstractDoctrineEntity
      */
     public function getNombre()
     {
-        $apellidos = trim("{$this->apellido1} {$this->apellido2} {$this->apellido2}");
+        $apellidos = trim("{$this->apellido1} {$this->apellido2} {$this->apellido3}");
         $nombres   = trim("{$this->nombre1} {$this->nombre2}");
         return "$apellidos, $nombres";
     }

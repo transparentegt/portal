@@ -55,6 +55,13 @@ class Module
                     return $model;
                 },
 
+                // EmpleadoMunicipalModel
+                'Transparente\Model\EmpleadoMunicipalModel' => function (ServiceManager $sm) {
+                    $em    = $sm->get('Doctrine\ORM\EntityManager');
+                    $model = $em->getRepository('Transparente\Model\Entity\EmpleadoMunicipal');
+                    return $model;
+                },
+
                 // PartidoPoliticoModel
                 'Transparente\Model\PartidoPoliticoModel' => function (ServiceManager $sm) {
                     $em    = $sm->get('Doctrine\ORM\EntityManager');

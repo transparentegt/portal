@@ -19,7 +19,7 @@ $entidad = $this->vars('entity');
 
 <div class="row">
 
-    <div class="col-md-7">
+    <div class="col-md-6">
         <dl class="dl-horizontal">
             <dt>id<dt>
                 <dd><?=$entidad->getId()?></dd>
@@ -93,7 +93,9 @@ $entidad = $this->vars('entity');
         </dl>
     </div>
 
-    <div class="col-md-5">
+    <div class="col-md-6">
+
+        <?php if ($entidad->getRepresentantesLegales()) :?>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Representantes Legales</h3>
@@ -108,8 +110,32 @@ $entidad = $this->vars('entity');
                     </li>
                     <?php endforeach ?>
                 </ul>
-                <span class="small">última fecha de actualización: <?=$entidad->getRepLegalesUpdated()?></span><dt>
+                <span class="small">última fecha de actualización: <?=$entidad->getRepLegalesUpdated()?></span>
             </div>
         </div>
+        <?php endif ?>
+
+        <?php if ($this->empleadosMunicipales) :?>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Empleados Municipales</h3>
+            </div>
+            <div class="panel-body">
+                <p>
+                    Listado de empleados municipales con apellidos simialres a algún representante legal del proveedor.
+                </p>
+                <ul>
+                    <?php foreach ($this->empleadosMunicipales as  $empleadoMunicipal) : /* @var \Transparente\Model\Entity\EmpleadoMunicipal */?>
+                    <li>
+                        <?=$empleadoMunicipal->getNombre()?> <br />
+                        <?=$empleadoMunicipal->getCargo()?> de
+                        <?=$empleadoMunicipal->getMunicipio()->getNombre()?>,
+                        <?=$empleadoMunicipal->getMunicipio()->getDepartamento()->getNombre()?>.
+                    </li>
+                    <?php endforeach ?>
+                </ul>
+            </div>
+        </div>
+        <?php endif ?>
     </div>
 </div>

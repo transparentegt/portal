@@ -71,6 +71,26 @@ class EmpleadoMunicipal extends AbstractDoctrineEntity
         return $this->id;
     }
 
+    public function getCargo()
+    {
+        return $this->cargo;
+    }
+
+    public function getMunicipio()
+    {
+        return $this->municipio;
+    }
+
+    /**
+     * Retorna el nombre completo
+     */
+    public function getNombre()
+    {
+        $apellidos = trim("{$this->apellido1} {$this->apellido2} {$this->apellido3}");
+        $nombres   = trim("{$this->nombre1} {$this->nombre2}");
+        return "$apellidos, $nombres";
+    }
+
 
     public function setApellido1($apellido1)
     {
