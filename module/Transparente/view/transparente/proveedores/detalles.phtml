@@ -104,7 +104,7 @@ $entidad = $this->vars('entity');
                 <ul>
                     <?php foreach ($entidad->getRepresentantesLegales() as $repLegal) :?>
                     <li>
-                        <a href="<?=$this->url()?>representante-legal/detalles/1342644">
+                        <a href="<?=$this->url()?>representante-legal/detalles/<?=$repLegal->getId()?>">
                             <?=$repLegal->getNombre()?>
                         </a>
                     </li>
@@ -129,7 +129,9 @@ $entidad = $this->vars('entity');
                     <li>
                         <?=$empleadoMunicipal->getNombre()?> <br />
                         <?=$empleadoMunicipal->getCargo()?> de
-                        <?=$empleadoMunicipal->getMunicipio()->getNombre()?>,
+                        <a href="<?=$this->url()?>municipio/detalles/<?=$empleadoMunicipal->getMunicipio()->getId()?>">
+                            <?=$empleadoMunicipal->getMunicipio()->getNombre()?>,
+                        </a>
                         <?=$empleadoMunicipal->getMunicipio()->getDepartamento()->getNombre()?>.
                     </li>
                     <?php endforeach ?>

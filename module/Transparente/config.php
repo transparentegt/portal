@@ -24,9 +24,10 @@ return array(
         'invokables' => array(
             'Transparente\Controller\Domicilios'         => 'Transparente\Controller\DomiciliosController',
             'Transparente\Controller\Index'              => 'Transparente\Controller\Index',
+            'Transparente\Controller\Municipio'          => 'Transparente\Controller\MunicipioController',
             'Transparente\Controller\Proveedores'        => 'Transparente\Controller\ProveedoresController',
-            'Transparente\Controller\Scraper'            => 'Transparente\Controller\ScraperController',
             'Transparente\Controller\RepresentanteLegal' => 'Transparente\Controller\RepresentanteLegalController',
+            'Transparente\Controller\Scraper'            => 'Transparente\Controller\ScraperController',
        ),
     ),
     'router' => array(

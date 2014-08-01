@@ -34,9 +34,9 @@ class GeoMunicipio extends AbstractDoctrineEntity
 
     /**
      * @ORM\OneToMany(targetEntity="EmpleadoMunicipal", mappedBy="municipio")
+     * @ORM\OrderBy({"apellido1" = "ASC", "apellido2" = "ASC", "nombre1" = "ASC", "nombre2" = "ASC"})
      */
     private $empleados_municipales;
-
 
     public function getId()
     {
@@ -53,5 +53,9 @@ class GeoMunicipio extends AbstractDoctrineEntity
         return $this->departamento;
     }
 
+    public function getEmpleadosMunicipales()
+    {
+        return $this->empleados_municipales;
+    }
 
 }

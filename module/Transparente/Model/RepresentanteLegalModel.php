@@ -2,6 +2,7 @@
 namespace Transparente\Model;
 
 use Doctrine\ORM\EntityRepository;
+use Transparente\Model\Entity\EmpleadoMunicipal;
 use Transparente\Model\Entity\RepresentanteLegal;
 
 class RepresentanteLegalModel extends EntityRepository
@@ -23,6 +24,58 @@ class RepresentanteLegalModel extends EntityRepository
         ]);
         return $rs;
     }
+
+    /**
+     * Buscar todos los representantes legales que tengan apellidos relacionados al empleado municipal
+     *
+     * @param EmpleadoMunicipal $empleado
+     *
+     * @return Transparente\Model\Entity\RepresentanteLegal[]
+     */
+    public function findByEmpleadoMunicipal(EmpleadoMunicipal $empleado)
+    {
+        $dql = 'SELECT RepresentanteLegal
+                FROM \Transparente\Model\Entity\EmpleadoMunicipal  EmpleadoMunicipal
+                JOIN \Transparente\Model\Entity\RepresentanteLegal RepresentanteLegal
+                WHERE EmpleadoMunicipal.id = ?1
+                    AND (
+                            (
+                                    RepresentanteLegal.apellido1 IS NOT NULL
+                                AND RepresentanteLegal.apellido1 <> \'\'
+                                AND (
+                                       (RepresentanteLegal.apellido1 = EmpleadoMunicipal.apellido1)
+                                    OR (RepresentanteLegal.apellido1 = EmpleadoMunicipal.apellido2)
+                                    OR (RepresentanteLegal.apellido1 = EmpleadoMunicipal.apellido3)
+                                )
+                            ) OR (
+                                    RepresentanteLegal.apellido2 IS NOT NULL
+                                AND RepresentanteLegal.apellido2 <> \'\'
+                                AND (
+                                       (RepresentanteLegal.apellido2 = EmpleadoMunicipal.apellido1)
+                                    OR (RepresentanteLegal.apellido2 = EmpleadoMunicipal.apellido2)
+                                    OR (RepresentanteLegal.apellido2 = EmpleadoMunicipal.apellido3)
+                                )
+                            ) OR (
+                                    RepresentanteLegal.apellido3 IS NOT NULL
+                                AND RepresentanteLegal.apellido3 <> \'\'
+                                AND (
+                                       (RepresentanteLegal.apellido3 = EmpleadoMunicipal.apellido1)
+                                    OR (RepresentanteLegal.apellido3 = EmpleadoMunicipal.apellido2)
+                                    OR (RepresentanteLegal.apellido3 = EmpleadoMunicipal.apellido3)
+                                )
+                            )
+
+
+                    )
+                ORDER BY RepresentanteLegal.apellido1, RepresentanteLegal.apellido2,
+                         RepresentanteLegal.nombre1,   RepresentanteLegal.nombre2
+                ';
+        $rs = $this->getEntityManager()->createQuery($dql)
+                ->setParameter(1, $empleado->getId())
+                ->getResult();
+        return $rs;
+    }
+
 
     /**
      * Genera el reporte de los representantes legales que tienen representantes legales
