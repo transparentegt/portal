@@ -21,9 +21,6 @@ $entidad = $this->vars('entity');
 
     <div class="col-md-6">
         <dl class="dl-horizontal">
-            <dt>id<dt>
-                <dd><?=$entidad->getId()?></dd>
-
             <dt>nombre<dt>
                 <dd><?=$entidad->getNombre()?></dd>
 
@@ -42,7 +39,9 @@ $entidad = $this->vars('entity');
                 <dd>
                     <address>
                         <?=$domicilio->getDireccion()?><br />
-                        <?=$domicilio->getMunicipio()->getNombre()?>, <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
+                        <a href="<?=$this->url()?>municipio/detalles/<?=$domicilio->getMunicipio()->getId()?>">
+                            <?=$domicilio->getMunicipio()->getNombre()?></a>,
+                        <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
                         <span class="glyphicon glyphicon-earphone"></span> tel: <?=$domicilio->getTelefonos()?><br />
                         <span class="glyphicon glyphicon-print"></span>    fax: <?=$domicilio->getFax()?>
                     </address>
@@ -54,7 +53,9 @@ $entidad = $this->vars('entity');
                 <dd>
                     <address>
                         <?=$domicilio->getDireccion()?><br />
-                        <?=$domicilio->getMunicipio()->getNombre()?>, <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
+                        <a href="<?=$this->url()?>municipio/detalles/<?=$domicilio->getMunicipio()->getId()?>">
+                            <?=$domicilio->getMunicipio()->getNombre()?></a>,
+                        <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
                         <span class="glyphicon glyphicon-earphone"></span> tel: <?=$domicilio->getTelefonos()?><br />
                         <span class="glyphicon glyphicon-print"></span>    fax: <?=$domicilio->getFax()?>
                     </address>
@@ -130,8 +131,7 @@ $entidad = $this->vars('entity');
                         <?=$empleadoMunicipal->getNombre()?> <br />
                         <?=$empleadoMunicipal->getCargo()?> de
                         <a href="<?=$this->url()?>municipio/detalles/<?=$empleadoMunicipal->getMunicipio()->getId()?>">
-                            <?=$empleadoMunicipal->getMunicipio()->getNombre()?>,
-                        </a>
+                            <?=$empleadoMunicipal->getMunicipio()->getNombre()?></a>,
                         <?=$empleadoMunicipal->getMunicipio()->getDepartamento()->getNombre()?>.
                     </li>
                     <?php endforeach ?>

@@ -12,83 +12,154 @@ $entidad = $this->vars('entity');
 /* @var $entidad Transparente\Model\Entity\RepresentanteLegal */
 ?>
 <style>
-.dl-horizontal dt { width: 370px; }
-.dl-horizontal dd { margin-left: 380px;}
+.dl-horizontal dt { width: 260px; }
+.dl-horizontal dd { margin-left: 270px;}
 </style>
-<h1>Representante Legal: <br /><?=$entidad->getNombre()?></h1>
-<dl  class="dl-horizontal">
-    <dt>id<dt>
-        <dd><?=$entidad->getId()?></dd>
-
-    <dt>nombre<dt>
-        <dd><?=$entidad->getNombre()?></dd>
-
-    <?php if (($nombresComerciales = $entidad->getNombresComerciales()) != false) : ?>
-        <dt>nombres comerciales<dt>
-            <?php foreach($nombresComerciales as $nombreComercial) : /* @var $nombreComercial Transparente\Model\Entity\RepresentanteLegalNombreComercial */ ?>
-            <dd><?=$nombreComercial->getNombre()?></dd>
-            <?php endforeach ?>
-    <?php endif ?>
+<h1><?=$entidad->getNombre()?>, <small>representante legal</small></h1>
 
 
-    <dt>NIT<dt>
-        <dd><?=$entidad->getNit()?></dd>
+<div class="row">
+    <div class="col-md-6">
+        <dl  class="dl-horizontal">
+            <dt>nombre<dt>
+                <dd><?=$entidad->getNombre()?></dd>
 
-    <?php if (($domicilio = $entidad->getDomicilioFiscal()) != false) : /* @var $domicilio Transparente\Model\Entity\Domicilio */?>
-    <dt>domicilio fiscal<dt>
-        <dd>
-            <address>
-                <?=$domicilio->getDireccion()?><br />
-                <?=$domicilio->getMunicipio()->getNombre()?>, <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
-                <span class="glyphicon glyphicon-earphone"></span> tel: <?=$domicilio->getTelefonos()?><br />
-                <span class="glyphicon glyphicon-print"></span>    fax: <?=$domicilio->getFax()?><br />
-            </address>
-        </dd>
-    <?php endif ?>
+            <?php if (($nombresComerciales = $entidad->getNombresComerciales()) != false) : ?>
+                <dt>nombres comerciales<dt>
+                    <?php foreach($nombresComerciales as $nombreComercial) : /* @var $nombreComercial Transparente\Model\Entity\RepresentanteLegalNombreComercial */ ?>
+                    <dd><?=$nombreComercial->getNombre()?></dd>
+                    <?php endforeach ?>
+            <?php endif ?>
 
-    <?php if (($domicilio = $entidad->getDomicilioComercial()) != false) : /* @var $domicilio Transparente\Model\Entity\Domicilio */?>
-    <dt>domicilio comercial<dt>
-        <dd>
-            <address>
-                <?=$domicilio->getDireccion()?><br />
-                <?=$domicilio->getMunicipio()->getNombre()?>, <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
-                <span class="glyphicon glyphicon-earphone"></span> tel: <?=$domicilio->getTelefonos()?><br />
-                <span class="glyphicon glyphicon-print"></span>    fax: <?=$domicilio->getFax()?><br />
-            </address>
-        </dd>
-    <?php endif ?>
 
-    <dt>status<dt>
-        <dd><?=$entidad->getStatus($human = true)?></dd>
+            <dt>NIT<dt>
+                <dd><?=$entidad->getNit()?></dd>
 
-    <dt>tiene acceso al sistema<dt>
-        <dd><?=$entidad->getTieneAccesoSistema($human = true)?></dd>
+            <?php if (($domicilio = $entidad->getDomicilioFiscal()) != false) : /* @var $domicilio Transparente\Model\Entity\Domicilio */?>
+            <dt>domicilio fiscal<dt>
+                <dd>
+                    <address>
+                        <?=$domicilio->getDireccion()?><br />
+                        <?=$domicilio->getMunicipio()->getNombre()?>, <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
+                        <span class="glyphicon glyphicon-earphone"></span> tel: <?=$domicilio->getTelefonos()?><br />
+                        <span class="glyphicon glyphicon-print"></span>    fax: <?=$domicilio->getFax()?><br />
+                    </address>
+                </dd>
+            <?php endif ?>
 
-    <dt>URL<dt>
-        <dd><?=$entidad->getUrl()?></dd>
+            <?php if (($domicilio = $entidad->getDomicilioComercial()) != false) : /* @var $domicilio Transparente\Model\Entity\Domicilio */?>
+            <dt>domicilio comercial<dt>
+                <dd>
+                    <address>
+                        <?=$domicilio->getDireccion()?><br />
+                        <?=$domicilio->getMunicipio()->getNombre()?>, <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
+                        <span class="glyphicon glyphicon-earphone"></span> tel: <?=$domicilio->getTelefonos()?><br />
+                        <span class="glyphicon glyphicon-print"></span>    fax: <?=$domicilio->getFax()?><br />
+                    </address>
+                </dd>
+            <?php endif ?>
 
-    <dt>e-mail<dt>
-        <dd><?=$entidad->getEmail()?></dd>
+            <dt>status<dt>
+                <dd><?=$entidad->getStatus($human = true)?></dd>
 
-    <dt>última fecha de actualización del representante legal<dt>
-        <dd><?=$entidad->getRepLegalesUpdated()?></dd>
+            <dt>tiene acceso al sistema<dt>
+                <dd><?=$entidad->getTieneAccesoSistema($human = true)?></dd>
 
-    <dt>tipo de organización<dt>
-        <dd><?=$entidad->getTipoOrganizacion()?></dd>
+            <dt>URL<dt>
+                <dd><?=$entidad->getUrl()?></dd>
 
-    <dt>número de escritura de constitución<dt>
-        <dd><?=$entidad->getConstNumEscritura()?></dd>
+            <dt>e-mail<dt>
+                <dd><?=$entidad->getEmail()?></dd>
 
-    <dt>fecha de constitución<dt>
-        <dd><?=$entidad->getConstFecha()?></dd>
+            <dt>última fecha de actualización del representante legal<dt>
+                <dd><?=$entidad->getRepLegalesUpdated()?></dd>
 
-    <dt>fecha inscripción provisional<dt>
-        <dd><?=$entidad->getInscripcionProvisional()?></dd>
+            <dt>tipo de organización<dt>
+                <dd><?=$entidad->getTipoOrganizacion()?></dd>
 
-    <dt>fecha inscripción definitiva<dt>
-        <dd><?=$entidad->getInscripcionDefinitiva()?></dd>
+            <dt>número de escritura de constitución<dt>
+                <dd><?=$entidad->getConstNumEscritura()?></dd>
 
-    <dt>fecha inscripción en la SAT<dt>
-        <dd><?=$entidad->getInscripcionSat()?></dd>
+            <dt>fecha de constitución<dt>
+                <dd><?=$entidad->getConstFecha()?></dd>
 
-</dl>
+            <dt>fecha inscripción provisional<dt>
+                <dd><?=$entidad->getInscripcionProvisional()?></dd>
+
+            <dt>fecha inscripción definitiva<dt>
+                <dd><?=$entidad->getInscripcionDefinitiva()?></dd>
+
+            <dt>fecha inscripción en la SAT<dt>
+                <dd><?=$entidad->getInscripcionSat()?></dd>
+        </dl>
+    </div>
+    <div class="col-md-6">
+
+
+        <?php if ($entidad->getProveedores()) :?>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Proveedores</h3>
+            </div>
+            <div class="panel-body">
+                <p><?=$entidad->getNombre()?> es representante legal de las siguientes empresas proveedoras</p>
+                <ul>
+                    <?php foreach ($entidad->getProveedores() as $proveedor) :?>
+                    <li>
+                        <a href="<?=$this->url()?>proveedores/detalles/<?=$proveedor->getId()?>">
+                            <?=$proveedor->getNombre()?>
+                        </a>
+                    </li>
+                    <?php endforeach ?>
+                </ul>
+            </div>
+        </div>
+        <?php endif ?>
+
+
+        <?php if ($entidad->getRepresentantesLegales()) :?>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Representantes Legales</h3>
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <?php foreach ($entidad->getRepresentantesLegales() as $repLegal) :?>
+                    <li>
+                        <a href="<?=$this->url()?>representante-legal/detalles/<?=$repLegal->getId()?>">
+                            <?=$repLegal->getNombre()?>
+                        </a>
+                    </li>
+                    <?php endforeach ?>
+                </ul>
+                <span class="small">última fecha de actualización: <?=$entidad->getRepLegalesUpdated()?></span>
+            </div>
+        </div>
+        <?php endif ?>
+
+        <?php if ($this->empleadosMunicipales) :?>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Empleados Municipales</h3>
+            </div>
+            <div class="panel-body">
+                <p>
+                    Listado de empleados municipales con apellidos simialres a algún representante legal del proveedor.
+                </p>
+                <ul>
+                    <?php foreach ($this->empleadosMunicipales as  $empleadoMunicipal) : /* @var \Transparente\Model\Entity\EmpleadoMunicipal */?>
+                    <li>
+                        <?=$empleadoMunicipal->getNombre()?> <br />
+                        <?=$empleadoMunicipal->getCargo()?> de
+                        <a href="<?=$this->url()?>municipio/detalles/<?=$empleadoMunicipal->getMunicipio()->getId()?>">
+                            <?=$empleadoMunicipal->getMunicipio()->getNombre()?></a>,
+                        <?=$empleadoMunicipal->getMunicipio()->getDepartamento()->getNombre()?>.
+                    </li>
+                    <?php endforeach ?>
+                </ul>
+            </div>
+        </div>
+        <?php endif ?>
+    </div>
+
+</div>
