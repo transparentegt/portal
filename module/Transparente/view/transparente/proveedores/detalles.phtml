@@ -15,6 +15,34 @@ $entidad = $this->vars('entity');
 .dl-horizontal dt { width: 260px; }
 .dl-horizontal dd { margin-left: 270px;}
 </style>
+<script>
+function openModal(id,title, body) {
+    $('body').append('<div class="modal fade" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> \
+            <div class="modal-dialog"> \
+              <div class="modal-content"> \
+                <div class="modal-header"> \
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> \
+                  <h4 class="modal-title" id="myModalLabel">' + title + '</h4> \
+                </div> \
+                <div class="modal-body">' + body + '</div> \
+                <div class="modal-footer"> \
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button> \
+                </div> \
+              </div> \
+            </div> \
+          </div>\
+      ');
+}
+$(function() {
+    openModal('empleadosMunicipalesModal', '¿Porqué queremos ver los empleados municipales?',
+            'Un empleado municipal tiene poder de decición para contratar a los proveedores. Éste puede decidir darles \
+            el trabajo a sus familiares con quienes ya ha acordado un precio para repartirse las ganancias. Esto es \
+            ilegal<sup>se necesita link al artículo</sup>, pero es difícil de encontrar; es por eso que buscamos listar \
+            los apellidos relacionados para encontrar estos actos de corrupción.');
+});
+
+</script>
+
 <h1>Proveedor: <?=$entidad->getNombre()?></h1>
 
 <div class="row">
@@ -116,27 +144,6 @@ $entidad = $this->vars('entity');
         <?php endif ?>
 
         <?php if ($this->empleadosMunicipales) :?>
-        <!-- Modal -->
-        <div class="modal fade" id="empleadosMunicipalesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-              </div>
-              <div class="modal-body">
-                ...
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Modal // -->
-
-
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Empleados Municipales</h3>
@@ -144,11 +151,9 @@ $entidad = $this->vars('entity');
             <div class="panel-body">
                 <p>
                     Listado de empleados municipales con apellidos simialres a algún representante legal del proveedor.
-                    <!--
                     <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#empleadosMunicipalesModal">
                         <span class="glyphicon glyphicon-question-sign"></span>
                     </button>
-                     -->
                 </p>
                 <ul>
                     <?php foreach ($this->empleadosMunicipales as  $empleadoMunicipal) : /* @var \Transparente\Model\Entity\EmpleadoMunicipal */?>
