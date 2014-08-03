@@ -32,10 +32,13 @@ class ProveedoresController extends AbstractActionController
      */
     public function detallesAction()
     {
-        $id               = $this->params('id');
-        $proveedoresModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
-        $entity           = $proveedoresModel->find($id);
-        return new ViewModel(compact('entity'));
+        $id                        = $this->params('id');
+        $proveedoresModel          = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
+        $empleadosMunicipalesModel = $this->getServiceLocator()->get('Transparente\Model\EmpleadoMunicipalModel');
+        /* @var $empleadoMunicipalModel \Transparente\Model\EmpleadoMunicipalModel */
+        $entity                    = $proveedoresModel->find($id);
+        $empleadosMunicipales      = $empleadosMunicipalesModel->findByRepresentantesLegalesDelProveedor($entity);
+        return new ViewModel(compact('empleadosMunicipales', 'entity'));
     }
 
     /**

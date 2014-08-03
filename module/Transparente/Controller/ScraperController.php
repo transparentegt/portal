@@ -4,9 +4,9 @@ namespace Transparente\Controller;
 use Transparente\Model\DomicilioModel;
 use Transparente\Model\ProveedorModel;
 use Transparente\Model\RepresentanteLegalModel;
-use Transparente\Model\ScraperModel;
+use Transparente\Model\Entity\EmpleadoMunicipal;
+
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
 
 /**
  * ScraperController
@@ -18,19 +18,51 @@ use Zend\View\Model\ViewModel;
  */
 class ScraperController extends AbstractActionController
 {
-    /**
-     * Iniciando el scraper
-     *
-     * @todo correr el scraper desde CLI
-     */
-    public function indexAction()
+    private function scrapEmpleadosMunicipales()
     {
-        $request = $this->getRequest();
-        if (!$request instanceof \Zend\Console\Request){
-            throw new \RuntimeException('Scraper solo puede ser corrido desde linea de comando.');
-        }
-        ini_set('memory_limit', -1);
+        $domicilioModel       = $this->getServiceLocator()->get('Transparente\Model\DomicilioModel');
+        /* @var $domicilioModel DomicilioModel */
+        $partidoPolíticoModel = $this->getServiceLocator()->get('Transparente\Model\PartidoPoliticoModel');
+        /* @var $partidoPolítico PartidoPoliticoModel */
+        $db = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        /* @var $db Doctrine\ORM\EntityManager */
 
+        $path  = realpath(__DIR__.'/../../../');
+        $path .= '/data/xls2import/';
+        $path .= 'empleados_municipales.csv';
+        if (($handle = fopen($path, 'r')) === FALSE) {
+            throw new \Exception("No se pudo leer el CSV '$path' para importar los empleados municipales");
+        }
+        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            if ($data[3] == 'VACANTE') continue;
+            $municipio       = $domicilioModel->detectarMunicipio($data[0], $data[1], 'nombre');
+            $partidoPolítico = $partidoPolíticoModel->findByIniciales($data[3])[0];
+            if (!$partidoPolítico) {
+                echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($data);
+                throw new \Exception("No se encontró el partido político {$data[3]}");
+            }
+
+            $data = [
+                'nombre1'   => $data[5],
+                'nombre2'   => $data[6],
+                'apellido1' => $data[7],
+                'apellido2' => $data[8],
+                'apellido3' => $data[9],
+                'cargo'     => $data[2],
+            ];
+
+            $empleadoMunicipal = new EmpleadoMunicipal();
+            $empleadoMunicipal->exchangeArray($data);
+            $empleadoMunicipal->setPartidoPolitico($partidoPolítico);
+            $empleadoMunicipal->setMunicipio($municipio);
+            $db->persist($empleadoMunicipal);
+        }
+        fclose($handle);
+        $db->flush();
+    }
+
+    private function scrapProveedores()
+    {
         $proveedorModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
         /* @var $proveedorModel ProveedorModel */
         $repModel    = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');
@@ -100,6 +132,25 @@ class ScraperController extends AbstractActionController
         $db = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
         /* @var $db Doctrine\ORM\EntityManager */
         $db->flush();
-        return new ViewModel(compact('totales'));
     }
+
+    /**
+     * Iniciando el scraper
+     *
+     * @todo volver a encender el scraper de proveedores
+     * @todo preguntar en el CLI si se quiere hacer cada paso
+     */
+    public function indexAction()
+    {
+        $request = $this->getRequest();
+        if (!$request instanceof \Zend\Console\Request){
+            throw new \RuntimeException('Scraper solo puede ser corrido desde linea de comando.');
+        }
+        ini_set('memory_limit', -1);
+
+        $this->scrapProveedores();
+        $this->scrapEmpleadosMunicipales();
+    }
+
+
 }

@@ -1,9 +1,9 @@
 <?php
 /**
- * Listar los proveedores
+ * Vista detalle del proveedor
  *
- * @todo usar paginador para los proveedores
- * @todo poder reordenar el listado
+ * @todo Se necesita la cita del artículo donde explica la ilegalidad de la relación familiar entre empleaods municipales y proveedores
+ * @todo Hacer plugin del modal para bootstrap estilo plugins de JQuery
  */
 
 /* @var $this Zend\View\Renderer\PhpRenderer */
@@ -15,15 +15,40 @@ $entidad = $this->vars('entity');
 .dl-horizontal dt { width: 260px; }
 .dl-horizontal dd { margin-left: 270px;}
 </style>
+<script>
+function openModal(id,title, body) {
+    $('body').append('<div class="modal fade" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> \
+            <div class="modal-dialog"> \
+              <div class="modal-content"> \
+                <div class="modal-header"> \
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> \
+                  <h4 class="modal-title" id="myModalLabel">' + title + '</h4> \
+                </div> \
+                <div class="modal-body">' + body + '</div> \
+                <div class="modal-footer"> \
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button> \
+                </div> \
+              </div> \
+            </div> \
+          </div>\
+      ');
+}
+$(function() {
+    openModal('empleadosMunicipalesModal', '¿Porqué queremos ver los empleados municipales?',
+            'Un empleado municipal tiene poder de decición para contratar a los proveedores. Éste puede decidir darles \
+            el trabajo a sus familiares con quienes ya ha acordado un precio para repartirse las ganancias. Esto es \
+            ilegal<sup>se necesita link al artículo</sup>, pero es difícil de encontrar; es por eso que buscamos listar \
+            los apellidos relacionados para encontrar estos actos de corrupción.');
+});
+
+</script>
+
 <h1>Proveedor: <?=$entidad->getNombre()?></h1>
 
 <div class="row">
 
-    <div class="col-md-7">
+    <div class="col-md-6">
         <dl class="dl-horizontal">
-            <dt>id<dt>
-                <dd><?=$entidad->getId()?></dd>
-
             <dt>nombre<dt>
                 <dd><?=$entidad->getNombre()?></dd>
 
@@ -42,7 +67,9 @@ $entidad = $this->vars('entity');
                 <dd>
                     <address>
                         <?=$domicilio->getDireccion()?><br />
-                        <?=$domicilio->getMunicipio()->getNombre()?>, <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
+                        <a href="<?=$this->url()?>municipio/detalles/<?=$domicilio->getMunicipio()->getId()?>">
+                            <?=$domicilio->getMunicipio()->getNombre()?></a>,
+                        <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
                         <span class="glyphicon glyphicon-earphone"></span> tel: <?=$domicilio->getTelefonos()?><br />
                         <span class="glyphicon glyphicon-print"></span>    fax: <?=$domicilio->getFax()?>
                     </address>
@@ -54,7 +81,9 @@ $entidad = $this->vars('entity');
                 <dd>
                     <address>
                         <?=$domicilio->getDireccion()?><br />
-                        <?=$domicilio->getMunicipio()->getNombre()?>, <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
+                        <a href="<?=$this->url()?>municipio/detalles/<?=$domicilio->getMunicipio()->getId()?>">
+                            <?=$domicilio->getMunicipio()->getNombre()?></a>,
+                        <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
                         <span class="glyphicon glyphicon-earphone"></span> tel: <?=$domicilio->getTelefonos()?><br />
                         <span class="glyphicon glyphicon-print"></span>    fax: <?=$domicilio->getFax()?>
                     </address>
@@ -93,7 +122,9 @@ $entidad = $this->vars('entity');
         </dl>
     </div>
 
-    <div class="col-md-5">
+    <div class="col-md-6">
+
+        <?php if ($entidad->getRepresentantesLegales()) :?>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Representantes Legales</h3>
@@ -102,14 +133,42 @@ $entidad = $this->vars('entity');
                 <ul>
                     <?php foreach ($entidad->getRepresentantesLegales() as $repLegal) :?>
                     <li>
-                        <a href="<?=$this->url()?>representante-legal/detalles/1342644">
+                        <a href="<?=$this->url()?>representante-legal/detalles/<?=$repLegal->getId()?>">
                             <?=$repLegal->getNombre()?>
                         </a>
                     </li>
                     <?php endforeach ?>
                 </ul>
-                <span class="small">última fecha de actualización: <?=$entidad->getRepLegalesUpdated()?></span><dt>
+                <span class="small">última fecha de actualización: <?=$entidad->getRepLegalesUpdated()?></span>
             </div>
         </div>
+        <?php endif ?>
+
+        <?php if ($this->empleadosMunicipales) :?>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Empleados Municipales</h3>
+            </div>
+            <div class="panel-body">
+                <p>
+                    Listado de empleados municipales con apellidos simialres a algún representante legal del proveedor.
+                    <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#empleadosMunicipalesModal">
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                    </button>
+                </p>
+                <ul>
+                    <?php foreach ($this->empleadosMunicipales as  $empleadoMunicipal) : /* @var \Transparente\Model\Entity\EmpleadoMunicipal */?>
+                    <li>
+                        <?=$empleadoMunicipal->getNombre()?> <br />
+                        <?=$empleadoMunicipal->getCargo()?> de
+                        <a href="<?=$this->url()?>municipio/detalles/<?=$empleadoMunicipal->getMunicipio()->getId()?>">
+                            <?=$empleadoMunicipal->getMunicipio()->getNombre()?></a>,
+                        <?=$empleadoMunicipal->getMunicipio()->getDepartamento()->getNombre()?>.
+                    </li>
+                    <?php endforeach ?>
+                </ul>
+            </div>
+        </div>
+        <?php endif ?>
     </div>
 </div>

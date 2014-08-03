@@ -1,0 +1,80 @@
+<?php
+/**
+ * Listar el detalle del municipio
+ */
+
+/* @var $this Zend\View\Renderer\PhpRenderer */
+
+$municipio = $this->municipio;
+/* @var $municipio Transparente\Model\Entity\GeoMunicipio */
+
+$representantes = $this->representantes;
+?>
+<script>
+function openModal(id,title, body) {
+    $('body').append('<div class="modal fade" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> \
+            <div class="modal-dialog"> \
+              <div class="modal-content"> \
+                <div class="modal-header"> \
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> \
+                  <h4 class="modal-title" id="myModalLabel">' + title + '</h4> \
+                </div> \
+                <div class="modal-body">' + body + '</div> \
+                <div class="modal-footer"> \
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button> \
+                </div> \
+              </div> \
+            </div> \
+          </div>\
+      ');
+}
+$(function() {
+    openModal('representantesLegalesModal', '¿Porqué queremos ver los representantes legales?',
+            'Un empleado municipal tiene poder de decición para contratar a los proveedores. Éste puede decidir darles \
+            el trabajo a sus familiares con quienes ya ha acordado un precio para repartirse las ganancias. Esto es \
+            ilegal<sup>se necesita link al artículo</sup>, pero es difícil de encontrar; es por eso que buscamos listar \
+            los apellidos relacionados para encontrar estos actos de corrupción.');
+});
+
+</script>
+<style>
+.dl-horizontal dt { width: 260px; }
+.dl-horizontal dd { margin-left: 270px;}
+</style>
+<h1>Municipio: <?=$municipio->getNombre()?>, <?=$municipio->getDepartamento()->getNombre()?></h1>
+
+<p>Listado de los empleados municipales del consejo municipal.</p>
+
+<div class="panel-group" id="accordion">
+
+    <?php foreach($this->empleadosMunicipales as $empleado) :?>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-<?=$empleado->getId()?>">
+                    <?=$empleado->getNombre()?> -- <?=$empleado->getCargo()?>
+                </a>
+            </h4>
+        </div>
+        <div id="collapse-<?=$empleado->getId()?>" class="panel-collapse collapse">
+            <div class="panel-body">
+                <?php if ($representantes[$empleado->getId()]) :?>
+                    Representantes Legales con apellidos en común:
+                    <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#representantesLegalesModal">
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                    </button>
+                    <ul>
+                        <?php foreach($representantes[$empleado->getId()] as $representanteLegal) : /* @var $representanteLegal \Transparente\Model\Entity\RepresentanteLegal */?>
+                            <li>
+                                <a href="<?=$this->url()?>representante-legal/detalles/<?=$representanteLegal->getId()?>">
+                                    <?=$representanteLegal->getNombre()?>
+                                </a>
+                            </li>
+                        <?php endforeach ?>
+                    </ul>
+                <?php endif ?>
+          </div>
+        </div>
+    </div>
+    <?php endforeach ?>
+</div>
