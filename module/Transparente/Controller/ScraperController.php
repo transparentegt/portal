@@ -61,6 +61,23 @@ class ScraperController extends AbstractActionController
         $db->flush();
     }
 
+    private function scrapProyectosAdjudicados()
+    {
+        $proyectoModel  = $this->getServiceLocator()->get('Transparente\Model\ProyectoModel');
+        /* @var $protectoModel ProyectoModel */
+        $proveedorModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
+        /* @var $proveedorModel ProveedorModel */
+
+        $proveedores    = $proveedorModel->findAll();
+        foreach($proveedores as $proveedor) {
+            $proyectosList = $proyectoModel->scrapList($proveedor);
+            echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($proyectosList); die();
+        }
+
+
+
+    }
+
     private function scrapProveedores()
     {
         $proveedorModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
@@ -148,8 +165,13 @@ class ScraperController extends AbstractActionController
         }
         ini_set('memory_limit', -1);
 
-        $this->scrapProveedores();
+        // la lectura de los empleados municipales son datos locales
         $this->scrapEmpleadosMunicipales();
+        // empezamos la barrida de Guatecompras buscando los proveedores
+        $this->scrapProveedores();
+        // Ahora que ya tenemos los proveedores en la base de datos, ya podemos importar los proyectos
+        $this->scrapProyectosAdjudicados();
+
     }
 
 

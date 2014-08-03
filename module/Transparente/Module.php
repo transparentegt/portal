@@ -83,6 +83,13 @@ class Module
                     return $model;
                 },
 
+                // ProyectoModel
+                'Transparente\Model\ProyectoModel' => function (ServiceManager $sm) {
+                    $em    = $sm->get('Doctrine\ORM\EntityManager');
+                    $model = $em->getRepository('Transparente\Model\Entity\Proyecto');
+                    return $model;
+                },
+
                 // RepresentanteLegalModel
                 'Transparente\Model\RepresentanteLegalModel' => function (ServiceManager $sm) {
                     $em    = $sm->get('Doctrine\ORM\EntityManager');
