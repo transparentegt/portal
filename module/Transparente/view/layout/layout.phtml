@@ -35,15 +35,12 @@ echo $this->doctype();
             footer > * {float: left; margin-right: 20px; margin-bottom: 10px;}
         </style>
     </head>
-    <body>
+    <body data-spy="scroll" data-target="#affix-nav">
         <?=$this->navigation('navigation')->menu()->setPartial(array('partial/topmenu.phtml', 'default'));?>
         <div class="container">
             <?php echo $this->content; ?>
             <hr>
             <footer>
-                <a href="http://framework.zend.com" title="Zend Framework Version: <?php echo \Zend\Version\Version::VERSION ?>" >
-                    <img src="<?=$this->basePath()?>/img/zf_powered.png" alt="Zend Framework Version: <?php echo \Zend\Version\Version::VERSION ?>" />
-                </a>
                 <a href="http://maphpia.com" title="Desarrollado por La Maphpia" >
                     <img src="<?=$this->basePath()?>/img/maphpia_powered.png" alt="Desarrollado por La Maphpia" />
                 </a>
