@@ -3,6 +3,7 @@ namespace Transparente\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Transparente\Model\Entity\AbstractDoctrineEntity;
+use Transparente\Model\ScraperModel;
 
 /**
  * @ORM\Entity
@@ -33,9 +34,12 @@ class ProveedorNombreComercial extends AbstractDoctrineEntity
         return $this->nombre;
     }
 
-    public function setNombre($nombre)
+    public function setNombre ($nombre)
     {
+        $nombre = ScraperModel::nombresPropios($nombre);
+        $nombre = str_replace('Sociedad Anonima', 'S.A.', $nombre);
         $this->nombre = $nombre;
+        return $this;
     }
 
     public function setProveedor(\Transparente\Model\Entity\Proveedor $proveedor)

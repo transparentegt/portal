@@ -120,6 +120,7 @@ CREATE TABLE rep_legal (
     , nombre2                varchar(128)           DEFAULT NULL
     , apellido1              varchar(128)           DEFAULT NULL
     , apellido2              varchar(128)           DEFAULT NULL
+    , apellido3              varchar(128)           DEFAULT NULL
     , nit                    varchar(16)   NOT NULL DEFAULT ''
     , status                 bool          NOT NULL DEFAULT false -- GTC: HABILITADO / INHABILITADO
     , actualizado_sat        datetime               DEFAULT NULL
@@ -209,5 +210,27 @@ concurso
 - descripción
 - modalidad
 - tipo de concurso
-
 */
+
+DROP TABLE IF EXISTS partido_político;
+CREATE TABLE partido_político (
+    id            int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+    , nombre      varchar(128) NOT NULL DEFAULT ''
+    , iniciales   varchar(32)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS empleado_municipal;
+CREATE TABLE empleado_municipal (
+    id                    int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+    , nombre1             varchar(32) NOT NULL DEFAULT ''
+    , nombre2             varchar(32)          DEFAULT NULL
+    , apellido1           varchar(32) NOT NULL DEFAULT ''
+    , apellido2           varchar(32)          DEFAULT NULL
+    , apellido3           varchar(32)          DEFAULT NULL
+    , id_partido_político int UNSIGNED NOT NULL
+    , FOREIGN KEY (id_partido_político) REFERENCES partido_político(id) ON DELETE CASCADE ON UPDATE CASCADE
+    , id_municipio        int UNSIGNED NOT NULL
+    , FOREIGN KEY (id_municipio) REFERENCES geo_municipios(id) ON DELETE CASCADE ON UPDATE CASCADE
+    , cargo               varchar(32)  NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

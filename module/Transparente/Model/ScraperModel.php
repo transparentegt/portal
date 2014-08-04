@@ -155,4 +155,17 @@ class ScraperModel
         $dom = new \Zend\Dom\Query($content);
         return $dom;
     }
+
+    /**
+     * Retorna el texto en modo nombre propio
+     *
+     * @param string $string
+     * @return string
+     */
+    public static function nombresPropios($string)
+    {
+        $string = mb_convert_case(trim($string), MB_CASE_TITLE, 'UTF-8');
+        return $string;
+    }
+
 }
