@@ -102,7 +102,9 @@ class ScraperModel
                     break;
                 case self::PAGE_MODE_PAGER:
                     if (!isset($vars['page'])) {
-                        $vars['page'] = 1;
+                        $vars['page']            = 1;
+                        $vars['__ASYNCPOST']     = 'true';
+                        $vars['__EVENTARGUMENT'] = '';
                         $html         = ScraperModel::getCachedUrl($url, 'GET', $vars, $key);
                         return $html;
                     }

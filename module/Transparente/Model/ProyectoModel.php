@@ -6,6 +6,30 @@ use Transparente\Model\Entity\Proveedor;
 
 class ProyectoModel extends EntityRepository
 {
+    /**
+     * Lee todos los datos del proveedor según su ID
+     *
+     * @param int $id
+     * @return array
+     *
+     * @todo scrapear entidad compradora
+     * @todo scrapear unidad compradora
+     */
+    public function scrap($id)
+    {
+        $url    = "http://guatecompras.gt/Concursos/consultaDetalleCon.aspx?nog={$id}&o=10";
+        $página = ScraperModel::getCachedUrl($url);
+
+        $xpaths = [
+            'categoría'   => '//*[@id="MasterGC_ContentBlockHolder_txtCategoria"]',
+            'descripción' => '//*[@id="MasterGC_ContentBlockHolder_txtTitulo"]',
+            'modalidad'   => '//*[@id="MasterGC_ContentBlockHolder_txtModalidad"]',
+            'tipo'        => '//*[@id="MasterGC_ContentBlockHolder_txtTipo"]',
+            'entidad'     => '//*[@id="MasterGC_ContentBlockHolder_txtEntidad"]',
+        ];
+        $proveedor = ['id' => $id] + ScraperModel::fetchData($xpaths, $página);
+
+    }
 
     /**
      * Conseguir el listado de los IDs de los proyectos adjudicados del proveedor
@@ -19,52 +43,47 @@ class ProyectoModel extends EntityRepository
      */
     public function scrapList(Proveedor $proveedor)
     {
-        $year        = date('Y');
-        $proveedores = [];
         $pagerKeys   = [
-                '_body:MasterGC$ContentBlockHolder$ScriptManager1' => 'MasterGC$ContentBlockHolder$UpdatePanel1|MasterGC$ContentBlockHolder$dgResultado$ctl54$ctl',
-                '__EVENTTARGET'                                    => 'MasterGC$ContentBlockHolder$dgResultado$ctl54$ctl',
-                '__EVENTARGUMENT'                                  => '',
-                '__VIEWSTATE'                                      => '/wEPDwUKMTI4MzUzOTE3NA8WAh4CbFkC3g8WAmYPZBYCAgMPZBYCAgEPZBYCAgUPZBYCAgUPZBYCZg9kFgQCAw8WAh4EVGV4dAXNAjx0YWJsZSBjbGFzcz0iVGl0dWxvUGFnMSIgY2VsbFNwYWNpbmc9IjAiIGNlbGxQYWRkaW5nPSIyIiBhbGlnbj0iY2VudGVyIj48dHI+PHRkPjx0YWJsZSBjbGFzcz0iVGl0dWxvUGFnMiIgY2VsbFNwYWNpbmc9IjAiIGNlbGxQYWRkaW5nPSIyIj48dHI+PHRkIGNsYXNzPSJUaXR1bG9QYWczIiBhbGlnbj0iY2VudGVyIj48dGFibGUgY2xhc3M9IlRhYmxhRm9ybTMiIGNlbGxTcGFjaW5nPSIzIiBjZWxsUGFkZGluZz0iNCI+PHRyIGNsYXNzPSJFdGlxdWV0YUZvcm0yIj48dGQ+QcOxbzogMjAxNDwvdGQ+PC90cj48L3RhYmxlPjwvdGQ+PC90cj48L3RhYmxlPjwvdGQ+PC90cj48L3RhYmxlPmQCBw88KwALAQAPFgoeC18hSXRlbUNvdW50AjIeCERhdGFLZXlzFgAeCVBhZ2VDb3VudAJNHhVfIURhdGFTb3VyY2VJdGVtQ291bnQC/h0eEFZpcnR1YWxJdGVtQ291bnQC/h1kZGTFGnAqD6UqwZ6veVDVd8I1rSzrhg==',
-                '__EVENTVALIDATION'                                => '/wEdAA14XElF3qXk6b0iXGg7E00zDgb8Uag+idZmhp4z8foPgz4xN15UhY4K7pA9ni2czGB1NCd9VnYGmPGPtkDAtNQeEDIBsVJcI17AvX4wvuIJ5AgMop+g+rIcjfLnqU7sIEd1r49BNud9Gzhdq5Du6Cuaivj/J0Sb6VUF9yYCq0O32nVzQBnAbvzxCHDPy/dQNW4JRFkop3STShyOPuu+QjyFyEKGLUzsAW/S22pN4CQ1k/PmspiPnyFdAbsK7K0ZtyIv/uu03tEXAoLdp793x+CRlm7Yn37MSDqo7lpN9Z9v4u6Js8E=',
-                '__ASYNCPOST'                                      => 'true'
+                '_body:MasterGC$ContentBlockHolder$ScriptManager1' => 'MasterGC$ContentBlockHolder$UpdatePanel1|MasterGC$ContentBlockHolder$dgResultado$ctl55$ctl',
+                '__EVENTTARGET'                                    => 'MasterGC$ContentBlockHolder$dgResultado$ctl55$ctl',
+                '__VIEWSTATE'                                      => '/wEPDwULLTEyNTU2MzYzMDIPFgYeBk5PR0xuawMKHglsTm9Qcm92ZWUoKVlTeXN0ZW0uSW50NjQsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OQU0MTA0Mh4EbFBlcgLeDxYCZg9kFgICAw9kFgICAQ9kFgICBQ9kFggCBQ8PFgQeBFRleHQFHEouSS4gQ09IRU4sIFNPQ0lFREFEIEFOT05JTUEeC05hdmlnYXRlVXJsBSkuL2NvbnN1bHRhRGV0UHJvdmVlLmFzcHg/cnFwPTgmbHBydj00MTA0MmRkAgcPDxYCHwMFCDIyMzQ1Mzg4ZGQCCQ88KwALAQAPFggeCERhdGFLZXlzFgAeC18hSXRlbUNvdW50AgYeCVBhZ2VDb3VudAIBHhVfIURhdGFTb3VyY2VJdGVtQ291bnQCBmQWAmYPZBYOAgIPZBYGZg9kFgICAQ8PFgQfAwUEMjAxNB8EBT4uL2NvbnN1bHRhRGV0UHJvdmVlQWRqLmFzcHg/bHBlcj0yMDE0JnJxcD01JmxwcnY9NDEwNDImaVRpcG89MWRkAgEPDxYCHwMFBTEsMTUxZGQCAg8PFgIfAwUOMjg0LDE2MSw0MTguNzFkZAIDD2QWBmYPZBYCAgEPDxYEHwMFBDIwMTMfBAU+Li9jb25zdWx0YURldFByb3ZlZUFkai5hc3B4P2xwZXI9MjAxMyZycXA9NSZscHJ2PTQxMDQyJmlUaXBvPTFkZAIBDw8WAh8DBQUxLDI5NGRkAgIPDxYCHwMFDjM5Miw5ODMsMjMzLjc5ZGQCBA9kFgZmD2QWAgIBDw8WBB8DBQQyMDEyHwQFPi4vY29uc3VsdGFEZXRQcm92ZWVBZGouYXNweD9scGVyPTIwMTImcnFwPTUmbHBydj00MTA0MiZpVGlwbz0xZGQCAQ8PFgIfAwUFMSwxMjRkZAICDw8WAh8DBQ4xMDIsMDY5LDc3OS40OGRkAgUPZBYGZg9kFgICAQ8PFgQfAwUEMjAxMR8EBT4uL2NvbnN1bHRhRGV0UHJvdmVlQWRqLmFzcHg/bHBlcj0yMDExJnJxcD01JmxwcnY9NDEwNDImaVRpcG89MWRkAgEPDxYCHwMFBTEsMjcwZGQCAg8PFgIfAwUNODgsNjk1LDQzNy4yOGRkAgYPZBYGZg9kFgICAQ8PFgQfAwUEMjAxMB8EBT4uL2NvbnN1bHRhRGV0UHJvdmVlQWRqLmFzcHg/bHBlcj0yMDEwJnJxcD01JmxwcnY9NDEwNDImaVRpcG89MWRkAgEPDxYCHwMFAzc4MWRkAgIPDxYCHwMFDTYzLDAxMSw3NjEuOTVkZAIHD2QWBmYPZBYCAgEPDxYEHwMFBDIwMDkfBAU+Li9jb25zdWx0YURldFByb3ZlZUFkai5hc3B4P2xwZXI9MjAwOSZycXA9NSZscHJ2PTQxMDQyJmlUaXBvPTFkZAIBDw8WAh8DBQEyZGQCAg8PFgIfAwUKMTAyLDE3MS4zN2RkAggPZBYGZg9kFgICAQ8PFgIfBAU0Li9jb25zdWx0YURldFByb3ZlZUFkai5hc3B4P3JxcD01JmxwcnY9NDEwNDImaVRpcG89MWRkAgEPDxYCHwMFBTUsNjIyZGQCAg8PFgIfAwUOOTMxLDAyMyw4MDIuNThkZAIPD2QWAmYPZBYCAgMPPCsACwEADxYKHwYCMh8FFgAfBwIYHwgC/wgeEFZpcnR1YWxJdGVtQ291bnQC/whkZGTXZwWfd5SqQVbIBcAEWzKdESTypg==',
+                '__EVENTVALIDATION'                                => '/wEdAA9LREma5igz5slDoSRLBf28HaHucUMA5SAPu3SveX9BBf/NaZcg5SPYk+JIxgvSWYbBqRb8VPt7LjDOQyE4WENPdZJkV49Xucpm0VV/6b0h7nYwq2aFZekVh79aucKgaI77JsE/uKmfwAjaUYgQDxoVGyD6qWrkPkk9DM+cN/KxX2l3rWGrVWE7Adc7dk6pHBjdDE6t2gIvmrKkUY1n2vEbNQMzDsD+bnTp+1tDsPoki5EeUQ9fBzpbpClP9t0n3tGqJJyahSZeiqw/zOKqyFyHpsECaRGyTs74kchOQllwMRTBwwICfRZm6NX7FDuG5TBuspGqjHqaVSN10HVtIEw6oupPPw==',
                 ];
-        $proveedorEnPágina = [];
-        $encontrados       = false;
-        $duplicados        = 0;
-        $page = 0;
+        $duplicados  = 0;
+        $enPágina    = [];
+        $encontrados = false;
+        $ids         = [];
+        $page        = 0;
+        $year        = date('Y');
         do {
             $page++;
             $html = ScraperModel::getCachedUrl(
-                    "http://guatecompras.gt/proveedores/consultaDetProveeAdj.aspx?rqp=5&lprv={$proveedor->getId()}&iTipo=1&lper=$year",
-                    ScraperModel::PAGE_MODE_PAGER,
-                    $pagerKeys,
-                    "proveedores-list-page-$page"
+                "http://guatecompras.gt/proveedores/consultaDetProveeAdj.aspx?rqp=5&lprv={$proveedor->getId()}&iTipo=1&lper=$year",
+                ScraperModel::PAGE_MODE_PAGER,
+                $pagerKeys
             );
-            $xpath           = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";
-            $proveedoresList = $html->queryXpath($xpath);
-            $encontrados     = count($proveedoresList);
-            foreach ($proveedoresList as $nodo) {
+            $xpath       = "//a[starts-with(@href, '../Concursos/consultaDetalleCon.aspx')]";
+            $list        = $html->queryXpath($xpath);
+            $encontrados = count($list);
+            foreach ($list as $nodo) {
                 /* @var $proveedor DOMElement */
-                // El link apunta a las adjudicaciones/projectos del proveedor, pero de aquí sacamos el ID del proveedor
-                $url           = parse_url($nodo->getAttribute('href'));
+                $url  = parse_url($nodo->getAttribute('href'));
                 parse_str($url['query'], $url);
-                $idProveedor   = (int) $url['lprv'];
-                if (!in_array($idProveedor, $proveedores)) {
-                    $proveedorEnPágina[$idProveedor] = $page;
-                    $proveedores[]                   = $idProveedor;
+                $id   = (int) $url['lprv'];
+                if (!in_array($id, $ids)) {
+                    $enPágina[$id] = $page;
+                    $ids[]         = $id;
                 } else {
                     $duplicados++;
                     $encontrados--;
-                    $páginaOriginal = $proveedorEnPágina[$idProveedor];
-                    echo "ERROR: Se encontró proveedor duplicado ($idProveedor)  en las páginas $páginaOriginal y $page\n";
+                    $páginaOriginal = $enPágina[$id];
+                    // echo "ERROR: Se encontró proveedor duplicado ($id)  en las páginas $páginaOriginal y $page\n";
                 }
-                }
-                // } while($encontrados > 0);
-        } while ($page <= self::PAGE_MAX);
-        $total = count($proveedores);
+            }
+        } while($encontrados > 0);
+        $total = count($ids);
         echo "LOG: proveedores por leer: $total, proveedores duplicados: $duplicados\n";
-        return $proveedores;
+        return $ids;
     }
 
 }
