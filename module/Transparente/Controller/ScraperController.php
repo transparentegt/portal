@@ -73,8 +73,8 @@ class ScraperController extends AbstractActionController
         foreach($proveedores as $proveedor) {
             $proyectosList = $proyectoModel->scrapList($proveedor);
             foreach ($proyectosList as $id) {
-                //$proyecto = $proyectoModel->scrap($id,$proveedor->getId());
-                //echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; \Doctrine\Common\Util\Debug::dump($proyecto); die();
+                $proyecto = $proyectoModel->scrap($id,$proveedor->getId());
+                echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; \Doctrine\Common\Util\Debug::dump($proyecto); // die();
 
 
 

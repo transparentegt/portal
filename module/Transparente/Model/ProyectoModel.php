@@ -15,7 +15,7 @@ class ProyectoModel extends EntityRepository
      * @todo scrapear entidad compradora
      * @todo scrapear unidad compradora
      */
-    public function scrap($nog,$proveedorId)
+    public function scrap($id,$proveedorId)
     {
         $url    = "http://guatecompras.gt/Concursos/consultaDetalleCon.aspx?nog={$id}&o=10&rqp=5&lprv={$proveedorId}&iTipo=1&lper=2014";
         $página = ScraperModel::getCachedUrl($url);
@@ -27,7 +27,8 @@ class ProyectoModel extends EntityRepository
             'tipo'        => '//*[@id="MasterGC_ContentBlockHolder_txtTipo"]',
             'entidad'     => '//*[@id="MasterGC_ContentBlockHolder_txtEntidad"]',
         ];
-        $proveedor = ['id' => $id] + ScraperModel::fetchData($xpaths, $página);
+        
+        return $proyecto = ['id' => $id] + ScraperModel::fetchData($xpaths, $página);
 
     }
 
@@ -65,7 +66,7 @@ class ProyectoModel extends EntityRepository
                 "http://guatecompras.gt/proveedores/consultaDetProveeAdj.aspx?rqp=5&lprv={$proveedor->getId()}&iTipo=1&lper=$year",
                 ScraperModel::PAGE_MODE_PAGER,
                 $pagerKeys,
-                "proveedores-adjudicados-to-{$proveedor->getId()}-list-page-$page"
+                "proyectos-adjudicados-to-{$proveedor->getId()}-list-page-$page"
             );
             if ($page == 1) {
                 $cssItems         = "span#MasterGC_ContentBlockHolder_lblFilas";
