@@ -18,7 +18,7 @@ class ProyectoModel extends AbstractModel
     public function scrap($id, $proveedorId)
     {
         $url    = "http://guatecompras.gt/Concursos/consultaDetalleCon.aspx?nog={$id}&o=10&rqp=5&lprv={$proveedorId}&iTipo=1&lper=2014";
-        $página = ScraperModel::getCachedUrl($url);
+        $página = ScraperModel::getCachedUrl($url, "proyecto-$id");
 
         $xpaths = [
             'categoría'   => '//*[@id="MasterGC_ContentBlockHolder_txtCategoria"]',
@@ -54,17 +54,12 @@ class ProyectoModel extends AbstractModel
         ];
         $ids  = [];
         $page = 0;
-        $year = date('Y');
+        $url  = "http://guatecompras.gt/proveedores/consultaDetProveeAdj.aspx?rqp=5&lprv={$proveedor->getId()}&iTipo=1&lper=" . date('Y');
         do {
             $page++;
-            $html = ScraperModel::getCachedUrl(
-                "http://guatecompras.gt/proveedores/consultaDetProveeAdj.aspx?rqp=5&lprv={$proveedor->getId()}&iTipo=1&lper=$year",
-                ScraperModel::PAGE_MODE_PAGER,
-                $pagerKeys,
-                "proyectos-adjudicados-to-{$proveedor->getId()}-list-page-$page"
-            );
-            $xpath       = "//a[starts-with(@href, '../Concursos/consultaDetalleCon.aspx')]";
-            $list        = $html->queryXpath($xpath);
+            $html  = ScraperModel::getCachedUrl($url, "proyectos-adjudicados-to-{$proveedor->getId()}-list-page-$page", ScraperModel::PAGE_MODE_PAGER, $pagerKeys);
+            $xpath = "//a[starts-with(@href, '../Concursos/consultaDetalleCon.aspx')]";
+            $list  = $html->queryXpath($xpath);
             $encontrados = count($list);
             foreach ($list as $nodo) {
                 /* @var $proveedor DOMElement */

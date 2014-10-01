@@ -11,7 +11,7 @@ class ScraperModel
 {
     const PAGE_MODE_GET   = 'GET';
     const PAGE_MODE_POST  = 'POST';
-    CONST PAGE_MODE_PAGER = 'PAGER.NET';
+    CONST PAGE_MODE_PAGER = 'PAGER';
 
     public static function fetchData($xpaths, \Zend\Dom\Query $dom)
     {
@@ -54,17 +54,15 @@ class ScraperModel
      * Retorna el contenido de la página solicitada, y la guarda en cache por si la vuelven a pedir
      *
      * @param  string $url    La dirección a conseguir
+     * @param  string $key    Nombre del cache
      * @param  string $method El método a usar para pedir la página, GET|POST|PAGER
      * @param  array  $vars   Si hay variables que pasar y retornar, se usa en PAGER
-     * @param  string $key
      * @throws \Exception
      * @return \Zend\Dom\Query
      */
-    public static function getCachedUrl($url, $method='GET', &$vars = [], $key = null)
+    public static function getCachedUrl($url, $key, $method = self::PAGE_MODE_GET, &$vars = [])
     {
-        if (!$key) {
-            $key = md5($method . $url . serialize($vars));
-        }
+        $key  .= "-$method-".substr(md5(serialize($vars)), 0, 6);
         $cache = \Zend\Cache\StorageFactory::factory([
             'adapter' => [
                 'name'    => 'filesystem',
@@ -74,10 +72,10 @@ class ScraperModel
             'plugins' => array('serializer'),
         ]);
         if ($cache->hasItem($key)) {
-            echo "Leyendo del cache: \t $method \t $key \t $url\n";
+            echo "Leyendo cache:   \t$method\t$url\t\t$key\n";
             $content = $cache->getItem($key);
         } else {
-            echo "Leyendo del sitio original:\t $method \t $key \t $url\n";
+            echo "Leyendo original:\t$method\t$url\t\t$key\n";
             switch ($method) {
                 case self::PAGE_MODE_GET:
                     $content = null;
@@ -107,7 +105,7 @@ class ScraperModel
                         $vars['page']            = 1;
                         $vars['__ASYNCPOST']     = 'true';
                         $vars['__EVENTARGUMENT'] = '';
-                        $domQuery                = ScraperModel::getCachedUrl($url, 'GET', $vars, $key);
+                        $domQuery                = ScraperModel::getCachedUrl($url, $key, self::PAGE_MODE_GET, $vars);
 
                         $cssItems   = "span#MasterGC_ContentBlockHolder_lblFilas";
                         $totalItems = explode(' ',$domQuery->execute($cssItems)[0]->textContent)[4];

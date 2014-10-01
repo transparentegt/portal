@@ -28,8 +28,8 @@ class ProveedorModel extends AbstractModel
      */
     public function scrap($id)
     {
-        $url               = "http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=8&lprv={$id}";
-        $páginaDelProveedor = ScraperModel::getCachedUrl($url);
+        $url    = "http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=8&lprv={$id}";
+        $página = ScraperModel::getCachedUrl($url, "proveedor-{$id}");
 
         /**
          * Que valores vamos a buscar via xpath en la página del proveedor
@@ -65,7 +65,7 @@ class ProveedorModel extends AbstractModel
             'rep_legales_updated' => '//*[@id="MasterGC_ContentBlockHolder_divRepresentantesLegales"]//span/span',
         ];
 
-        $proveedor = ['id' => $id] + ScraperModel::fetchData($xpaths, $páginaDelProveedor);
+        $proveedor = ['id' => $id] + ScraperModel::fetchData($xpaths, $página);
 
         // después de capturar los datos, hacemos un postproceso
 
@@ -107,20 +107,14 @@ class ProveedorModel extends AbstractModel
             '_body:MasterGC$ContentBlockHolder$ScriptManager1' => 'MasterGC$ContentBlockHolder$UpdatePanel1|MasterGC$ContentBlockHolder$dgResultado$ctl54$ctl',
             '__EVENTTARGET'                                    => 'MasterGC$ContentBlockHolder$dgResultado$ctl54$ctl',
         ];
-        $ids  = [];
-        $page = 0;
-        $year = date('Y');
+        $ids   = [];
+        $page  = 0;
+        $start = 'http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.date('Y');
         do {
             $page++;
-            $html = ScraperModel::getCachedUrl(
-                    'http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year,
-                    ScraperModel::PAGE_MODE_PAGER,
-                    $pagerKeys,
-                    "proveedores-list-page-$page"
-            );
-            $xpath       = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";
-            $list        = $html->queryXpath($xpath);
-            $encontrados = count($list);
+            $html  = ScraperModel::getCachedUrl($start, "proveedores-list-page-$page", ScraperModel::PAGE_MODE_PAGER, $pagerKeys);
+            $xpath = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";
+            $list  = $html->queryXpath($xpath);
             foreach ($list as $nodo) {
                 /* @var $proveedor DOMElement */
                 $url = parse_url($nodo->getAttribute('href'));
@@ -143,7 +137,8 @@ class ProveedorModel extends AbstractModel
      */
     public function scrapNombresComerciales($id)
     {
-        $página  = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeNomCom.aspx?rqp=8&lprv='.$id);
+        $url     = 'http://guatecompras.gt/proveedores/consultaProveeNomCom.aspx?rqp=8&lprv='.$id;
+        $página  = ScraperModel::getCachedUrl($url, "nombre-comercial-$id");
         $xpath   = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]';
         $nodos   = $página->queryXpath($xpath);
         $nombres = [];

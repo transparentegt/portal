@@ -5,8 +5,25 @@ vendor/bin/doctrine-module orm:validate-schema
 vendor/bin/doctrine-module orm:schema-tool:create
 mysql $DBNAME  < db/db.data.sql
 
-rm -f data/cache/zfcache-*/*-list-page-*
 # inicia el debug del CLI, hay que agregar un if para ver si viene un flag de debug como parámetro del debug -d
+
+while getopts ":dx" opt; do
+  case $opt in
+    d)
+      echo "DEBUG was activated!"
+      export QUERY_STRING="start_debug=true"
+      ;;
+    x)
+      echo "Clear cache activated!"
+      rm -rf data/cache/zfcache-*
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      ;;
+  esac
+done
+
+
 # export QUERY_STRING="start_debug=true"
 php public/index.php scraper
 
