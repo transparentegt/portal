@@ -51,14 +51,16 @@ class ScraperModel
     }
 
     /**
-     * Returns a cached crawled URL
+     * Retorna el contenido de la página solicitada, y la guarda en cache por si la vuelven a pedir
      *
-     * @param string $url
-     * @param string $method
-     *
+     * @param  string $url    La dirección a conseguir
+     * @param  string $method El método a usar para pedir la página, GET|POST|PAGER
+     * @param  array  $vars   Si hay variables que pasar y retornar, se usa en PAGER
+     * @param  string $key
+     * @throws \Exception
      * @return \Zend\Dom\Query
      */
-    public static function getCachedUrl($url, $method='GET', &$vars = null, $key = null)
+    public static function getCachedUrl($url, $method='GET', &$vars = [], $key = null)
     {
         if (!$key) {
             $key = md5($method . $url . serialize($vars));
@@ -105,12 +107,26 @@ class ScraperModel
                         $vars['page']            = 1;
                         $vars['__ASYNCPOST']     = 'true';
                         $vars['__EVENTARGUMENT'] = '';
-                        $html         = ScraperModel::getCachedUrl($url, 'GET', $vars, $key);
-                        return $html;
+                        $domQuery                = ScraperModel::getCachedUrl($url, 'GET', $vars, $key);
+
+                        $cssItems   = "span#MasterGC_ContentBlockHolder_lblFilas";
+                        $totalItems = explode(' ',$domQuery->execute($cssItems)[0]->textContent)[4];
+                        $totalItems = \NumberFormatter::create('en_US', \NumberFormatter::DECIMAL)->parse($totalItems);
+                        $totalPages = ceil($totalItems/50);
+
+                        $vars['totalItems'] = $totalItems;
+                        $vars['totalPages'] = $totalPages;
+
+                        // definir llaves del paginador basados en la primera página
+                        $cssEventValidation        = 'input[name="__EVENTVALIDATION"]';
+                        $vars['__EVENTVALIDATION'] = $domQuery->execute($cssEventValidation)[0]->getAttribute('value');
+                        $cssViewState              = 'input[name="__VIEWSTATE"]';
+                        $vars['__VIEWSTATE']       = $domQuery->execute($cssViewState)[0]->getAttribute('value');
+
+                        // la llamada recursiva nos devuelve el objeto ya listo para retornarlo
+                        return $domQuery;
                     }
                     $vars['page']++;
-                    // @todo hacer call GET con page == 1;
-
                     $ctl = $vars['page'];
                     if ($vars['page'] > 11 && ($vars['page'] % 10 > 1)) {
                         $ctl = $vars['page'] % 10 + 1;
@@ -119,7 +135,6 @@ class ScraperModel
                     } elseif ($vars['page'] > 11 && ($vars['page'] % 10  == 1)) {
                         $ctl = 12;
                     }
-                    // echo "Leyendo página: {$vars['page']}, ctl: $ctl\n";
                     $ctl      = sprintf("%02d", $ctl);
                     $postVars = $vars;
                     unset($postVars['page']);
@@ -140,9 +155,7 @@ class ScraperModel
 
                     $vars['__VIEWSTATE']       = $request[19];
                     $vars['__EVENTVALIDATION'] = $request[23];
-
-                    $content = $request[7];
-                    // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($content); die();
+                    $content                   = $request[7];
                     break;
                 default:
                     throw new \Exception("Cache type '$method' not defined");
