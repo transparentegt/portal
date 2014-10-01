@@ -1,10 +1,9 @@
 <?php
 namespace Transparente\Model;
 
-use Doctrine\ORM\EntityRepository;
 use Transparente\Model\Entity\Proveedor;
 
-class EmpleadoMunicipalModel extends EntityRepository
+class EmpleadoMunicipalModel extends AbstractModel
 {
 
     /**

@@ -15,9 +15,9 @@ class MunicipioController extends AbstractActionController
         $id             = $this->params('id');
         $municipioModel = $this->getServiceLocator()->get('Transparente\Model\MunicipioModel');
         $municipio      = $municipioModel->findOneById($id);
+        /* @var GeoMunicipio $municipio */
 
-        $empleadosMunicipales = $municipio->getEmpleadosMunicipales();
-
+        $empleadosMunicipales     = $municipio->getEmpleadosMunicipales();
         $representanteLelgalModel = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');
         $representantes           = [];
         foreach ($empleadosMunicipales as $empleado) {

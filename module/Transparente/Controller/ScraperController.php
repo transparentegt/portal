@@ -18,6 +18,11 @@ use Zend\Mvc\Controller\AbstractActionController;
  */
 class ScraperController extends AbstractActionController
 {
+    /**
+     * Lee los empleados municipales del archivo data/xls2import/empleados_municipales.csv
+     *
+     * @return void
+     */
     private function scrapEmpleadosMunicipales()
     {
         $domicilioModel       = $this->getServiceLocator()->get('Transparente\Model\DomicilioModel');
@@ -61,6 +66,9 @@ class ScraperController extends AbstractActionController
         $db->flush();
     }
 
+    /**
+     * Lee los proyectos de todos los proveedores
+     */
     private function scrapProyectosAdjudicados()
     {
         $proyectoModel  = $this->getServiceLocator()->get('Transparente\Model\ProyectoModel');
@@ -74,17 +82,13 @@ class ScraperController extends AbstractActionController
             $proyectosList = $proyectoModel->scrapList($proveedor);
             foreach ($proyectosList as $id) {
                 $proyecto = $proyectoModel->scrap($id,$proveedor->getId());
-                echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; \Doctrine\Common\Util\Debug::dump($proyecto); // die();
-
-
-
-
+                echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; \Doctrine\Common\Util\Debug::dump($proyecto); die();
+                $proyectoModel->save($proyecto);
             }
-            if ($count++ > 3) break;
+            $db = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+            /* @var $db Doctrine\ORM\EntityManager */
+            $db->flush();
         }
-
-
-
     }
 
     private function scrapProveedores()
@@ -147,9 +151,10 @@ class ScraperController extends AbstractActionController
 
             foreach ($data['representantes_legales'] as $idRep) {
                 $totales['repLegales']++;
-                /* @var $domicilioModel DomicilioModel */
                 $repLegal = $repModel->scrap($idRep);
-                $proveedor->appendRepresentanteLegal($repLegal);
+                if ($repLegal) {
+                    $proveedor->appendRepresentanteLegal($repLegal);
+                }
             }
             // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; Doctrine\Common\Util\Debug::dump($proveedor); die();
             // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($data); die();

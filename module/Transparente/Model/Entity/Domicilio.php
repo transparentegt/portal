@@ -6,6 +6,12 @@ use \Transparente\Model\Entity\AbstractDoctrineEntity;
 use Transparente\Model\ScraperModel;
 
 /**
+ * Entidad genérica de domicilios
+ *
+ * Se usan varios domicilios en el sistema, domicilio fisca, domicilio comercial, etc. Que hueva estar copiando esa
+ * estructura en cada tabla y varias veces. Mejor lo metemos todas las direcciones en una tabla con la misma estructura
+ * y hacemos llaves foraneas que apunten a las direcciones aquí guardadas
+ *
  * @ORM\Entity(repositoryClass="Transparente\Model\DomicilioModel")
  * @ORM\Table(name="domicilios")
  */
@@ -24,6 +30,7 @@ class Domicilio extends AbstractDoctrineEntity
     protected $direccion;
 
     /**
+     *  Meter todos en un solo campo, porque pelan
      * @ORM\Column(type="string")
      */
     protected $telefonos;
@@ -34,6 +41,7 @@ class Domicilio extends AbstractDoctrineEntity
     protected $fax;
 
     /**
+     * Última fecha de actualización, null si no saebmos cuando la actualizaron
      * @ORM\Column(type="datetime")
      */
     // protected $updated;

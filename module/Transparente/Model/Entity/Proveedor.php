@@ -7,7 +7,17 @@ use Transparente\Model\Entity\AbstractDoctrineEntity;
 use Transparente\Model\ScraperModel;
 
 /**
- * Entidad de proveedores
+ * Proveedor (Vendedor, entidad vendedora)
+ *
+ * Datos parseables que no se guardan en la base de datos
+ * - adjudicado:
+ *      bool si tiene o no aprobado un proyecto, valor calculado por JOIN a otra tabla
+ * - participa en contrato abierto:
+ *      bool si tiene o no registros en la tabla (no existente) de productos, valor calculado por JOIN a otra tabla
+ *
+ * @link http://guatecompras.gt/info/preguntasFrecProv.aspx#_lbl10
+ *
+ * @todo dejar de tener campos NOT NULL
  *
  * @ORM\Entity(repositoryClass="Transparente\Model\ProveedorModel")
  * @ORM\Table(name="proveedor")
@@ -15,6 +25,8 @@ use Transparente\Model\ScraperModel;
 class Proveedor extends AbstractDoctrineEntity
 {
     /**
+     * No es autoincrement para usaar el mismo ID que en GTC
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      */
@@ -32,11 +44,15 @@ class Proveedor extends AbstractDoctrineEntity
     protected $nit;
 
     /**
+     * HABILITADO / INHABILITADO
+     *
      * @ORM\Column(type="boolean")
      */
     protected $status;
 
     /**
+     * En GTC se muestra como CON/SIN CONTRASEÑA
+     *
      * @ORM\Column(type="boolean")
      */
     protected $tiene_acceso_sistema;
@@ -54,21 +70,29 @@ class Proveedor extends AbstractDoctrineEntity
     protected $domicilio_comercial;
 
     /**
-     * @ORM\Column(type="string")
+     * Está en domicilio comercial, pero no queremos meter eso en la tabla domicilios.
+     *
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $url;
 
     /**
-     * @ORM\Column(type="string")
+     * Está en domicilio comercial, pero no queremos meter eso en la tabla domicilios.
+     *
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $email;
 
     /**
+     * Última fecha que se actualizaron los representantes legales
+     *
      * @ORM\Column(type="string")
      */
     protected $rep_legales_updated;
 
     /**
+     * Un representante legal puede representar muchas empresas. Una empresa puede estar representada por muchos representantes.
+     *
      * @ORM\ManyToMany ( targetEntity = "RepresentanteLegal", inversedBy = "proveedores", cascade = "persist" )
      * @ORM\JoinTable (
      *      name               = "proveedor_representado_por",
@@ -83,49 +107,59 @@ class Proveedor extends AbstractDoctrineEntity
     /**
      * Los valores encontrados han sido: SOCIEDAD ANÓNIMA, INDIVIDUAL
      *
+     * @todo tiene que ser un listado limitado
+     *
      * @ORM\Column(type="string")
      */
-    protected $tipo_organizacion;
+    // protected $tipo_organizacion;
 
     /**
      * Datos recibidos de la SAT
      * @ORM\Column(type="datetime")
      */
-    protected $actualizado_sat;
+    // protected $actualizado_sat;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $const_fecha;
+    // protected $const_fecha;
+
+    /**
+     * Número de escritura de constitucioń (WTF? será número entero)
+     *
+     * @ORM\Column(type="string")
+     */
+    //protected $const_num_escritura;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $const_num_escritura;
+    // protected $inscripcion_provisional;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $inscripcion_provisional;
+    // protected $inscripcion_definitiva;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $inscripcion_definitiva;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $inscripcion_sat;
+    // protected $inscripcion_sat;
 
     /**
      * @ORM\OneToMany(targetEntity="ProveedorNombreComercial", mappedBy="proveedor", cascade="persist")
      */
     protected $nombres_comerciales;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Proyecto", mappedBy="proveedor", cascade="persist")
+     */
+    protected $proyectos;
+
     public function __construct()
     {
         $this->nombres_comerciales    = new ArrayCollection();
+        $this->proyectos              = new ArrayCollection();
         $this->representantes_legales = new ArrayCollection();
     }
 

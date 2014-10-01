@@ -12,6 +12,7 @@ class GeoMunicipio extends AbstractDoctrineEntity
 {
     /**
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
     protected $id;
@@ -34,7 +35,7 @@ class GeoMunicipio extends AbstractDoctrineEntity
 
     /**
      * @ORM\OneToMany(targetEntity="EmpleadoMunicipal", mappedBy="municipio")
-     * @ORM\OrderBy({"apellido1" = "ASC", "apellido2" = "ASC", "nombre1" = "ASC", "nombre2" = "ASC"})
+     * @ORM\OrderBy({"cargo" = "ASC"})
      */
     private $empleados_municipales;
 

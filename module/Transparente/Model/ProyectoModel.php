@@ -1,21 +1,21 @@
 <?php
 namespace Transparente\Model;
 
-use Doctrine\ORM\EntityRepository;
 use Transparente\Model\Entity\Proveedor;
+use Transparente\Model\Entity\Proyecto;
 
-class ProyectoModel extends EntityRepository
+class ProyectoModel extends AbstractModel
 {
     /**
      * Lee todos los datos del proveedor según su ID
      *
-     * @param int $id
-     * @return array
+     * @param  int      $id
+     * @return Proyecto
      *
      * @todo scrapear entidad compradora
      * @todo scrapear unidad compradora
      */
-    public function scrap($id,$proveedorId)
+    public function scrap($id, $proveedorId)
     {
         $url    = "http://guatecompras.gt/Concursos/consultaDetalleCon.aspx?nog={$id}&o=10&rqp=5&lprv={$proveedorId}&iTipo=1&lper=2014";
         $página = ScraperModel::getCachedUrl($url);
@@ -27,9 +27,14 @@ class ProyectoModel extends EntityRepository
             'tipo'        => '//*[@id="MasterGC_ContentBlockHolder_txtTipo"]',
             'entidad'     => '//*[@id="MasterGC_ContentBlockHolder_txtEntidad"]',
         ];
-        
-        return $proyecto = ['id' => $id] + ScraperModel::fetchData($xpaths, $página);
 
+        $data   = [
+            'id'           => $id,
+            'proveedor_id' => $proveedorId,
+        ] + ScraperModel::fetchData($xpaths, $página);
+        $entity = new Proyecto();
+        $entity->exchangeArray($data);
+        return $entity;
     }
 
     /**
@@ -74,7 +79,7 @@ class ProyectoModel extends EntityRepository
                 $totalPages = ceil($totalItems/50);
 
                 /**** set values to pagerKeys based on first page*****/
-                $cssEventValidation  = "input[name=\"__EVENTVALIDATION\"]";        
+                $cssEventValidation  = "input[name=\"__EVENTVALIDATION\"]";
                 $pagerKeys['__EVENTVALIDATION'] = $html->execute($cssEventValidation)[0]->getAttribute('value');
                 $cssViewState  = "input[name=\"__VIEWSTATE\"]";
                 $pagerKeys['__VIEWSTATE'] = $html->execute($cssViewState)[0]->getAttribute('value');
@@ -84,7 +89,7 @@ class ProyectoModel extends EntityRepository
 
 
             }
-          
+
 
             $xpath       = "//a[starts-with(@href, '../Concursos/consultaDetalleCon.aspx')]";
             $list        = $html->queryXpath($xpath);

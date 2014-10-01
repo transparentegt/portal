@@ -1,12 +1,9 @@
 <?php
 namespace Transparente\Model;
 
-use Doctrine\ORM\EntityRepository;
-use Transparente\Model\Entity\Proveedor;
-
-class ProveedorModel extends EntityRepository
+class ProveedorModel extends AbstractModel
 {
-    const PAGE_MAX = 78;
+    const PAGE_MAX = 100;
 
     public function findAll()
     {
@@ -23,12 +20,6 @@ class ProveedorModel extends EntityRepository
         $query = $this->getEntityManager()->createQuery($dql);
         return $query->getResult();
 
-    }
-
-    public function save(Proveedor $entity)
-    {
-        $em = $this->getEntityManager();
-        $em->persist($entity);
     }
 
     /**
@@ -98,8 +89,8 @@ class ProveedorModel extends EntityRepository
                                             . '-' . (1 + $proveedor['rep_legales_updated']['tm_mon'])
                                             . '-' . ($proveedor['rep_legales_updated']['tm_mday'])
                                             ;
-        $proveedor['url']                  = ($proveedor['url']   != '[--No Especificado--]') ? $proveedor['url'] : null;
-        $proveedor['email']                = ($proveedor['email'] != '[--No Especificado--]') ? $proveedor['email'] : null;
+        $proveedor['url']   = ($proveedor['url']   != '[--No Especificado--]') ? $proveedor['url'] : null;
+        $proveedor['email'] = ($proveedor['email'] != '[--No Especificado--]') ? $proveedor['email'] : null;
         return $proveedor;
     }
 
@@ -161,7 +152,7 @@ class ProveedorModel extends EntityRepository
         // } while($encontrados > 0);
         } while ($page <= self::PAGE_MAX);
         $total = count($proveedores);
-        echo "LOG: proveedores por leer: $total, proveedores duplicados: $duplicados\n";
+        echo "***** ***** ***** ***** LOG: proveedores por leer: $total, proveedores duplicados: $duplicados\n";
         return $proveedores;
     }
 

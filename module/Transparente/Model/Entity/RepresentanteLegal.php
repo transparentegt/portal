@@ -21,6 +21,8 @@ use Transparente\Model\ScraperModel;
 class RepresentanteLegal extends AbstractDoctrineEntity
 {
     /**
+     * no es autoincrement para usaar el mismo ID que en GTC
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      */
@@ -30,7 +32,7 @@ class RepresentanteLegal extends AbstractDoctrineEntity
      * Datos recibidos de la SAT
      * @ORM\Column(type="datetime")
      */
-    protected $actualizado_sat;
+    // protected $actualizado_sat;
 
     /**
      * @ORM\Column(type="string")
@@ -68,11 +70,15 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     protected $nombres_comerciales;
 
     /**
+     * GTC: HABILITADO / INHABILITADO
+     *
      * @ORM\Column(type="boolean")
      */
     protected $status;
 
     /**
+     * En GTC se muestra como CON/SIN CONTRASEÑA
+     *
      * @ORM\Column(type="boolean")
      */
     protected $tiene_acceso_sistema = false;
@@ -90,16 +96,22 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     protected $domicilio_comercial;
 
     /**
-     * @ORM\Column(type="string")
+     * Está en domicilio comercial, pero no queremos meter eso en la tabla domicilios
+     *
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $url;
 
     /**
-     * @ORM\Column(type="string")
+     * está en domicilio comercial, pero no queremos meter eso en la tabla domicilios
+     *
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $email;
 
     /**
+     * Un representante legal puede representar muchas empresas. Una empresa puede estar representada por muchos representantes.
+     *
      * @ORM\ManyToMany(targetEntity="Proveedor", mappedBy="representantes_legales", cascade="persist")
      * @ORM\JoinTable(name="proveedor_representado_por")
      *
@@ -108,7 +120,9 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     protected $proveedores;
 
     /**
-     * @ORM\ManyToMany ( targetEntity = "RepresentanteLegal", inversedBy = "represento", cascade = "persist" )
+     * Un representante legal puede tener muchos representantes legales.
+     *
+     * @ORM\ManyToMany ( targetEntity = "RepresentanteLegal", cascade = "persist" )
      * @ORM\JoinTable (
      *      name               = "representante_representado_por",
      *      joinColumns        = { @ORM\JoinColumn (name = "id_representante_legal", referencedColumnName = "id") },
@@ -116,47 +130,53 @@ class RepresentanteLegal extends AbstractDoctrineEntity
      * )
      *
      * @var ArrayCollection
+     *
+     * @todo Esta relación no debería de existir y debería de unificarse como proveedor
      */
     protected $representantes_legales;
 
     /**
-     * (Datos recibidos de la SAT el: 01.jul.2014 16:45:44
+     * Última fecha que se actualizaron los representantes legales
+     * (Datos recibidos de la SAT el: 01.jul.2014 16:45:44)
      *
      * @ORM\Column(type="string")
      */
     protected $rep_legales_updated;
 
     /**
+     * Tipo de representante legal, tiene que ser un listado limitado.
      * Los valores encontrados han sido: SOCIEDAD ANÓNIMA, INDIVIDUAL
      *
      * @ORM\Column(type="string")
      */
-    protected $tipo_organizacion;
+    // protected $tipo_organizacion;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $const_fecha;
+    // protected $const_fecha;
+
+    /**
+     * Número de escritura de constitucioń (WTF? será número entero)
+     *
+     * @ORM\Column(type="string")
+     */
+    // protected $const_num_escritura;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $const_num_escritura;
+    // protected $inscripcion_provisional;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $inscripcion_provisional;
+    // protected $inscripcion_definitiva;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $inscripcion_definitiva;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $inscripcion_sat;
+    // protected $inscripcion_sat;
 
     public function __construct()
     {

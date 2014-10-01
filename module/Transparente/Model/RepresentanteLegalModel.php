@@ -1,11 +1,10 @@
 <?php
 namespace Transparente\Model;
 
-use Doctrine\ORM\EntityRepository;
 use Transparente\Model\Entity\EmpleadoMunicipal;
 use Transparente\Model\Entity\RepresentanteLegal;
 
-class RepresentanteLegalModel extends EntityRepository
+class RepresentanteLegalModel extends AbstractModel
 {
     protected static $scraped = [];
 
@@ -75,7 +74,6 @@ class RepresentanteLegalModel extends EntityRepository
                 ->getResult();
         return $rs;
     }
-
 
     /**
      * Genera el reporte de los representantes legales que tienen representantes legales
@@ -150,26 +148,14 @@ class RepresentanteLegalModel extends EntityRepository
      */
     private function splitNombre(&$data)
     {
-        $nombres           = explode(',', $data['nombre']);
-        $nombre            = explode(',', $nombres[1]);
+        $nombres = explode(',', $data['nombre']);
+        if (count($nombres) != 5) throw new \Exception('Formato de nombre inválido');
         $data['nombre1']   = $nombres[3];
         $data['nombre2']   = $nombres[4];
         $data['apellido1'] = $nombres[0];
         $data['apellido2'] = $nombres[1];
         $data['apellido3'] = $nombres[2];
         unset($data['nombre']);
-    }
-
-    /**
-     * Guardar un representante legal
-     * @param RepresentanteLegal $entity
-     *
-     * @todo se usa? lo que guardamos es el proveedor y en cascada todo el representante legal
-     */
-    public function save(RepresentanteLegal $entity)
-    {
-        $em = $this->getEntityManager();
-        $em->persist($entity);
     }
 
     /**
@@ -214,7 +200,12 @@ class RepresentanteLegalModel extends EntityRepository
         ];
 
         $data = ['id' => $id] + ScraperModel::fetchData($xpaths, $página);
-        $this->splitNombre($data);
+        try {
+            $this->splitNombre($data);
+        } catch (\Exception $e) {
+            return false;
+        }
+
         // después de capturar los datos, hacemos un postproceso
         $data['status']               = ($data['status'] == 'HABILITADO');
         $data['tiene_acceso_sistema'] = ($data['tiene_acceso_sistema'] == 'CON CONTRASEÑA');

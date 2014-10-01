@@ -66,6 +66,14 @@ class EmpleadoMunicipal extends AbstractDoctrineEntity
      */
     protected $partido_político;
 
+    /**
+     * @return PartidoPolitico
+     */
+    public function getPartidoPolítico()
+    {
+        return $this->partido_político;
+    }
+
     public function getId()
     {
         return $this->id;
@@ -90,7 +98,6 @@ class EmpleadoMunicipal extends AbstractDoctrineEntity
         $nombres   = trim("{$this->nombre1} {$this->nombre2}");
         return "$apellidos, $nombres";
     }
-
 
     public function setApellido1($apellido1)
     {

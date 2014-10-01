@@ -1,9 +1,7 @@
 <?php
 namespace Transparente\Model;
 
-use Doctrine\ORM\EntityRepository;
-
-class DomicilioModel extends EntityRepository
+class DomicilioModel extends AbstractModel
 {
     public  function detectarMunicipio($departamento, $municipio, $municipioField = 'nombre_guatecompras')
     {
