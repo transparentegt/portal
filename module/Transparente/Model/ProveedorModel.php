@@ -1,16 +1,14 @@
 <?php
 namespace Transparente\Model;
 
-use Doctrine\ORM\EntityRepository;
-use Transparente\Model\Entity\Proveedor;
-
-class ProveedorModel extends EntityRepository
+class ProveedorModel extends AbstractModel
 {
-    const PAGE_MAX = 78;
-
-    public function findAll()
+    public function findAll($where = [], $orderBy = [])
     {
-        return $this->findBy($criteria = [], $orderBy = ['nombre' => 'ASC']);
+        if (!$orderBy) {
+            $orderBy = ['nombre' => 'ASC'];
+        }
+        return $this->findBy($where, $orderBy);
     }
 
     public function findByNoDomicilioFiscal()
@@ -25,12 +23,6 @@ class ProveedorModel extends EntityRepository
 
     }
 
-    public function save(Proveedor $entity)
-    {
-        $em = $this->getEntityManager();
-        $em->persist($entity);
-    }
-
     /**
      * Lee todos los datos del proveedor según su ID
      *
@@ -39,8 +31,8 @@ class ProveedorModel extends EntityRepository
      */
     public function scrap($id)
     {
-        $url               = "http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=8&lprv={$id}";
-        $páginaDelProveedor = ScraperModel::getCachedUrl($url);
+        $url    = "http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=8&lprv={$id}";
+        $página = ScraperModel::getCachedUrl($url, "proveedor-{$id}");
 
         /**
          * Que valores vamos a buscar via xpath en la página del proveedor
@@ -76,7 +68,7 @@ class ProveedorModel extends EntityRepository
             'rep_legales_updated' => '//*[@id="MasterGC_ContentBlockHolder_divRepresentantesLegales"]//span/span',
         ];
 
-        $proveedor = ['id' => $id] + ScraperModel::fetchData($xpaths, $páginaDelProveedor);
+        $proveedor = ['id' => $id] + ScraperModel::fetchData($xpaths, $página);
 
         // después de capturar los datos, hacemos un postproceso
 
@@ -98,8 +90,8 @@ class ProveedorModel extends EntityRepository
                                             . '-' . (1 + $proveedor['rep_legales_updated']['tm_mon'])
                                             . '-' . ($proveedor['rep_legales_updated']['tm_mday'])
                                             ;
-        $proveedor['url']                  = ($proveedor['url']   != '[--No Especificado--]') ? $proveedor['url'] : null;
-        $proveedor['email']                = ($proveedor['email'] != '[--No Especificado--]') ? $proveedor['email'] : null;
+        $proveedor['url']   = ($proveedor['url']   != '[--No Especificado--]') ? $proveedor['url'] : null;
+        $proveedor['email'] = ($proveedor['email'] != '[--No Especificado--]') ? $proveedor['email'] : null;
         return $proveedor;
     }
 
@@ -108,63 +100,36 @@ class ProveedorModel extends EntityRepository
      *
      * @return int[]
      *
-     * @todo Detectar cuantas páginas hay que leer. No necesitar usar una constante para saber si llegamos al final.
-     *       Al parar cuando recibimos una página con solo proveedores que ya leimos, contamos 2,550 proveedores
+     * @todo Quedan solo 2 $pagerKeys que debeoms de sacar de la primera página para quitar ese parámetro
      *
-     * @todo Hay diferentes páginas donde sale el mismo proveedor, hay que hacer un reporte de eso (issue #21)
-     *       ERROR: Se encontró proveedor duplicado (2025239)  en las páginas 49 y  50.
-     *
-     * @todo Reducir las variables de las llaves que son constantes entre diferentes paginadores, seteándolas en el
-     *       scraper, y seteando solo las que son diferentes por paginador como parámetros.
+     * @todo Esto es TAN igual al ProyectoModel->scrapList() que deberíamos de moverlo a la superclase
      */
     public function scrapList()
     {
-        $year        = date('Y');
-        $proveedores = [];
         $pagerKeys   = [
             '_body:MasterGC$ContentBlockHolder$ScriptManager1' => 'MasterGC$ContentBlockHolder$UpdatePanel1|MasterGC$ContentBlockHolder$dgResultado$ctl54$ctl',
             '__EVENTTARGET'                                    => 'MasterGC$ContentBlockHolder$dgResultado$ctl54$ctl',
-            '__EVENTARGUMENT'                                  => '',
-            '__VIEWSTATE'                                      => '/wEPDwUKMTI4MzUzOTE3NA8WAh4CbFkC3g8WAmYPZBYCAgMPZBYCAgEPZBYCAgUPZBYCAgUPZBYCZg9kFgQCAw8WAh4EVGV4dAXNAjx0YWJsZSBjbGFzcz0iVGl0dWxvUGFnMSIgY2VsbFNwYWNpbmc9IjAiIGNlbGxQYWRkaW5nPSIyIiBhbGlnbj0iY2VudGVyIj48dHI+PHRkPjx0YWJsZSBjbGFzcz0iVGl0dWxvUGFnMiIgY2VsbFNwYWNpbmc9IjAiIGNlbGxQYWRkaW5nPSIyIj48dHI+PHRkIGNsYXNzPSJUaXR1bG9QYWczIiBhbGlnbj0iY2VudGVyIj48dGFibGUgY2xhc3M9IlRhYmxhRm9ybTMiIGNlbGxTcGFjaW5nPSIzIiBjZWxsUGFkZGluZz0iNCI+PHRyIGNsYXNzPSJFdGlxdWV0YUZvcm0yIj48dGQ+QcOxbzogMjAxNDwvdGQ+PC90cj48L3RhYmxlPjwvdGQ+PC90cj48L3RhYmxlPjwvdGQ+PC90cj48L3RhYmxlPmQCBw88KwALAQAPFgoeC18hSXRlbUNvdW50AjIeCERhdGFLZXlzFgAeCVBhZ2VDb3VudAJNHhVfIURhdGFTb3VyY2VJdGVtQ291bnQC/h0eEFZpcnR1YWxJdGVtQ291bnQC/h1kZGTFGnAqD6UqwZ6veVDVd8I1rSzrhg==',
-            '__EVENTVALIDATION'                                => '/wEdAA14XElF3qXk6b0iXGg7E00zDgb8Uag+idZmhp4z8foPgz4xN15UhY4K7pA9ni2czGB1NCd9VnYGmPGPtkDAtNQeEDIBsVJcI17AvX4wvuIJ5AgMop+g+rIcjfLnqU7sIEd1r49BNud9Gzhdq5Du6Cuaivj/J0Sb6VUF9yYCq0O32nVzQBnAbvzxCHDPy/dQNW4JRFkop3STShyOPuu+QjyFyEKGLUzsAW/S22pN4CQ1k/PmspiPnyFdAbsK7K0ZtyIv/uu03tEXAoLdp793x+CRlm7Yn37MSDqo7lpN9Z9v4u6Js8E=',
-            '__ASYNCPOST'                                      => 'true'
         ];
-        $proveedorEnPágina = [];
-        $encontrados       = false;
-        $duplicados        = 0;
-        $page = 0;
+        $ids   = [];
+        $page  = 0;
+        $start = 'http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.date('Y');
         do {
             $page++;
-            $html = ScraperModel::getCachedUrl(
-                    'http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.$year,
-                    ScraperModel::PAGE_MODE_PAGER,
-                    $pagerKeys,
-                    "proveedores-list-page-$page"
-            );
-            $xpath           = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";
-            $proveedoresList = $html->queryXpath($xpath);
-            $encontrados     = count($proveedoresList);
-            foreach ($proveedoresList as $nodo) {
+            $html  = ScraperModel::getCachedUrl($start, "proveedores-$page", ScraperModel::PAGE_MODE_PAGER, $pagerKeys);
+            $xpath = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";
+            $list  = $html->queryXpath($xpath);
+            foreach ($list as $nodo) {
                 /* @var $proveedor DOMElement */
-                // El link apunta a las adjudicaciones/projectos del proveedor, pero de aquí sacamos el ID del proveedor
-                $url           = parse_url($nodo->getAttribute('href'));
+                $url = parse_url($nodo->getAttribute('href'));
                 parse_str($url['query'], $url);
-                $idProveedor   = (int) $url['lprv'];
-                if (!in_array($idProveedor, $proveedores)) {
-                    $proveedorEnPágina[$idProveedor] = $page;
-                    $proveedores[]                   = $idProveedor;
-                } else {
-                    $duplicados++;
-                    $encontrados--;
-                    $páginaOriginal = $proveedorEnPágina[$idProveedor];
-                    echo "ERROR: Se encontró proveedor duplicado ($idProveedor)  en las páginas $páginaOriginal y $page\n";
+                $id   = (int) $url['lprv'];
+                if (!in_array($id, $ids)) {
+                    $ids[] = $id;
                 }
             }
-        // } while($encontrados > 0);
-        } while ($page <= self::PAGE_MAX);
-        $total = count($proveedores);
-        echo "LOG: proveedores por leer: $total, proveedores duplicados: $duplicados\n";
-        return $proveedores;
+        } while ($page <= $pagerKeys['totalPages']);
+        sort($ids);
+        return $ids;
     }
 
     /**
@@ -175,7 +140,8 @@ class ProveedorModel extends EntityRepository
      */
     public function scrapNombresComerciales($id)
     {
-        $página  = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeNomCom.aspx?rqp=8&lprv='.$id);
+        $url     = 'http://guatecompras.gt/proveedores/consultaProveeNomCom.aspx?rqp=8&lprv='.$id;
+        $página  = ScraperModel::getCachedUrl($url, "nombre-comercial-$id");
         $xpath   = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]';
         $nodos   = $página->queryXpath($xpath);
         $nombres = [];

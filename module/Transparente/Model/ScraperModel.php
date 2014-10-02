@@ -11,7 +11,7 @@ class ScraperModel
 {
     const PAGE_MODE_GET   = 'GET';
     const PAGE_MODE_POST  = 'POST';
-    CONST PAGE_MODE_PAGER = 'PAGER.NET';
+    CONST PAGE_MODE_PAGER = 'PAGER';
 
     public static function fetchData($xpaths, \Zend\Dom\Query $dom)
     {
@@ -51,18 +51,18 @@ class ScraperModel
     }
 
     /**
-     * Returns a cached crawled URL
+     * Retorna el contenido de la página solicitada, y la guarda en cache por si la vuelven a pedir
      *
-     * @param string $url
-     * @param string $method
-     *
+     * @param  string $url    La dirección a conseguir
+     * @param  string $key    Nombre del cache
+     * @param  string $method El método a usar para pedir la página, GET|POST|PAGER
+     * @param  array  $vars   Si hay variables que pasar y retornar, se usa en PAGER
+     * @throws \Exception
      * @return \Zend\Dom\Query
      */
-    public static function getCachedUrl($url, $method='GET', &$vars = null, $key = null)
+    public static function getCachedUrl($url, $key, $method = self::PAGE_MODE_GET, &$vars = [])
     {
-        if (!$key) {
-            $key = md5($method . $url . serialize($vars));
-        }
+        $key  .= "-$method";
         $cache = \Zend\Cache\StorageFactory::factory([
             'adapter' => [
                 'name'    => 'filesystem',
@@ -72,10 +72,10 @@ class ScraperModel
             'plugins' => array('serializer'),
         ]);
         if ($cache->hasItem($key)) {
-            echo "Leyendo del cache: \t $method \t $key \t $url\n";
+            echo sprintf("Leyendo cache:   \t%-40s\t%s\n", $key, $url);
             $content = $cache->getItem($key);
         } else {
-            echo "Leyendo del sitio original:\t $method \t $key \t $url\n";
+            echo sprintf("Leyendo original:\t%-40s\t%s\n", $key, $url);
             switch ($method) {
                 case self::PAGE_MODE_GET:
                     $content = null;
@@ -102,13 +102,29 @@ class ScraperModel
                     break;
                 case self::PAGE_MODE_PAGER:
                     if (!isset($vars['page'])) {
-                        $vars['page'] = 1;
-                        $html         = ScraperModel::getCachedUrl($url, 'GET', $vars, $key);
-                        return $html;
+                        $vars['page']            = 1;
+                        $vars['__ASYNCPOST']     = 'true';
+                        $vars['__EVENTARGUMENT'] = '';
+                        $domQuery                = ScraperModel::getCachedUrl($url, $key, self::PAGE_MODE_GET, $vars);
+
+                        $cssItems   = "span#MasterGC_ContentBlockHolder_lblFilas";
+                        $totalItems = explode(' ',$domQuery->execute($cssItems)[0]->textContent)[4];
+                        $totalItems = \NumberFormatter::create('en_US', \NumberFormatter::DECIMAL)->parse($totalItems);
+                        $totalPages = ceil($totalItems/50);
+
+                        $vars['totalItems'] = $totalItems;
+                        $vars['totalPages'] = $totalPages;
+
+                        // definir llaves del paginador basados en la primera página
+                        $cssEventValidation        = 'input[name="__EVENTVALIDATION"]';
+                        $vars['__EVENTVALIDATION'] = $domQuery->execute($cssEventValidation)[0]->getAttribute('value');
+                        $cssViewState              = 'input[name="__VIEWSTATE"]';
+                        $vars['__VIEWSTATE']       = $domQuery->execute($cssViewState)[0]->getAttribute('value');
+
+                        // la llamada recursiva nos devuelve el objeto ya listo para retornarlo
+                        return $domQuery;
                     }
                     $vars['page']++;
-                    // @todo hacer call GET con page == 1;
-
                     $ctl = $vars['page'];
                     if ($vars['page'] > 11 && ($vars['page'] % 10 > 1)) {
                         $ctl = $vars['page'] % 10 + 1;
@@ -117,7 +133,6 @@ class ScraperModel
                     } elseif ($vars['page'] > 11 && ($vars['page'] % 10  == 1)) {
                         $ctl = 12;
                     }
-                    // echo "Leyendo página: {$vars['page']}, ctl: $ctl\n";
                     $ctl      = sprintf("%02d", $ctl);
                     $postVars = $vars;
                     unset($postVars['page']);
@@ -138,16 +153,12 @@ class ScraperModel
 
                     $vars['__VIEWSTATE']       = $request[19];
                     $vars['__EVENTVALIDATION'] = $request[23];
-
-                    $content = $request[7];
-                    // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($content); die();
+                    $content                   = $request[7];
                     break;
                 default:
                     throw new \Exception("Cache type '$method' not defined");
             }
         }
-
-        //echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($data); die();
         if (!$content) {
             throw new \Exception("No se pudo leer la URL $url");
         }

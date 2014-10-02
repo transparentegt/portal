@@ -17,6 +17,7 @@ class PartidoPolitico extends AbstractDoctrineEntity
 {
     /**
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
     protected $id;
@@ -32,7 +33,15 @@ class PartidoPolitico extends AbstractDoctrineEntity
     protected $iniciales;
 
     /**
-     * @ORM\OneToMany(targetEntity="EmpleadoMunicipal", mappedBy="municipio")
+     * @return mixed
+     */
+    public function getIniciales()
+    {
+        return $this->iniciales;
+    }
+
+    /**
+     * @ORM\OneToMany(targetEntity="EmpleadoMunicipal", mappedBy="partido_político")
      */
     private $empleados_municipales;
 

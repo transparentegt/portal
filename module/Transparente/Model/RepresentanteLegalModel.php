@@ -1,11 +1,10 @@
 <?php
 namespace Transparente\Model;
 
-use Doctrine\ORM\EntityRepository;
 use Transparente\Model\Entity\EmpleadoMunicipal;
 use Transparente\Model\Entity\RepresentanteLegal;
 
-class RepresentanteLegalModel extends EntityRepository
+class RepresentanteLegalModel extends AbstractModel
 {
     protected static $scraped = [];
 
@@ -75,7 +74,6 @@ class RepresentanteLegalModel extends EntityRepository
                 ->getResult();
         return $rs;
     }
-
 
     /**
      * Genera el reporte de los representantes legales que tienen representantes legales
@@ -150,26 +148,14 @@ class RepresentanteLegalModel extends EntityRepository
      */
     private function splitNombre(&$data)
     {
-        $nombres           = explode(',', $data['nombre']);
-        $nombre            = explode(',', $nombres[1]);
+        $nombres = explode(',', $data['nombre']);
+        if (count($nombres) != 5) throw new \Exception('Formato de nombre inválido');
         $data['nombre1']   = $nombres[3];
         $data['nombre2']   = $nombres[4];
         $data['apellido1'] = $nombres[0];
         $data['apellido2'] = $nombres[1];
         $data['apellido3'] = $nombres[2];
         unset($data['nombre']);
-    }
-
-    /**
-     * Guardar un representante legal
-     * @param RepresentanteLegal $entity
-     *
-     * @todo se usa? lo que guardamos es el proveedor y en cascada todo el representante legal
-     */
-    public function save(RepresentanteLegal $entity)
-    {
-        $em = $this->getEntityManager();
-        $em->persist($entity);
     }
 
     /**
@@ -186,7 +172,7 @@ class RepresentanteLegalModel extends EntityRepository
         }
 
         $url    = "http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=10&lprv={$id}";
-        $página = ScraperModel::getCachedUrl($url);
+        $página = ScraperModel::getCachedUrl($url, "representante-legal-$id");
         $xpaths = [
             'nombre'               => '//*[@id="MasterGC_ContentBlockHolder_lblNombreProv"]',
             'nit'                  => '//*[@id="MasterGC_ContentBlockHolder_lblNIT"]',
@@ -214,7 +200,12 @@ class RepresentanteLegalModel extends EntityRepository
         ];
 
         $data = ['id' => $id] + ScraperModel::fetchData($xpaths, $página);
-        $this->splitNombre($data);
+        try {
+            $this->splitNombre($data);
+        } catch (\Exception $e) {
+            return false;
+        }
+
         // después de capturar los datos, hacemos un postproceso
         $data['status']               = ($data['status'] == 'HABILITADO');
         $data['tiene_acceso_sistema'] = ($data['tiene_acceso_sistema'] == 'CON CONTRASEÑA');
@@ -265,7 +256,8 @@ class RepresentanteLegalModel extends EntityRepository
      */
     public function scrapNombresComerciales($id)
     {
-        $página  = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeNomCom.aspx?rqp=8&lprv='.$id);
+        $url     = 'http://guatecompras.gt/proveedores/consultaProveeNomCom.aspx?rqp=8&lprv='.$id;
+        $página  = ScraperModel::getCachedUrl($url, "replegal-nombre-comercial-$id");
         $xpath   = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]';
         $nodos   = $página->queryXpath($xpath);
         $nombres = [];
@@ -288,7 +280,8 @@ class RepresentanteLegalModel extends EntityRepository
      */
     public function scrapRepresentantesLegales($parentId)
     {
-        $página    = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaprrepleg.aspx?rqp=8&lprv=' . $parentId);
+        $url       = 'http://guatecompras.gt/proveedores/consultaprrepleg.aspx?rqp=8&lprv=' . $parentId;
+        $página    = ScraperModel::getCachedUrl($url, "proveedor-$parentId-reprlegales");
         $xpath     = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]/a';
         $nodos     = $página->queryXpath($xpath);
         $elementos = [];

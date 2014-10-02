@@ -18,6 +18,11 @@ use Zend\Mvc\Controller\AbstractActionController;
  */
 class ScraperController extends AbstractActionController
 {
+    /**
+     * Lee los empleados municipales del archivo data/xls2import/empleados_municipales.csv
+     *
+     * @return void
+     */
     private function scrapEmpleadosMunicipales()
     {
         $domicilioModel       = $this->getServiceLocator()->get('Transparente\Model\DomicilioModel');
@@ -121,24 +126,42 @@ class ScraperController extends AbstractActionController
 
             foreach ($data['representantes_legales'] as $idRep) {
                 $totales['repLegales']++;
-                /* @var $domicilioModel DomicilioModel */
                 $repLegal = $repModel->scrap($idRep);
-                $proveedor->appendRepresentanteLegal($repLegal);
+                if ($repLegal) {
+                    $proveedor->appendRepresentanteLegal($repLegal);
+                }
             }
             // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; Doctrine\Common\Util\Debug::dump($proveedor); die();
             // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($data); die();
             $proveedorModel->save($proveedor);
        }
-        $db = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
-        /* @var $db Doctrine\ORM\EntityManager */
-        $db->flush();
+    }
+
+    /**
+     * Lee los proyectos de todos los proveedores
+     */
+    private function scrapProyectosAdjudicados()
+    {
+        $proyectoModel  = $this->getServiceLocator()->get('Transparente\Model\ProyectoModel');
+        /* @var $protectoModel ProyectoModel */
+        $proveedorModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
+        /* @var $proveedorModel ProveedorModel */
+        $proveedores    = $proveedorModel->findAll([],['id' => 'ASC']);
+        foreach($proveedores as $proveedor) {
+            $proyectosList = $proyectoModel->scrapList($proveedor);
+            foreach ($proyectosList as $id) {
+                $proyecto = $proyectoModel->scrap($id,$proveedor->getId());
+                $proyecto->setProveedor($proveedor);
+                $proyectoModel->save($proyecto);
+            }
+        }
     }
 
     /**
      * Iniciando el scraper
      *
-     * @todo volver a encender el scraper de proveedores
      * @todo preguntar en el CLI si se quiere hacer cada paso
+     * @todo reiniciar la DB desde PHP y no desde el bash
      */
     public function indexAction()
     {
@@ -148,8 +171,13 @@ class ScraperController extends AbstractActionController
         }
         ini_set('memory_limit', -1);
 
-        $this->scrapProveedores();
+        // la lectura de los empleados municipales son datos locales
         $this->scrapEmpleadosMunicipales();
+        // empezamos la barrida de Guatecompras buscando los proveedores
+        $this->scrapProveedores();
+        // Ahora que ya tenemos los proveedores en la base de datos, ya podemos importar los proyectos
+        $this->scrapProyectosAdjudicados();
+
     }
 
 
