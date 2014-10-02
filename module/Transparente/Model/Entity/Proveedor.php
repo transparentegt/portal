@@ -188,8 +188,24 @@ class Proveedor extends AbstractDoctrineEntity
 
     public function setNombre ($nombre)
     {
-        $nombre = ScraperModel::nombresPropios($nombre);
-        $nombre = str_replace('Sociedad Anonima', 'S.A.', $nombre);
+        $nombre  = str_replace('"', '', $nombre);
+        $nombres = preg_split('/[\s,\.]+/', $nombre);
+        $nombre  = '';
+        foreach ($nombres as $n) {
+            $n = trim($n);
+            if (!$n) continue;
+            $nombre .= ' ';
+            // detectamos si tiene caracteres extraños
+            if (preg_match('/[^a-zÑñ]/i', $n)) {
+                $nombre .= mb_convert_case(trim($n), MB_CASE_UPPER, 'UTF-8');
+            } else {
+                // en caso contrario es un nombre propio
+                $nombre .= ScraperModel::nombresPropios($n);
+            }
+        }
+        $nombre = trim($nombre);
+        $nombre = preg_replace('/\s?sociedad anonima/i', ', S.A.', $nombre);
+        $nombre = trim($nombre);
         $this->nombre = $nombre;
         return $this;
     }

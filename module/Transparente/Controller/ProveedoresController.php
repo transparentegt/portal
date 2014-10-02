@@ -20,11 +20,12 @@ class ProveedoresController extends AbstractActionController
     {
         $proveedoresModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
         $entities         = $proveedoresModel->findAll();
+        $total            = number_format(count($entities));
         $paginator        = new Paginator(new Adapter(new ArrayCollection($entities)));
         if (!empty($_GET['page'])) {
             $paginator->setCurrentPageNumber($_GET['page']);
         }
-        return new ViewModel(compact('paginator'));
+        return new ViewModel(compact('paginator', 'total'));
     }
 
     /**
