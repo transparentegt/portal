@@ -257,7 +257,7 @@ class RepresentanteLegalModel extends AbstractModel
     public function scrapNombresComerciales($id)
     {
         $url     = 'http://guatecompras.gt/proveedores/consultaProveeNomCom.aspx?rqp=8&lprv='.$id;
-        $página  = ScraperModel::getCachedUrl($url, "representante-legal-nombre-comercial-$id");
+        $página  = ScraperModel::getCachedUrl($url, "replegal-nombre-comercial-$id");
         $xpath   = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]';
         $nodos   = $página->queryXpath($xpath);
         $nombres = [];
@@ -281,7 +281,7 @@ class RepresentanteLegalModel extends AbstractModel
     public function scrapRepresentantesLegales($parentId)
     {
         $url       = 'http://guatecompras.gt/proveedores/consultaprrepleg.aspx?rqp=8&lprv=' . $parentId;
-        $página    = ScraperModel::getCachedUrl($url, "proveedor-$parentId-representantes-legales");
+        $página    = ScraperModel::getCachedUrl($url, "proveedor-$parentId-reprlegales");
         $xpath     = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]/a';
         $nodos     = $página->queryXpath($xpath);
         $elementos = [];

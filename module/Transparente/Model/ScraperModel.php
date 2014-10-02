@@ -62,7 +62,7 @@ class ScraperModel
      */
     public static function getCachedUrl($url, $key, $method = self::PAGE_MODE_GET, &$vars = [])
     {
-        $key  .= "-$method-".substr(md5(serialize($vars)), 0, 6);
+        $key  .= "-$method";
         $cache = \Zend\Cache\StorageFactory::factory([
             'adapter' => [
                 'name'    => 'filesystem',
@@ -72,10 +72,10 @@ class ScraperModel
             'plugins' => array('serializer'),
         ]);
         if ($cache->hasItem($key)) {
-            echo "Leyendo cache:   \t$method\t$url\t\t$key\n";
+            echo sprintf("Leyendo cache:   \t%-40s\t%s\n", $key, $url);
             $content = $cache->getItem($key);
         } else {
-            echo "Leyendo original:\t$method\t$url\t\t$key\n";
+            echo sprintf("Leyendo original:\t%-40s\t%s\n", $key, $url);
             switch ($method) {
                 case self::PAGE_MODE_GET:
                     $content = null;
@@ -159,8 +159,6 @@ class ScraperModel
                     throw new \Exception("Cache type '$method' not defined");
             }
         }
-
-        //echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($data); die();
         if (!$content) {
             throw new \Exception("No se pudo leer la URL $url");
         }

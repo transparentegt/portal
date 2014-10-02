@@ -3,7 +3,6 @@ namespace Transparente\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Transparente\Model\Entity\AbstractDoctrineEntity;
 use Transparente\Model\ScraperModel;
 
 /**
@@ -210,7 +209,7 @@ class Proveedor extends AbstractDoctrineEntity
         $desordenados = $this->representantes_legales;
         $ordenados    = [];
         foreach ($desordenados as $entidad) {
-            if (in_array($entidad->getNombre(), $ordenados)) throw new \Exception('Nombre duplocado');
+            if (in_array($entidad->getNombre(), $ordenados)) throw new \Exception('Nombre duplicado');
             $ordenados[$entidad->getNombre()] = $entidad;
         }
         ksort($ordenados);

@@ -16,5 +16,6 @@ abstract class AbstractModel extends EntityRepository
     {
         $em = $this->getEntityManager();
         $em->persist($entity);
+        $em->flush();
     }
 }

@@ -3,9 +3,12 @@ namespace Transparente\Model;
 
 class ProveedorModel extends AbstractModel
 {
-    public function findAll()
+    public function findAll($where = [], $orderBy = [])
     {
-        return $this->findBy($criteria = [], $orderBy = ['nombre' => 'ASC']);
+        if (!$orderBy) {
+            $orderBy = ['nombre' => 'ASC'];
+        }
+        return $this->findBy($where, $orderBy);
     }
 
     public function findByNoDomicilioFiscal()
@@ -112,7 +115,7 @@ class ProveedorModel extends AbstractModel
         $start = 'http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.date('Y');
         do {
             $page++;
-            $html  = ScraperModel::getCachedUrl($start, "proveedores-list-page-$page", ScraperModel::PAGE_MODE_PAGER, $pagerKeys);
+            $html  = ScraperModel::getCachedUrl($start, "proveedores-$page", ScraperModel::PAGE_MODE_PAGER, $pagerKeys);
             $xpath = "//a[starts-with(@href, './consultaDetProveeAdj.aspx')]";
             $list  = $html->queryXpath($xpath);
             foreach ($list as $nodo) {
