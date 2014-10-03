@@ -2,6 +2,7 @@
 namespace Transparente\Model\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Proyectos adjudicados
@@ -22,12 +23,11 @@ class Proyecto extends AbstractDoctrineEntity
     protected $id;
 
     /**
-     * Proveedor adjudicado al proyecto
+     * Proveedores adjudicado al proyecto
      *
-     * @ORM\ManyToMany(targetEntity="Proveedor", inversedBy="proyectos")
-     * @ORM\JoinColumn(name="id_proveedor", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Proveedor", mappedBy="proyectos")
      */
-    protected $proveedor;
+    protected $proveedores;
 
     /**
      * @ORM\Column(type="string")
@@ -91,10 +91,12 @@ class Proyecto extends AbstractDoctrineEntity
      */
     protected $status;
 
-
-    public function setProveedor(\Transparente\Model\Entity\Proveedor $proveedor)
-    {
-        $this->proveedor = $proveedor;
+    public function __construct() {
+        $this->proveedores = new ArrayCollection();
     }
 
+    public function addProveedor(Proveedor $proveedor)
+    {
+        $this->proveedores[] = $proveedor;
+    }
 }

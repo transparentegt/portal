@@ -1,8 +1,8 @@
 DBNAME=maphpia_gtt
-mysqladmin drop -f $DBNAME
-mysqladmin create $DBNAME
+# mysqladmin drop -f $DBNAME
+# mysqladmin create $DBNAME
 vendor/bin/doctrine-module orm:validate-schema
-vendor/bin/doctrine-module orm:schema-tool:create
+vendor/bin/doctrine-module orm:schema-tool:update --force
 mysql $DBNAME  < db/db.data.sql
 while getopts ":dx" opt; do
   case $opt in

@@ -80,7 +80,7 @@ class Proveedor extends AbstractDoctrineEntity
     protected $principal_trabajo;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Proyecto", mappedBy="proveedor", cascade="persist")
+     * @ORM\ManyToMany(targetEntity="Proyecto", inversedBy="proveedores", cascade="persist")
      */
     protected $proyectos;
 
@@ -200,6 +200,12 @@ class Proveedor extends AbstractDoctrineEntity
         $this->nombres_comerciales    = new ArrayCollection();
         $this->proyectos              = new ArrayCollection();
         $this->representantes_legales = new ArrayCollection();
+    }
+
+    public function addProyecto(Proyecto $proyecto)
+    {
+        $proyecto->addProveedor($this);
+        $this->proyectos[] = $proyecto;
     }
 
     public function appendNombreComercial(ProveedorNombreComercial $nombreComercial)
