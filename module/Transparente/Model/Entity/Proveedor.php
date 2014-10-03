@@ -80,7 +80,7 @@ class Proveedor extends AbstractDoctrineEntity
     protected $principal_trabajo;
 
     /**
-     * @ORM\OneToMany(targetEntity="Proyecto", mappedBy="proveedor", cascade="persist")
+     * @ORM\ManyToMany(targetEntity="Proyecto", mappedBy="proveedor", cascade="persist")
      */
     protected $proyectos;
 

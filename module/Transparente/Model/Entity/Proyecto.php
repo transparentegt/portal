@@ -24,7 +24,7 @@ class Proyecto extends AbstractDoctrineEntity
     /**
      * Proveedor adjudicado al proyecto
      *
-     * @ORM\ManyToOne(targetEntity="Proveedor", inversedBy="proyectos")
+     * @ORM\ManyToMany(targetEntity="Proveedor", inversedBy="proyectos")
      * @ORM\JoinColumn(name="id_proveedor", referencedColumnName="id")
      */
     protected $proveedor;
