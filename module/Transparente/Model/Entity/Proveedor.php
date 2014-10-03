@@ -32,29 +32,10 @@ class Proveedor extends AbstractDoctrineEntity
     protected $id;
 
     /**
-     * Nombre o razón social
-     * @ORM\Column(type="string")
+     * @ORM\ManyToOne(targetEntity="Domicilio", cascade="persist")
+     * @ORM\JoinColumn(name="id_domicilio_comercial", referencedColumnName="id")
      */
-    protected $nombre;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $nit;
-
-    /**
-     * HABILITADO / INHABILITADO
-     *
-     * @ORM\Column(type="boolean")
-     */
-    protected $status;
-
-    /**
-     * En GTC se muestra como CON/SIN CONTRASEÑA
-     *
-     * @ORM\Column(type="boolean")
-     */
-    protected $tiene_acceso_sistema;
+    protected $domicilio_comercial;
 
     /**
      * @ORM\ManyToOne(targetEntity="Domicilio", cascade="persist")
@@ -63,24 +44,45 @@ class Proveedor extends AbstractDoctrineEntity
     protected $domicilio_fiscal;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Domicilio", cascade="persist")
-     * @ORM\JoinColumn(name="id_domicilio_comercial", referencedColumnName="id")
-     */
-    protected $domicilio_comercial;
-
-    /**
-     * Está en domicilio comercial, pero no queremos meter eso en la tabla domicilios.
-     *
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $url;
-
-    /**
      * Está en domicilio comercial, pero no queremos meter eso en la tabla domicilios.
      *
      * @ORM\Column(type="string", nullable=true)
      */
     protected $email;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $nit;
+
+    /**
+     * Nombre o razón social
+     * @ORM\Column(type="string")
+     */
+    protected $nombre;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ProveedorNombreComercial", mappedBy="proveedor", cascade="persist")
+     */
+    protected $nombres_comerciales;
+
+    /**
+     * Algunos proveedores no tienen este campo
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $principal_actividad;
+    /**
+     * Algunos proveedores no tienen este campo
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $principal_trabajo;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Proyecto", mappedBy="proveedor", cascade="persist")
+     */
+    protected $proyectos;
 
     /**
      * Última fecha que se actualizaron los representantes legales
@@ -104,13 +106,42 @@ class Proveedor extends AbstractDoctrineEntity
     protected $representantes_legales;
 
     /**
+     * HABILITADO / INHABILITADO
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $status;
+
+    /**
+     * En GTC se muestra como CON/SIN CONTRASEÑA
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $tiene_acceso_sistema;
+
+    /**
      * Los valores encontrados han sido: SOCIEDAD ANÓNIMA, INDIVIDUAL
      *
      * @todo tiene que ser un listado limitado
      *
      * @ORM\Column(type="string")
      */
-    // protected $tipo_organizacion;
+    protected $tipo_organización;
+
+    /**
+     * Última fecha que se actualizaron los representantes legales
+     *
+     * @ORM\Column(type="string")
+     */
+    protected $updated_sat;
+
+    /**
+     * Está en domicilio comercial, pero no queremos meter eso en la tabla domicilios.
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $url;
+
 
     /**
      * Datos recibidos de la SAT
@@ -146,14 +177,23 @@ class Proveedor extends AbstractDoctrineEntity
     // protected $inscripcion_sat;
 
     /**
-     * @ORM\OneToMany(targetEntity="ProveedorNombreComercial", mappedBy="proveedor", cascade="persist")
+     * @return mixed
      */
-    protected $nombres_comerciales;
+    public function getUpdatedSat()
+    {
+        return $this->updated_sat;
+    }
 
     /**
-     * @ORM\OneToMany(targetEntity="Proyecto", mappedBy="proveedor", cascade="persist")
+     * @param mixed $updated_sat
+     *
+     * @todo convertir a campo date
      */
-    protected $proyectos;
+    public function setUpdatedSat($updated_sat)
+    {
+        preg_match('/\d+\.\w+\.\d+/', $updated_sat, $matches);
+        $this->updated_sat = $matches[0];;
+    }
 
     public function __construct()
     {
@@ -208,6 +248,22 @@ class Proveedor extends AbstractDoctrineEntity
         $nombre = trim($nombre);
         $this->nombre = $nombre;
         return $this;
+    }
+
+    /**
+     * @param mixed $principal_actividad
+     */
+    public function setPrincipalActividad($principal_actividad)
+    {
+        $this->principal_actividad = ucfirst(strtolower($principal_actividad));
+    }
+
+    /**
+     * @param mixed $principal_trabajo
+     */
+    public function setPrincipalTrabajo($principal_trabajo)
+    {
+        $this->principal_trabajo = ucfirst(strtolower($principal_trabajo));
     }
 
     public function getNombresComerciales()
@@ -320,21 +376,25 @@ class Proveedor extends AbstractDoctrineEntity
         return $url;
     }
 
-    public function setUrl ($url)
-    {
-        $this->url = $url;
-        return $this;
-    }
-
     public function getEmail ()
     {
         return $this->email;
     }
 
-    public function setEmail ($email)
+    /**
+     * @return mixed
+     */
+    public function getPrincipalActividad()
     {
-        $this->email = $email;
-        return $this;
+        return $this->principal_actividad;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrincipalTrabajo()
+    {
+        return $this->principal_trabajo;
     }
 
     public function getRepLegalesUpdated ()
@@ -342,32 +402,14 @@ class Proveedor extends AbstractDoctrineEntity
         return $this->rep_legales_updated;
     }
 
-    public function setRepLegalesUpdated ($rep_legales_updated)
+    public function getTipoOrganización ()
     {
-        $this->rep_legales_updated = $rep_legales_updated;
-        return $this;
-    }
-
-    public function getTipoOrganizacion ()
-    {
-        return $this->tipo_organizacion;
-    }
-
-    public function setTipoOrganizacion ($tipo_organizacion)
-    {
-        $this->tipo_organizacion = $tipo_organizacion;
-        return $this;
+        return $this->tipo_organización;
     }
 
     public function getConstNumEscritura ()
     {
         return $this->const_num_escritura;
-    }
-
-    public function setConstNumEscritura ($const_num_escritura)
-    {
-        $this->const_num_escritura = $const_num_escritura;
-        return $this;
     }
 
     public function getConstFecha ()
@@ -386,21 +428,9 @@ class Proveedor extends AbstractDoctrineEntity
         return $this->inscripcion_provisional;
     }
 
-    public function setInscripcionProvisional ($inscripcion_provisional)
-    {
-        $this->inscripcion_provisional = $inscripcion_provisional;
-        return $this;
-    }
-
     public function getInscripcionDefinitiva ()
     {
         return $this->inscripcion_definitiva;
-    }
-
-    public function setInscripcionDefinitiva ($inscripcion_definitiva)
-    {
-        $this->inscripcion_definitiva = $inscripcion_definitiva;
-        return $this;
     }
 
     public function getInscripcionSat ()
@@ -408,9 +438,14 @@ class Proveedor extends AbstractDoctrineEntity
         return $this->inscripcion_sat;
     }
 
-    public function setInscripcionSat ($inscripcion_sat)
+    /**
+     * @param string $tipo_organización
+     */
+    public function setTipoOrganización($tipo_organización)
     {
-        $this->inscripcion_sat = $inscripcion_sat;
-        return $this;
+        $this->tipo_organización = mb_strtolower($tipo_organización, 'UTF-8');
     }
+
+
+
 }

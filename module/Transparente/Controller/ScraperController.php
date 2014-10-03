@@ -90,12 +90,12 @@ class ScraperController extends AbstractActionController
             $proveedor = new \Transparente\Model\Entity\Proveedor();
             $proveedor->exchangeArray($data);
 
-            if (!empty($data['domicilio_fiscal'])) {
+            if (!empty($data['fiscal'])) {
                 $totales['domicilios']++;
                 $domicilio = new \Transparente\Model\Entity\Domicilio();
-                $domicilio->exchangeArray($data['domicilio_fiscal']);
+                $domicilio->exchangeArray($data['fiscal']);
                 try {
-                    $domicilio = $domicilioModel->createFromScrappedData($data['domicilio_fiscal']);
+                    $domicilio = $domicilioModel->createFromScrappedData($data['fiscal']);
                     if ($domicilio) {
                         $proveedor->setDomicilioFiscal($domicilio);
                     }
@@ -104,12 +104,12 @@ class ScraperController extends AbstractActionController
                 }
             }
 
-            if (!empty($data['domicilio_comercial'])) {
+            if (!empty($data['comercial'])) {
                 $totales['domicilios']++;
                 $domicilio = new \Transparente\Model\Entity\Domicilio();
-                $domicilio->exchangeArray($data['domicilio_comercial']);
+                $domicilio->exchangeArray($data['comercial']);
                 try {
-                    $domicilio = $domicilioModel->createFromScrappedData($data['domicilio_comercial']);
+                    $domicilio = $domicilioModel->createFromScrappedData($data['comercial']);
                     if ($domicilio) {
                         $proveedor->setDomicilioComercial($domicilio);
                     }
