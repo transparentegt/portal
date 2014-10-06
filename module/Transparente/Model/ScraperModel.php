@@ -27,8 +27,6 @@ class ScraperModel
                         try {
                             $nodes = $dom->queryXpath($path);
                         } catch (\Exception $e) {
-                            echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($dom->getDocument()); die();
-
                             throw new \Exception("No se encontríó el path '$path'", null, $e);
                         }
                     } else {
@@ -116,11 +114,16 @@ class ScraperModel
                         $vars['totalPages'] = $totalPages;
 
                         // definir llaves del paginador basados en la primera página
-                        $cssEventValidation        = 'input[name="__EVENTVALIDATION"]';
-                        $vars['__EVENTVALIDATION'] = $domQuery->execute($cssEventValidation)[0]->getAttribute('value');
-                        $cssViewState              = 'input[name="__VIEWSTATE"]';
-                        $vars['__VIEWSTATE']       = $domQuery->execute($cssViewState)[0]->getAttribute('value');
-
+                        $node = 'input[name="__EVENTVALIDATION"]';
+                        $node = $domQuery->execute($node);
+                        if ($node) {
+                            $vars['__EVENTVALIDATION'] = $node[0]->getAttribute('value');
+                        }
+                        $node = 'input[name="__VIEWSTATE"]';
+                        $node = $domQuery->execute($node)[0];
+                        if ($node) {
+                            $vars['__VIEWSTATE'] = $node->getAttribute('value');
+                        }
                         // la llamada recursiva nos devuelve el objeto ya listo para retornarlo
                         return $domQuery;
                     }
