@@ -147,15 +147,12 @@ class ScraperController extends AbstractActionController
         $proveedorModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
         /* @var $proveedorModel ProveedorModel */
         $proveedores    = $proveedorModel->findAll([],['id' => 'ASC']);
-        $proyectos      = [];
         foreach($proveedores as $proveedor) {
             $proyectosList = $proyectoModel->scrapList($proveedor);
             foreach ($proyectosList as $id) {
-                if (isset($proyectos[$id])) {
-                    $proyecto = $proyectos[$id];
-                } else {
+                $proyecto = $proyectoModel->find($id);
+                if (!$proyecto) {
                     $proyecto       = $proyectoModel->scrap($id,$proveedor->getId());
-                    $proyectos[$id] = $proyecto;
                 }
                 $proveedor->addProyecto($proyecto);
             }
@@ -183,7 +180,6 @@ class ScraperController extends AbstractActionController
         // $this->scrapProveedores();
         // Ahora que ya tenemos los proveedores en la base de datos, ya podemos importar los proyectos
         $this->scrapProyectosAdjudicados();
-
     }
 
 
