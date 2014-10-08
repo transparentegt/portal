@@ -149,10 +149,11 @@ class ScraperController extends AbstractActionController
         $proveedores    = $proveedorModel->findAll([],['id' => 'ASC']);
         foreach($proveedores as $proveedor) {
             $proyectosList = $proyectoModel->scrapList($proveedor);
+            $proyectosList = $proveedor->menosProyectosQueYaTengo($proyectosList);
             foreach ($proyectosList as $id) {
                 $proyecto = $proyectoModel->find($id);
                 if (!$proyecto) {
-                    $proyecto       = $proyectoModel->scrap($id,$proveedor->getId());
+                    $proyecto = $proyectoModel->scrap($id,$proveedor->getId());
                 }
                 $proveedor->addProyecto($proyecto);
             }

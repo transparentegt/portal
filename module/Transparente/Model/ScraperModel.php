@@ -13,6 +13,8 @@ class ScraperModel
     const PAGE_MODE_POST  = 'POST';
     CONST PAGE_MODE_PAGER = 'PAGER';
 
+    private static $cache;
+
     public static function fetchData($xpaths, \Zend\Dom\Query $dom)
     {
         $element = [];
@@ -48,6 +50,21 @@ class ScraperModel
         return $element;
     }
 
+    public static function getCache()
+    {
+        if (!self::$cache) {
+            self::$cache = \Zend\Cache\StorageFactory::factory([
+                'adapter' => [
+                    'name'    => 'filesystem',
+                    'ttl'     => PHP_INT_MAX,
+                    'options' => ['cache_dir' => realpath('./data/cache')],
+                ],
+                'plugins' => array('serializer'),
+            ]);
+        }
+        return self::$cache;
+    }
+
     /**
      * Retorna el contenido de la página solicitada, y la guarda en cache por si la vuelven a pedir
      *
@@ -61,14 +78,7 @@ class ScraperModel
     public static function getCachedUrl($url, $key, $method = self::PAGE_MODE_GET, &$vars = [])
     {
         $key  .= "-$method";
-        $cache = \Zend\Cache\StorageFactory::factory([
-            'adapter' => [
-                'name'    => 'filesystem',
-                'ttl'     => PHP_INT_MAX,
-                'options' => ['cache_dir' => realpath('./data/cache')],
-            ],
-            'plugins' => array('serializer'),
-        ]);
+        $cache = self::getCache();
         if ($cache->hasItem($key)) {
             echo sprintf("Leyendo cache:   \t%-40s\t%s\n", $key, $url);
             $content = $cache->getItem($key);

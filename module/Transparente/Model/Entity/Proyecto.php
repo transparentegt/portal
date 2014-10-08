@@ -99,4 +99,12 @@ class Proyecto extends AbstractDoctrineEntity
     {
         $this->proveedores[] = $proveedor;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }

@@ -55,30 +55,37 @@ class ProyectoModel extends AbstractModel
      */
     public function scrapList(Proveedor $proveedor)
     {
-        $pagerKeys   = [
-            '_body:MasterGC$ContentBlockHolder$ScriptManager1' => 'MasterGC$ContentBlockHolder$UpdatePanel1|MasterGC$ContentBlockHolder$dgResultado$ctl55$ctl',
-            '__EVENTTARGET'                                    => 'MasterGC$ContentBlockHolder$dgResultado$ctl55$ctl',
-        ];
-        $ids   = [];
-        $page  = 0;
-        $start = "http://guatecompras.gt/proveedores/consultaDetProveeAdj.aspx?rqp=5&lprv={$proveedor->getId()}&iTipo=1&lper=" . date('Y');
-        do {
-            $page++;
-            $html  = ScraperModel::getCachedUrl($start, "proveedor-{$proveedor->getId()}-proyectos-$page", ScraperModel::PAGE_MODE_PAGER, $pagerKeys);
-            $xpath = "//a[starts-with(@href, '../Concursos/consultaDetalleCon.aspx')]";
-            $list  = $html->queryXpath($xpath);
-            $encontrados = count($list);
-            foreach ($list as $nodo) {
-                /* @var $proveedor DOMElement */
-                $url  = parse_url($nodo->getAttribute('href'));
-                parse_str($url['query'], $url);
-                $id   = (int) $url['nog'];
-                if (!in_array($id, $ids)) {
-                    $ids[]         = $id;
+        $key = "proveedor-{$proveedor->getId()}-proyectos-list";
+        if (ScraperModel::getCache()->hasItem($key)) {
+            echo "Leyendo cache: $key\n";
+            $ids = ScraperModel::getCache()->getItem($key);
+        } else {
+            $pagerKeys   = [
+                '_body:MasterGC$ContentBlockHolder$ScriptManager1' => 'MasterGC$ContentBlockHolder$UpdatePanel1|MasterGC$ContentBlockHolder$dgResultado$ctl55$ctl',
+                '__EVENTTARGET'                                    => 'MasterGC$ContentBlockHolder$dgResultado$ctl55$ctl',
+            ];
+            $ids   = [];
+            $page  = 0;
+            $start = "http://guatecompras.gt/proveedores/consultaDetProveeAdj.aspx?rqp=5&lprv={$proveedor->getId()}&iTipo=1&lper=" . date('Y');
+            do {
+                $page++;
+                $html  = ScraperModel::getCachedUrl($start, "proveedor-{$proveedor->getId()}-proyectos-$page", ScraperModel::PAGE_MODE_PAGER, $pagerKeys);
+                $xpath = "//a[starts-with(@href, '../Concursos/consultaDetalleCon.aspx')]";
+                $list  = $html->queryXpath($xpath);
+                $encontrados = count($list);
+                foreach ($list as $nodo) {
+                    /* @var $proveedor DOMElement */
+                    $url  = parse_url($nodo->getAttribute('href'));
+                    parse_str($url['query'], $url);
+                    $id   = (int) $url['nog'];
+                    if (!isset($ids[$id])) {
+                        $ids[$id] = $id;
+                    }
                 }
-            }
-        } while($page <= $pagerKeys['totalPages']);
-        sort($ids);
+            } while($page <= $pagerKeys['totalPages']);
+            asort($ids);
+            ScraperModel::getCache()->setItem($key, $ids);
+        }
         return $ids;
     }
 

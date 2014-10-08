@@ -81,6 +81,8 @@ class Proveedor extends AbstractDoctrineEntity
 
     /**
      * @ORM\ManyToMany(targetEntity="Proyecto", inversedBy="proveedores", cascade="persist")
+     *
+     * @var Proyecto
      */
     protected $proyectos;
 
@@ -443,6 +445,23 @@ class Proveedor extends AbstractDoctrineEntity
     {
         return $this->inscripcion_sat;
     }
+
+    /**
+     * De un listado de proyectos retorna solo los que no hay ya asociados a este proveedor
+     *
+     * @param  array $proyectosList
+     * @return array
+     */
+    public function menosProyectosQueYaTengo($proyectosList)
+    {
+        $proyectos = $this->proyectos;
+        foreach ($proyectos as $proyecto) {
+            unset($proyectosList[$proyecto->getId()]);
+        }
+        return $proyectosList;
+    }
+
+
 
     /**
      * @param string $tipo_organización
