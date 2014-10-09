@@ -146,7 +146,7 @@ class ScraperController extends AbstractActionController
         /* @var $protectoModel ProyectoModel */
         $proveedorModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
         /* @var $proveedorModel ProveedorModel */
-        $proveedores    = $proveedorModel->findAll([],['id' => 'ASC']);
+        $proveedores    = $proveedorModel->findPendientesDeScrapearProyectos();
         foreach($proveedores as $proveedor) {
             $proyectosList = $proyectoModel->scrapList($proveedor);
             $proyectosList = $proveedor->menosProyectosQueYaTengo($proyectosList);

@@ -77,13 +77,15 @@ class ScraperModel
      */
     public static function getCachedUrl($url, $key, $method = self::PAGE_MODE_GET, &$vars = [])
     {
-        $key  .= "-$method";
-        $cache = self::getCache();
+        $downloaded = false;
+        $key       .= "-$method";
+        $cache      = self::getCache();
         if ($cache->hasItem($key)) {
             echo sprintf("Leyendo cache:   \t%-40s\t%s\n", $key, $url);
             $content = $cache->getItem($key);
         } else {
             echo sprintf("Leyendo original:\t%-40s\t%s\n", $key, $url);
+            $downloaded = true;
             switch ($method) {
                 case self::PAGE_MODE_GET:
                     $content = null;
@@ -116,8 +118,13 @@ class ScraperModel
                         $domQuery                = ScraperModel::getCachedUrl($url, $key, self::PAGE_MODE_GET, $vars);
 
                         $cssItems   = "span#MasterGC_ContentBlockHolder_lblFilas";
-                        $totalItems = explode(' ',$domQuery->execute($cssItems)[0]->textContent)[4];
+                        $totalItems = $domQuery->execute($cssItems);
+                        $totalItems = $totalItems[0]->textContent;
+                        $totalItems = explode(' ',$totalItems)[4];
                         $totalItems = \NumberFormatter::create('en_US', \NumberFormatter::DECIMAL)->parse($totalItems);
+                        if (!$totalItems) {
+                            return false;
+                        }
                         $totalPages = ceil($totalItems/50);
 
                         $vars['totalItems'] = $totalItems;
@@ -175,7 +182,9 @@ class ScraperModel
         if (!$content) {
             throw new \Exception("No se pudo leer la URL $url");
         }
-        $cache->setItem($key, $content);
+        if ($downloaded) {
+            $cache->setItem($key, $content);
+        }
         $dom = new \Zend\Dom\Query($content);
         return $dom;
     }

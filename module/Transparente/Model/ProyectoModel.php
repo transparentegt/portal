@@ -70,6 +70,9 @@ class ProyectoModel extends AbstractModel
             do {
                 $page++;
                 $html  = ScraperModel::getCachedUrl($start, "proveedor-{$proveedor->getId()}-proyectos-$page", ScraperModel::PAGE_MODE_PAGER, $pagerKeys);
+                if (!$html) {
+                    break;
+                }
                 $xpath = "//a[starts-with(@href, '../Concursos/consultaDetalleCon.aspx')]";
                 $list  = $html->queryXpath($xpath);
                 $encontrados = count($list);

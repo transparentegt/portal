@@ -24,6 +24,28 @@ class ProveedorModel extends AbstractModel
     }
 
     /**
+     * Retornla el arreglo de proveedores pendientes de leer sus proyectos
+     * 
+     * @return Proveedor[]
+     */
+    public function findPendientesDeScrapearProyectos()
+    {
+        $dql    = 'SELECT MAX(Proveedor.id)
+                FROM Transparente\Model\Entity\Proveedor Proveedor
+                JOIN Proveedor.proyectos
+                ';
+        $query  = $this->getEntityManager()->createQuery($dql);
+        $result = $query->getResult();
+        $result = (int) $result[0][1];
+        $dql    = "SELECT Proveedor
+                FROM Transparente\Model\Entity\Proveedor Proveedor
+                WHERE Proveedor.id >= $result
+                ORDER BY Proveedor.id ASC";
+        $query = $this->getEntityManager()->createQuery($dql);
+        return $query->getResult();
+    }
+
+    /**
      * Lee todos los datos del proveedor según su ID
      *
      * @param int $id
