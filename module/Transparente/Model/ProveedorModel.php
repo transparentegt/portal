@@ -25,7 +25,7 @@ class ProveedorModel extends AbstractModel
 
     /**
      * Retornla el arreglo de proveedores pendientes de leer sus proyectos
-     * 
+     *
      * @return Proveedor[]
      */
     public function findPendientesDeScrapearProyectos()

@@ -19,10 +19,11 @@ class ProyectoModel extends AbstractModel
     {
         $url    = "http://guatecompras.gt/Concursos/consultaDetalleCon.aspx?nog={$id}&o=10&rqp=5&lprv={$proveedorId}&iTipo=1&lper=2014";
         $página = ScraperModel::getCachedUrl($url, "proyecto-$id");
-
+        // en orde de como los vemos en la página de GTC
         $xpaths = [
+            // le pusimos "nombre" para estandarizar que toda entidad tenga un nombre, pero en GTC dice "descripción"
+            'nombre'                      => '//*[@id="MasterGC_ContentBlockHolder_txtTitulo"]',
             'categoría'                   => '//*[@id="MasterGC_ContentBlockHolder_txtCategoria"]',
-            'descripción'                 => '//*[@id="MasterGC_ContentBlockHolder_txtTitulo"]',
             'modalidad'                   => '//*[@id="MasterGC_ContentBlockHolder_txtModalidad"]',
             'tipo'                        => '//*[@id="MasterGC_ContentBlockHolder_txtTipo"]',
             'comprador'                   => '//*[@id="MasterGC_ContentBlockHolder_txtEntidad"]',

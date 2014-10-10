@@ -178,25 +178,6 @@ class Proveedor extends AbstractDoctrineEntity
      */
     // protected $inscripcion_sat;
 
-    /**
-     * @return mixed
-     */
-    public function getUpdatedSat()
-    {
-        return $this->updated_sat;
-    }
-
-    /**
-     * @param mixed $updated_sat
-     *
-     * @todo convertir a campo date
-     */
-    public function setUpdatedSat($updated_sat)
-    {
-        preg_match('/\d+\.\w+\.\d+/', $updated_sat, $matches);
-        $this->updated_sat = $matches[0];;
-    }
-
     public function __construct()
     {
         $this->nombres_comerciales    = new ArrayCollection();
@@ -224,9 +205,63 @@ class Proveedor extends AbstractDoctrineEntity
         return $this;
     }
 
+    public function getConstFecha ()
+    {
+        return $this->const_fecha;
+    }
+
+    public function getConstNumEscritura ()
+    {
+        return $this->const_num_escritura;
+    }
+
+    public function getDomicilioComercial ()
+    {
+        return $this->domicilio_comercial;
+    }
+
+    public function getDomicilioFiscal ()
+    {
+        return $this->domicilio_fiscal;
+    }
+
+    public function getEmail ()
+    {
+        return $this->email;
+    }
+
     public function getId ()
     {
         return $this->id;
+    }
+
+    public function getInscripcionProvisional ()
+    {
+        return $this->inscripcion_provisional;
+    }
+
+    public function getInscripcionDefinitiva ()
+    {
+        return $this->inscripcion_definitiva;
+    }
+
+    public function getInscripcionSat ()
+    {
+        return $this->inscripcion_sat;
+    }
+
+    /**
+     * Se retorna el NIT con el guión del dígito verificador final
+     *
+     * @return string
+     *
+     * @todo validar cuando el nit es inválido
+     */
+    public function getNit()
+    {
+        $nit = $this->nit;
+        $nit = substr($nit, 0, strlen($nit) -1) . '-' . substr($nit, -1, 1);
+        return $nit;
     }
 
     public function getNombre ()
@@ -234,49 +269,38 @@ class Proveedor extends AbstractDoctrineEntity
         return $this->nombre;
     }
 
-    public function setNombre ($nombre)
-    {
-        $nombre  = str_replace('"', '', $nombre);
-        $nombres = preg_split('/[\s,\.]+/', $nombre);
-        $nombre  = '';
-        foreach ($nombres as $n) {
-            $n = trim($n);
-            if (!$n) continue;
-            $nombre .= ' ';
-            // detectamos si tiene caracteres extraños
-            if (preg_match('/[^a-zÑñ]/i', $n)) {
-                $nombre .= mb_convert_case(trim($n), MB_CASE_UPPER, 'UTF-8');
-            } else {
-                // en caso contrario es un nombre propio
-                $nombre .= ScraperModel::nombresPropios($n);
-            }
-        }
-        $nombre = trim($nombre);
-        $nombre = preg_replace('/\s?sociedad anonima/i', ', S.A.', $nombre);
-        $nombre = trim($nombre);
-        $this->nombre = $nombre;
-        return $this;
-    }
-
-    /**
-     * @param mixed $principal_actividad
-     */
-    public function setPrincipalActividad($principal_actividad)
-    {
-        $this->principal_actividad = ucfirst(strtolower($principal_actividad));
-    }
-
-    /**
-     * @param mixed $principal_trabajo
-     */
-    public function setPrincipalTrabajo($principal_trabajo)
-    {
-        $this->principal_trabajo = ucfirst(strtolower($principal_trabajo));
-    }
-
     public function getNombresComerciales()
     {
         return $this->nombres_comerciales;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrincipalActividad()
+    {
+        return $this->principal_actividad;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrincipalTrabajo()
+    {
+        return $this->principal_trabajo;
+    }
+
+    /**
+     * @return Proyecto
+     */
+    public function getProyectos()
+    {
+        return $this->proyectos;
+    }
+
+    public function getRepLegalesUpdated ()
+    {
+        return $this->rep_legales_updated;
     }
 
     /**
@@ -296,26 +320,6 @@ class Proveedor extends AbstractDoctrineEntity
         return $ordenados;
     }
 
-    /**
-     * Se retorna el NIT con el guión del dígito verificador final
-     *
-     * @return string
-     *
-     * @todo validar cuando el nit es inválido
-     */
-    public function getNit()
-    {
-        $nit = $this->nit;
-        $nit = substr($nit, 0, strlen($nit) -1) . '-' . substr($nit, -1, 1);
-        return $nit;
-    }
-
-    public function setNit ($nit)
-    {
-        $this->nit = $nit;
-        return $this;
-    }
-
     public function getStatus ($human = false)
     {
         $flag = $this->status;
@@ -323,12 +327,6 @@ class Proveedor extends AbstractDoctrineEntity
             $flag = ($flag) ? 'activo' : 'inactivo';
         }
         return $flag;
-    }
-
-    public function setStatus ($status)
-    {
-        $this->status = $status;
-        return $this;
     }
 
     public function getTieneAccesoSistema ($human = false)
@@ -340,32 +338,17 @@ class Proveedor extends AbstractDoctrineEntity
         return $flag;
     }
 
-    public function setTieneAccesoSistema ($tiene_acceso_sistema)
+    public function getTipoOrganización ()
     {
-        $this->tiene_acceso_sistema = $tiene_acceso_sistema;
-        return $this;
+        return $this->tipo_organización;
     }
 
-    public function getDomicilioFiscal ()
+    /**
+     * @return mixed
+     */
+    public function getUpdatedSat()
     {
-        return $this->domicilio_fiscal;
-    }
-
-    public function setDomicilioFiscal (\Transparente\Model\Entity\Domicilio $domicilio)
-    {
-        $this->domicilio_fiscal = $domicilio;
-        return $this;
-    }
-
-    public function getDomicilioComercial ()
-    {
-        return $this->domicilio_comercial;
-    }
-
-    public function setDomicilioComercial (\Transparente\Model\Entity\Domicilio $domicilio)
-    {
-        $this->domicilio_comercial = $domicilio;
-        return $this;
+        return $this->updated_sat;
     }
 
     public function getUrl ()
@@ -384,68 +367,6 @@ class Proveedor extends AbstractDoctrineEntity
         return $url;
     }
 
-    public function getEmail ()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPrincipalActividad()
-    {
-        return $this->principal_actividad;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPrincipalTrabajo()
-    {
-        return $this->principal_trabajo;
-    }
-
-    public function getRepLegalesUpdated ()
-    {
-        return $this->rep_legales_updated;
-    }
-
-    public function getTipoOrganización ()
-    {
-        return $this->tipo_organización;
-    }
-
-    public function getConstNumEscritura ()
-    {
-        return $this->const_num_escritura;
-    }
-
-    public function getConstFecha ()
-    {
-        return $this->const_fecha;
-    }
-
-    public function setConstFecha ($const_fecha)
-    {
-        $this->const_fecha = $const_fecha;
-        return $this;
-    }
-
-    public function getInscripcionProvisional ()
-    {
-        return $this->inscripcion_provisional;
-    }
-
-    public function getInscripcionDefinitiva ()
-    {
-        return $this->inscripcion_definitiva;
-    }
-
-    public function getInscripcionSat ()
-    {
-        return $this->inscripcion_sat;
-    }
-
     /**
      * De un listado de proyectos retorna solo los que no hay ya asociados a este proveedor
      *
@@ -461,7 +382,66 @@ class Proveedor extends AbstractDoctrineEntity
         return $proyectosList;
     }
 
+    public function setConstFecha ($const_fecha)
+    {
+        $this->const_fecha = $const_fecha;
+        return $this;
+    }
 
+    public function setDomicilioComercial (\Transparente\Model\Entity\Domicilio $domicilio)
+    {
+        $this->domicilio_comercial = $domicilio;
+        return $this;
+    }
+
+    public function setDomicilioFiscal (\Transparente\Model\Entity\Domicilio $domicilio)
+    {
+        $this->domicilio_fiscal = $domicilio;
+        return $this;
+    }
+
+    public function setNombre ($nombre)
+    {
+        $nombre = ScraperModel::nombresPropios($nombre);
+        $nombre = preg_replace('/\s?sociedad anonima/i', ', S.A.', $nombre);
+        $nombre = trim($nombre);
+        $this->nombre = $nombre;
+        return $this;
+    }
+
+    public function setNit ($nit)
+    {
+        $this->nit = $nit;
+        return $this;
+    }
+
+    /**
+     * @param mixed $principal_actividad
+     */
+    public function setPrincipalActividad($principal_actividad)
+    {
+        $this->principal_actividad = ucfirst(strtolower($principal_actividad));
+    }
+
+    /**
+     * @param mixed $principal_trabajo
+     */
+    public function setPrincipalTrabajo($principal_trabajo)
+    {
+        $this->principal_trabajo = ucfirst(strtolower($principal_trabajo));
+    }
+
+    public function setStatus ($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    public function setTieneAccesoSistema ($tiene_acceso_sistema)
+    {
+        $this->tiene_acceso_sistema = $tiene_acceso_sistema;
+        return $this;
+    }
 
     /**
      * @param string $tipo_organización
@@ -471,6 +451,14 @@ class Proveedor extends AbstractDoctrineEntity
         $this->tipo_organización = mb_strtolower($tipo_organización, 'UTF-8');
     }
 
-
-
+    /**
+     * @param mixed $updated_sat
+     *
+     * @todo convertir a campo date
+     */
+    public function setUpdatedSat($updated_sat)
+    {
+        preg_match('/\d+\.\w+\.\d+/', $updated_sat, $matches);
+        $this->updated_sat = $matches[0];;
+    }
 }

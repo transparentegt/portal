@@ -37,12 +37,17 @@ class Proyecto extends AbstractDoctrineEntity
     /**
      * @ORM\Column(type="string")
      */
-    protected $descripción;
+    protected $modalidad;
 
     /**
+     * Nombre del proyecto
+     *
+     * Le pusimos "nombre" para estandarizar que toda entidad tenga un nombre, pero en GTC dice "descripción"
+     * Tiene de constrain en GTC que es un campo de varchar(200) detectado por los nombres más largos
+     *
      * @ORM\Column(type="string")
      */
-    protected $modalidad;
+    protected $nombre;
 
     /**
      * @ORM\Column(type="string")
@@ -107,4 +112,23 @@ class Proyecto extends AbstractDoctrineEntity
     {
         return $this->id;
     }
+
+    /**
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * @param mixed $nombre
+     */
+    public function setNombre($nombre)
+    {
+        $nombre       = ScraperModel::nombresPropios($nombre);
+        $this->nombre = $nombre;
+    }
+
+
 }

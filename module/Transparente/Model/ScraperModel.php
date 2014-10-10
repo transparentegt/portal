@@ -195,10 +195,25 @@ class ScraperModel
      * @param string $string
      * @return string
      */
-    public static function nombresPropios($string)
+    public static function nombresPropios($nombre)
     {
-        $string = mb_convert_case(trim($string), MB_CASE_TITLE, 'UTF-8');
-        return $string;
+        $nombre  = str_replace('"', '', $nombre);
+        $nombres = preg_split('/[\s,\.]+/', $nombre);
+        $nombre  = '';
+        foreach ($nombres as $n) {
+            $n = trim($n);
+            if (!$n) continue;
+            $nombre .= ' ';
+            // detectamos si tiene caracteres extraños
+            if (preg_match('/[^a-zÑñ]/i', $n)) {
+                $nombre .= mb_convert_case(trim($n), MB_CASE_UPPER, 'UTF-8');
+            } else {
+                // en caso contrario es un nombre propio
+                $nombre .= mb_convert_case(trim($n), MB_CASE_TITLE, 'UTF-8');
+            }
+        }
+        $nombre = trim($nombre);
+        return $nombre;
     }
 
 }

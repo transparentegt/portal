@@ -33,7 +33,8 @@ $representantes = $this->representantes;
     <div class="panel panel-default empleado">
         <div class="panel-heading"><?=$empleado->getCargo()?></div>
             <div class="panel-body">
-                <img class="pull-left logo-partido"
+                <img class="pull-left logo-partido img-thumbnail"
+                     title="<?=$empleado->getPartidoPolítico()->getNombre()?>"  alt="<?=$empleado->getPartidoPolítico()->getNombre()?>"
                      src="<?=$this->basePath()?>/Transparente/img/logos-partidos/<?=$empleado->getPartidoPolítico()->getIniciales()?>.svg"  />
                 <h4><?=$empleado->getNombre()?></h4>
                 <?php if ($representantes[$empleado->getId()]) :?>

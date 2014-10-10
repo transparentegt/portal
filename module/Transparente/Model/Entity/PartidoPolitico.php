@@ -58,6 +58,19 @@ class PartidoPolitico extends AbstractDoctrineEntity
         return $this;
     }
 
+    /**
+     * Partidos que no tenemos el nombre, por lo menos devolver las iniciales.
+     * @return string
+     */
+    public function getNombre()
+    {
+        $nombre = $this->nombre;
+        if (!$nombre) {
+            $nombre = $this->getIniciales();
+        }
+        return $nombre;
+    }
+
     public function getId ()
     {
         return $this->id;
