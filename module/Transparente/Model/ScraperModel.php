@@ -205,7 +205,7 @@ class ScraperModel
             if (!$n) continue;
             $nombre .= ' ';
             // detectamos si tiene caracteres extraños
-            if (preg_match('/[^a-zÑñ]/i', $n)) {
+            if (preg_match('/[^a-zÑñÁÉÍÓÚáéíóúÜü]/i', $n)) {
                 $nombre .= mb_convert_case(trim($n), MB_CASE_UPPER, 'UTF-8');
             } else {
                 // en caso contrario es un nombre propio
@@ -223,13 +223,19 @@ class ScraperModel
      */
     public static function fecha($date)
     {
+        $meses = [
+            [null, 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+            [null, 'eneero', 'febrero', 'marzo', 'abrbril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+        ] ;
         preg_match('/(\d+)\.(\w+)\.(\d+)/', $date, $matches);
-        $meses = [null, 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
-        $día   = $matches[1];
-        $mes   = $matches[2];
-        $año   = $matches[3];
-        $mes   = array_search($mes, $meses);
-        $fecha = new \DateTime("$año-$mes-$día");
+        $día = $matches[1];
+        $año = $matches[3];
+        foreach ($meses as $nombres) {
+            $mes = array_search($matches[2], $nombres);
+            if ($mes) break;
+        }
+        $fecha = "$año-$mes-$día";
+        $fecha = new \DateTime($fecha);
         return $fecha;
     }
 }

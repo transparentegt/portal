@@ -134,6 +134,24 @@ class Proyecto extends AbstractDoctrineEntity
     }
 
     /**
+     * @param string $nombre
+     */
+    public function setEntidadCompradora($nombre)
+    {
+        $nombre                   = ScraperModel::nombresPropios($nombre);
+        $this->entidad_compradora = $nombre;
+    }
+
+    /**
+     * @param string $nombre
+     */
+    public function setEntidadCompradoraUnidad($nombre)
+    {
+        $nombre                          = ScraperModel::nombresPropios($nombre);
+        $this->entidad_compradora_unidad = $nombre;
+    }
+
+    /**
      * @param mixed $fecha_cierre_ofertas
      */
     public function setFechaCierreOfertas($fecha_cierre_ofertas)
@@ -158,7 +176,7 @@ class Proyecto extends AbstractDoctrineEntity
     }
 
     /**
-     * @param mixed $fecha_publicación
+     * @param string $fecha_publicación
      */
     public function setFechaPublicación($fecha_publicación)
     {
@@ -166,7 +184,7 @@ class Proyecto extends AbstractDoctrineEntity
     }
 
     /**
-     * @param mixed $nombre
+     * @param string $nombre
      */
     public function setNombre($nombre)
     {
