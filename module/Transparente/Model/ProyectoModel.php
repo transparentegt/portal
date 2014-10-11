@@ -15,33 +15,35 @@ class ProyectoModel extends AbstractModel
      * @todo scrapear entidad compradora
      * @todo scrapear unidad compradora
      */
-    public function scrap($id, $proveedorId)
+    public function scrap($id)
     {
-        $url    = "http://guatecompras.gt/Concursos/consultaDetalleCon.aspx?nog={$id}&o=10&rqp=5&lprv={$proveedorId}&iTipo=1&lper=2014";
+        $url    = "http://guatecompras.gt/Concursos/consultaDetalleCon.aspx?nog={$id}&o=0&lper=2014";
         $página = ScraperModel::getCachedUrl($url, "proyecto-$id");
         // en orde de como los vemos en la página de GTC
         $xpaths = [
             // le pusimos "nombre" para estandarizar que toda entidad tenga un nombre, pero en GTC dice "descripción"
-            'nombre'                      => '//*[@id="MasterGC_ContentBlockHolder_txtTitulo"]',
             'categoría'                   => '//*[@id="MasterGC_ContentBlockHolder_txtCategoria"]',
+            'entidad_compradora'          => '//*[@id="MasterGC_ContentBlockHolder_txtEntidad"]/a',
+            'entidad_compradora_tipo'     => '//*[@id="MasterGC_ContentBlockHolder_txtTipoEntidad"]',
+            'entidad_compradora_unidad'   => '//*[@id="MasterGC_ContentBlockHolder_txtUE"]/a',
+            'fecha_cierre_ofertas'        => '//*[@id="MasterGC_ContentBlockHolder_txtFechacierreRecep"]',
+            'fecha_finalización'          => '//*[@id="MasterGC_ContentBlockHolder_txtFechaFinalización"]',
+            'fecha_presentación_ofertas'  => '//*[@id="MasterGC_ContentBlockHolder_txtFechaPresentacion"]',
+            'fecha_publicación'           => '//*[@id="MasterGC_ContentBlockHolder_txtFechaPub"]',
             'modalidad'                   => '//*[@id="MasterGC_ContentBlockHolder_txtModalidad"]',
-            'tipo'                        => '//*[@id="MasterGC_ContentBlockHolder_txtTipo"]',
-            'comprador'                   => '//*[@id="MasterGC_ContentBlockHolder_txtEntidad"]',
-            'tipoComprador'               => '//*[@id="MasterGC_ContentBlockHolder_txtTipoEntidad"]',
-            // 'unidadCompradora'            => '/html/body/form/table[2]/tbody/tr/td/div[3]/table/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[9]/td[2]/span/a',
-            'fechaPublicación'            => '//*[@id="MasterGC_ContentBlockHolder_txtFechaPub"]',
-            'fechaPresentaciónOfertas'    => '//*[@id="MasterGC_ContentBlockHolder_txtFechaPresentacion"]',
-            'fechaCierreRecepciónOfertas' => '//*[@id="MasterGC_ContentBlockHolder_txtFechacierreRecep"]',
-            'tipoRecepciónOfertas'        => '//*[@id="MasterGC_ContentBlockHolder_txtRecepcionOferta"]',
+            'nombre'                      => '//*[@id="MasterGC_ContentBlockHolder_txtTitulo"]',
             'status'                      => '//*[@id="MasterGC_ContentBlockHolder_txtEstatus"]',
+            'tipo'                        => '//*[@id="MasterGC_ContentBlockHolder_txtTipo"]',
+            'tipo_recepción_oferta'       => '//*[@id="MasterGC_ContentBlockHolder_txtRecepcionOferta"]',
         ];
 
-        $data   = [
-            'id'           => $id,
-            'proveedor_id' => $proveedorId,
-        ] + ScraperModel::fetchData($xpaths, $página);
+        $data   = ['id' => $id,] + ScraperModel::fetchData($xpaths, $página);
         $entity = new Proyecto();
         $entity->exchangeArray($data);
+
+        echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($entity); die();
+
+
         return $entity;
     }
 

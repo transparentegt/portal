@@ -32,10 +32,10 @@ class ProveedorModel extends AbstractModel
     {
         $dql    = 'SELECT MAX(Proveedor.id)
                 FROM Transparente\Model\Entity\Proveedor Proveedor
-                JOIN Proveedor.proyectos
+                JOIN Proveedor.pagos
                 ';
         $query  = $this->getEntityManager()->createQuery($dql);
-        $result = $query->getResult();
+        $result = $query->getScalarResult();
         $result = (int) $result[0][1];
         $dql    = "SELECT Proveedor
                 FROM Transparente\Model\Entity\Proveedor Proveedor

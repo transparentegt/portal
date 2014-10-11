@@ -101,6 +101,13 @@ class Proveedor extends AbstractDoctrineEntity
     protected $nombres_comerciales;
 
     /**
+     * Pagos al proveedor
+     *
+     * @ORM\OneToMany(targetEntity="Pago", mappedBy="proveedor")
+     */
+    protected $pagos;
+
+    /**
      * Algunos proveedores no tienen este campo
      *
      * @ORM\Column(type="string", nullable=true)
@@ -113,13 +120,6 @@ class Proveedor extends AbstractDoctrineEntity
      * @ORM\Column(type="string", nullable=true)
      */
     protected $principal_trabajo;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Proyecto", inversedBy="proveedores", cascade="persist")
-     *
-     * @var Proyecto
-     */
-    protected $proyectos;
 
     /**
      * Última fecha que se actualizaron los representantes legales
@@ -182,7 +182,7 @@ class Proveedor extends AbstractDoctrineEntity
     public function __construct()
     {
         $this->nombres_comerciales    = new ArrayCollection();
-        $this->proyectos              = new ArrayCollection();
+        $this->pagos                  = new ArrayCollection();
         $this->representantes_legales = new ArrayCollection();
     }
 
@@ -391,21 +391,6 @@ class Proveedor extends AbstractDoctrineEntity
     {
         $url = 'http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=8&lprv=' . $this->getId();
         return $url;
-    }
-
-    /**
-     * De un listado de proyectos retorna solo los que no hay ya asociados a este proveedor
-     *
-     * @param  array $proyectosList
-     * @return array
-     */
-    public function menosProyectosQueYaTengo($proyectosList)
-    {
-        $proyectos = $this->proyectos;
-        foreach ($proyectos as $proyecto) {
-            unset($proyectosList[$proyecto->getId()]);
-        }
-        return $proyectosList;
     }
 
     public function setConstFecha ($const_fecha)
