@@ -80,7 +80,7 @@ class Proveedor extends AbstractDoctrineEntity
     /**
      * Número de escritura de constitución
      *
-     * @ORM\Column(type="int")
+     * @ORM\Column(type="integer")
      */
     protected $inscripción_número_escritura;
 
@@ -236,19 +236,44 @@ class Proveedor extends AbstractDoctrineEntity
         return $this->id;
     }
 
-    public function getInscripcionDefinitiva ()
+    /**
+     * @return mixed
+     */
+    public function getInscripciónFechaConstitución()
     {
-        return $this->inscripcion_definitiva;
+        return $this->inscripción_fecha_constitución;
     }
 
-    public function getInscripcionProvisional ()
+    /**
+     * @return mixed
+     */
+    public function getInscripciónFechaDefinitiva()
     {
-        return $this->inscripcion_provisional;
+        return $this->inscripción_fecha_definitiva;
     }
 
-    public function getInscripcionSat ()
+    /**
+     * @return mixed
+     */
+    public function getInscripciónFechaProvisional()
     {
-        return $this->inscripcion_sat;
+        return $this->inscripción_fecha_provisional;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInscripciónFechaSat()
+    {
+        return $this->inscripción_fecha_sat;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInscripciónNúmeroEscritura()
+    {
+        return $this->inscripción_número_escritura;
     }
 
     /**

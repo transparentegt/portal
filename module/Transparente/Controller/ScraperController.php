@@ -131,8 +131,6 @@ class ScraperController extends AbstractActionController
                     $proveedor->appendRepresentanteLegal($repLegal);
                 }
             }
-            // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; Doctrine\Common\Util\Debug::dump($proveedor); die();
-            // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($data); die();
             $proveedorModel->save($proveedor);
        }
     }

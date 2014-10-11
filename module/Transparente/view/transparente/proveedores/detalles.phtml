@@ -66,7 +66,7 @@ $(function() {
                     <?=$entidad->getNombre()?>
                 </a>
             </dd>
-            <?=dl('última actualización por la SAT', $entidad->getUpdatedSat())?>
+            <?=dl('actualizado por SAT', $entidad->getUpdatedSat()->format('d/m/Y'))?>
 
             <?php if (($nombresComerciales = $entidad->getNombresComerciales()) != false) : ?>
                 <dt>nombres comerciales<dt>
@@ -107,22 +107,24 @@ $(function() {
             <?php endif ?>
 
             <dt>e-mail<dt>
-            <dd><?=$entidad->getEmail()?></dd>
+            <dd><span class="glyphicon glyphicon-inbox"></span>
+                <?=implode('<br /><span class="glyphicon glyphicon-inbox"></span>', explode(',', $entidad->getEmail()))?>
+            </dd>
 
             <dt>fecha de constitución<dt>
-            <dd><?=$entidad->getConstFecha()?></dd>
+            <dd><?=$entidad->getInscripciónFechaConstitución()->format('d/m/Y')?></dd>
 
             <dt>fecha inscripción provisional<dt>
-            <dd><?=$entidad->getInscripcionProvisional()?></dd>
+            <dd><?=$entidad->getInscripciónFechaProvisional()->format('d/m/Y')?></dd>
 
             <dt>fecha inscripción definitiva<dt>
-            <dd><?=$entidad->getInscripcionDefinitiva()?></dd>
+            <dd><?=$entidad->getInscripciónFechaDefinitiva()->format('d/m/Y')?></dd>
 
             <dt>fecha inscripción en la SAT<dt>
-            <dd><?=$entidad->getInscripcionSat()?></dd>
+            <dd><?=$entidad->getInscripciónFechaSat()->format('d/m/Y')?></dd>
 
-            <dt>número de escritura de constitución<dt>
-            <dd><?=$entidad->getConstNumEscritura()?></dd>
+            <dt>número de escritura<dt>
+            <dd><?=$entidad->getInscripciónNúmeroEscritura()?></dd>
 
             <?=dl('principal actividad', $entidad->getPrincipalActividad())?>
             <?=dl('principal trabajo',   $entidad->getPrincipalTrabajo())?>
