@@ -74,16 +74,8 @@ class ScraperController extends AbstractActionController
         /* @var $repModel RepresentanteLegalModel */
         $domicilioModel = $this->getServiceLocator()->get('Transparente\Model\DomicilioModel');
         /* @var $domicilioModel DomicilioModel */
-
-        $totales = [
-            'proveedores' => 0,
-            'domicilios'  => 0,
-            'repLegales'  => 0,
-        ];
-
         $proveedores = $proveedorModel->scrapList();
         foreach ($proveedores as $idProveedor) {
-            $totales['proveedores']++;
             $data      = $proveedorModel->scrap($idProveedor);
             $data     += ['nombres_comerciales'    => $proveedorModel->scrapNombresComerciales($idProveedor)];
             $data     += ['representantes_legales' => $repModel->scrapRepresentantesLegales($idProveedor)];
@@ -91,7 +83,6 @@ class ScraperController extends AbstractActionController
             $proveedor->exchangeArray($data);
 
             if (!empty($data['fiscal'])) {
-                $totales['domicilios']++;
                 $domicilio = new \Transparente\Model\Entity\Domicilio();
                 $domicilio->exchangeArray($data['fiscal']);
                 try {
@@ -105,7 +96,6 @@ class ScraperController extends AbstractActionController
             }
 
             if (!empty($data['comercial'])) {
-                $totales['domicilios']++;
                 $domicilio = new \Transparente\Model\Entity\Domicilio();
                 $domicilio->exchangeArray($data['comercial']);
                 try {
@@ -125,7 +115,6 @@ class ScraperController extends AbstractActionController
             }
 
             foreach ($data['representantes_legales'] as $idRep) {
-                $totales['repLegales']++;
                 $repLegal = $repModel->scrap($idRep);
                 if ($repLegal) {
                     $proveedor->appendRepresentanteLegal($repLegal);

@@ -54,33 +54,33 @@ class Proveedor extends AbstractDoctrineEntity
 
     /**
      * Fecha de constitución:
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     protected $inscripción_fecha_constitución;
 
     /**
      * Inscripción DEFINITIVA en el Registro Mercantil
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     protected $inscripción_fecha_definitiva;
 
     /**
      * Inscripción PROVISIONAL en el Registro Mercantil
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     protected $inscripción_fecha_provisional;
 
     /**
      * Inscripción en la SAT
      *
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     protected $inscripción_fecha_sat;
 
     /**
      * Número de escritura de constitución
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     protected $inscripción_número_escritura;
 
@@ -124,7 +124,7 @@ class Proveedor extends AbstractDoctrineEntity
     /**
      * Última fecha que se actualizaron los representantes legales
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="date", nullable=true)
      */
     protected $rep_legales_updated;
 
@@ -518,7 +518,7 @@ class Proveedor extends AbstractDoctrineEntity
      */
     public function setRepLegalesUpdated($rep_legales_updated)
     {
-        $this->rep_legales_updated = $rep_legales_updated;
+        $this->rep_legales_updated = ScraperModel::fecha($rep_legales_updated);
     }
 
     public function setStatus ($status)

@@ -160,7 +160,7 @@ $(function() {
                     </li>
                     <?php endforeach ?>
                 </ul>
-                <span class="small">actualizado en SAT: <?=$entidad->getRepLegalesUpdated()?></span>
+                <span class="small">actualizado en SAT: <?=$entidad->getRepLegalesUpdated()->format('d/m/Y')?></span>
             </div>
         </div>
         <?php endif ?>
