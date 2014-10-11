@@ -65,15 +65,22 @@ class ProveedorModel extends AbstractModel
          * @var array
          */
         $xpaths = [
-            'email'                => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[2]//td[2]',
-            'nit'                  => '//*[@id="MasterGC_ContentBlockHolder_lblNIT"]',
-            'nombre'               => '//*[@id="MasterGC_ContentBlockHolder_lblNombreProv"]',
-            'principal_actividad'  => '//*[@id="MasterGC_ContentBlockHolder_pnl_TrabActiv2"]//tr[1]//td[2]',
-            'principal_trabajo'    => '//*[@id="MasterGC_ContentBlockHolder_pnl_TrabActiv2"]//tr[2]//td[2]',
-            'rep_legales_updated'  => '//*[@id="MasterGC_ContentBlockHolder_divRepresentantesLegales"]//span/span',
-            'status'               => '//*[@id="MasterGC_ContentBlockHolder_lblHabilitado"]',
-            'tiene_acceso_sistema' => '//*[@id="MasterGC_ContentBlockHolder_lblContraSnl"]',
-            'tipo_organización'    => '//*[@id="MasterGC_ContentBlockHolder_pnl_DatosInscripcion2"]//tr[1]//td[2]',
+            'email'                          => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[2]//td[2]',
+            'inscripción_fecha_constitución' => '//*[@id="MasterGC_ContentBlockHolder_pnl_DatosInscripcion2"]//tr[3]//td[2]',
+            'inscripción_fecha_definitiva'   => '//*[@id="MasterGC_ContentBlockHolder_pnl_DatosInscripcion2"]//tr[5]//td[2]',
+            'inscripción_fecha_provisional'  => '//*[@id="MasterGC_ContentBlockHolder_pnl_DatosInscripcion2"]//tr[4]//td[2]',
+            'inscripción_fecha_sat'          => '//*[@id="MasterGC_ContentBlockHolder_pnl_DatosInscripcion2"]//tr[6]//td[2]',
+            'inscripción_número_escritura'   => '//*[@id="MasterGC_ContentBlockHolder_pnl_DatosInscripcion2"]//tr[2]//td[2]',
+            'nit'                            => '//*[@id="MasterGC_ContentBlockHolder_lblNIT"]',
+            'nombre'                         => '//*[@id="MasterGC_ContentBlockHolder_lblNombreProv"]',
+            'principal_actividad'            => '//*[@id="MasterGC_ContentBlockHolder_pnl_TrabActiv2"]//tr[1]//td[2]',
+            'principal_trabajo'              => '//*[@id="MasterGC_ContentBlockHolder_pnl_TrabActiv2"]//tr[2]//td[2]',
+            'rep_legales_updated'            => '//*[@id="MasterGC_ContentBlockHolder_divRepresentantesLegales"]//span/span',
+            'status'                         => '//*[@id="MasterGC_ContentBlockHolder_lblHabilitado"]',
+            'tiene_acceso_sistema'           => '//*[@id="MasterGC_ContentBlockHolder_lblContraSnl"]',
+            'tipo_organización'              => '//*[@id="MasterGC_ContentBlockHolder_pnl_DatosInscripcion2"]//tr[1]//td[2]',
+            'updated_sat'                    => '//*[@id="MasterGC_ContentBlockHolder_lblFechaInfo"]',
+            'url'                            => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[1]//td[2]',
             'fiscal'     => [
                 'updated'      => 'div#MasterGC_ContentBlockHolder_divDomicilioFiscal span.AvisoGrande span.AvisoGrande',
                 'departamento' => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioFiscal2"]//tr[1]//td[2]',
@@ -90,16 +97,8 @@ class ProveedorModel extends AbstractModel
                 'telefonos'    => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[6]//td[2]',
                 'fax'          => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[7]//td[2]',
             ],
-            'url'                 => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[1]//td[2]',
-            'updated_sat'         => '//*[@id="MasterGC_ContentBlockHolder_lblFechaInfo"]',
         ];
-
         $proveedor = ['id' => $id] + ScraperModel::fetchData($xpaths, $página);
-
-        // después de capturar los datos, hacemos un postproceso
-
-        $proveedor['status']               = ($proveedor['status'] == 'HABILITADO');
-        $proveedor['tiene_acceso_sistema'] = ($proveedor['tiene_acceso_sistema'] == 'CON CONTRASEÑA');
         // descartar direcciones vacías
         if ($proveedor['fiscal']['direccion'] == '[--No Especificado--]' ||
             $proveedor['fiscal']['municipio'] == '[--No Especificado--]') {
@@ -109,15 +108,6 @@ class ProveedorModel extends AbstractModel
             $proveedor['comercial']['municipio'] == '[--No Especificado--]') {
             unset($proveedor['comercial']);
         }
-
-        // algunas fechas no están bien parseadas
-        $proveedor['rep_legales_updated']  = strptime($proveedor['rep_legales_updated'], '(Datos recibidos de la SAT el: %d.%b.%Y %T ');
-        $proveedor['rep_legales_updated']  = 1900+$proveedor['rep_legales_updated']['tm_year']
-                                            . '-' . (1 + $proveedor['rep_legales_updated']['tm_mon'])
-                                            . '-' . ($proveedor['rep_legales_updated']['tm_mday'])
-                                            ;
-        $proveedor['url']   = ($proveedor['url']   != '[--No Especificado--]') ? $proveedor['url'] : null;
-        $proveedor['email'] = ($proveedor['email'] != '[--No Especificado--]') ? $proveedor['email'] : null;
         return $proveedor;
     }
 

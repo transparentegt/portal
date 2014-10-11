@@ -216,4 +216,20 @@ class ScraperModel
         return $nombre;
     }
 
+    /**
+     * Convierte las fechas de formato GTC dia.mesEnEspañol.año en un objeto DateTime
+     * @param  string    $date
+     * @return \DateTime
+     */
+    public static function fecha($date)
+    {
+        preg_match('/(\d+)\.(\w+)\.(\d+)/', $date, $matches);
+        $meses = [null, 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+        $día   = $matches[1];
+        $mes   = $matches[2];
+        $año   = $matches[3];
+        $mes   = array_search($mes, $meses);
+        $fecha = new \DateTime("$año-$mes-$día");
+        return $fecha;
+    }
 }

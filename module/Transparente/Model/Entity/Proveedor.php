@@ -16,21 +16,15 @@ use Transparente\Model\ScraperModel;
  *
  * @link http://guatecompras.gt/info/preguntasFrecProv.aspx#_lbl10
  *
- * @todo dejar de tener campos NOT NULL
+ * @todo Leer inconformidads presentadas
+ * @todo Leer inhabilitaciones recibidas
+ * @todo Leer publicaciones sin concurso
  *
  * @ORM\Entity(repositoryClass="Transparente\Model\ProveedorModel")
  * @ORM\Table(name="proveedor")
  */
 class Proveedor extends AbstractDoctrineEntity
 {
-    /**
-     * No es autoincrement para usaar el mismo ID que en GTC
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     */
-    protected $id;
-
     /**
      * @ORM\ManyToOne(targetEntity="Domicilio", cascade="persist")
      * @ORM\JoinColumn(name="id_domicilio_comercial", referencedColumnName="id")
@@ -49,6 +43,46 @@ class Proveedor extends AbstractDoctrineEntity
      * @ORM\Column(type="string", nullable=true)
      */
     protected $email;
+
+    /**
+     * No es autoincrement para usaar el mismo ID que en GTC
+     *
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     */
+    protected $id;
+
+    /**
+     * Fecha de constitución:
+     * @ORM\Column(type="date")
+     */
+    protected $inscripción_fecha_constitución;
+
+    /**
+     * Inscripción DEFINITIVA en el Registro Mercantil
+     * @ORM\Column(type="date")
+     */
+    protected $inscripción_fecha_definitiva;
+
+    /**
+     * Inscripción PROVISIONAL en el Registro Mercantil
+     * @ORM\Column(type="date")
+     */
+    protected $inscripción_fecha_provisional;
+
+    /**
+     * Inscripción en la SAT
+     *
+     * @ORM\Column(type="date")
+     */
+    protected $inscripción_fecha_sat;
+
+    /**
+     * Número de escritura de constitución
+     *
+     * @ORM\Column(type="int")
+     */
+    protected $inscripción_número_escritura;
 
     /**
      * @ORM\Column(type="string")
@@ -72,6 +106,7 @@ class Proveedor extends AbstractDoctrineEntity
      * @ORM\Column(type="string", nullable=true)
      */
     protected $principal_actividad;
+
     /**
      * Algunos proveedores no tienen este campo
      *
@@ -133,7 +168,7 @@ class Proveedor extends AbstractDoctrineEntity
     /**
      * Última fecha que se actualizaron los representantes legales
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="date")
      */
     protected $updated_sat;
 
@@ -143,40 +178,6 @@ class Proveedor extends AbstractDoctrineEntity
      * @ORM\Column(type="string", nullable=true)
      */
     protected $url;
-
-
-    /**
-     * Datos recibidos de la SAT
-     * @ORM\Column(type="datetime")
-     */
-    // protected $actualizado_sat;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    // protected $const_fecha;
-
-    /**
-     * Número de escritura de constitucioń (WTF? será número entero)
-     *
-     * @ORM\Column(type="string")
-     */
-    //protected $const_num_escritura;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    // protected $inscripcion_provisional;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    // protected $inscripcion_definitiva;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    // protected $inscripcion_sat;
 
     public function __construct()
     {
@@ -235,14 +236,14 @@ class Proveedor extends AbstractDoctrineEntity
         return $this->id;
     }
 
-    public function getInscripcionProvisional ()
-    {
-        return $this->inscripcion_provisional;
-    }
-
     public function getInscripcionDefinitiva ()
     {
         return $this->inscripcion_definitiva;
+    }
+
+    public function getInscripcionProvisional ()
+    {
+        return $this->inscripcion_provisional;
     }
 
     public function getInscripcionSat ()
@@ -400,6 +401,62 @@ class Proveedor extends AbstractDoctrineEntity
         return $this;
     }
 
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = ($email != '[--No Especificado--]') ? $email : null;
+    }
+
+    /**
+     * @param string $inscripción_fecha_constitución
+     */
+    public function setInscripciónFechaConstitución($inscripción_fecha_constitución)
+    {
+        $inscripción_fecha_constitución       = ScraperModel::fecha($inscripción_fecha_constitución);
+        $this->inscripción_fecha_constitución = $inscripción_fecha_constitución;
+        return $this;
+    }
+
+    /**
+     * @param string $inscripción_fecha_definitiva
+     */
+    public function setInscripciónFechaDefinitiva($inscripción_fecha_definitiva)
+    {
+        $inscripción_fecha_definitiva       = ScraperModel::fecha($inscripción_fecha_definitiva);
+        $this->inscripción_fecha_definitiva = $inscripción_fecha_definitiva;
+        return $this;
+    }
+
+    /**
+     * @param mixed $inscripción_fecha_provisional
+     */
+    public function setInscripciónFechaProvisional($inscripción_fecha_provisional)
+    {
+        $inscripción_fecha_provisional       = ScraperModel::fecha($inscripción_fecha_provisional);
+        $this->inscripción_fecha_provisional = $inscripción_fecha_provisional;
+        return $this;
+    }
+
+    /**
+     * @param mixed $inscripción_fecha_sat
+     */
+    public function setInscripciónFechaSat($inscripción_fecha_sat)
+    {
+        $inscripción_fecha_sat       = ScraperModel::fecha($inscripción_fecha_sat);
+        $this->inscripción_fecha_sat = $inscripción_fecha_sat;
+        return $this;
+    }
+
+    /**
+     * @param mixed $inscripción_número_escritura
+     */
+    public function setInscripciónNúmeroEscritura($inscripción_número_escritura)
+    {
+        $this->inscripción_número_escritura = (int) $inscripción_número_escritura;
+    }
+
     public function setNombre ($nombre)
     {
         $nombre = ScraperModel::nombresPropios($nombre);
@@ -431,15 +488,23 @@ class Proveedor extends AbstractDoctrineEntity
         $this->principal_trabajo = ucfirst(strtolower($principal_trabajo));
     }
 
+    /**
+     * @param mixed $rep_legales_updated
+     */
+    public function setRepLegalesUpdated($rep_legales_updated)
+    {
+        $this->rep_legales_updated = $rep_legales_updated;
+    }
+
     public function setStatus ($status)
     {
-        $this->status = $status;
+        $this->status = ($status == 'HABILITADO');;
         return $this;
     }
 
     public function setTieneAccesoSistema ($tiene_acceso_sistema)
     {
-        $this->tiene_acceso_sistema = $tiene_acceso_sistema;
+        $this->tiene_acceso_sistema = ($tiene_acceso_sistema == 'CON CONTRASEÑA');
         return $this;
     }
 
@@ -452,13 +517,19 @@ class Proveedor extends AbstractDoctrineEntity
     }
 
     /**
-     * @param mixed $updated_sat
-     *
-     * @todo convertir a campo date
+     * @param string $updated_sat
      */
     public function setUpdatedSat($updated_sat)
     {
-        preg_match('/\d+\.\w+\.\d+/', $updated_sat, $matches);
-        $this->updated_sat = $matches[0];;
+        $this->updated_sat = ScraperModel::fecha($updated_sat);
+        return $this;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = ($url  != '[--No Especificado--]') ? $url : null;
     }
 }
