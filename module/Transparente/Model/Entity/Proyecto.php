@@ -48,12 +48,12 @@ class Proyecto extends AbstractDoctrineEntity
     protected $fecha_cierre_ofertas;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     protected $fecha_finalización;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     protected $fecha_presentación_ofertas;
 
@@ -88,7 +88,7 @@ class Proyecto extends AbstractDoctrineEntity
     /**
      * Pagos por el proyecto
      *
-     * @ORM\OneToMany(targetEntity="Pago", mappedBy="proyecto")
+     * @ORM\OneToMany(targetEntity="Pago", mappedBy="proyecto", cascade={"persist"})
      */
     protected $pagos;
 
@@ -103,7 +103,7 @@ class Proyecto extends AbstractDoctrineEntity
     protected $tipo;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $tipo_recepción_oferta;
 
@@ -112,9 +112,9 @@ class Proyecto extends AbstractDoctrineEntity
         $this->pagos = new ArrayCollection();
     }
 
-    public function addProveedor(Proveedor $proveedor)
+    public function addPago(Pago $pago)
     {
-        $this->proveedores[] = $proveedor;
+        $this->pagos[] = $pago;
     }
 
     /**

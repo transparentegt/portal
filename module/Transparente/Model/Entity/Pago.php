@@ -29,14 +29,52 @@ class Pago extends AbstractDoctrineEntity
     /**
      * Proveedor a quién se le pagó
      *
-     * @ORM\ManyToOne(targetEntity="Proveedor", inversedBy="pagos")
+     * @ORM\ManyToOne(targetEntity="Proveedor", inversedBy="pagos", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $proveedor;
 
     /**
      * Proyecto que generó el pago
      *
-     * @ORM\ManyToOne(targetEntity="Proyecto", inversedBy="pagos")
+     * @ORM\ManyToOne(targetEntity="Proyecto", inversedBy="pagos", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $proyecto;
-} 
+
+    /**
+     * @return float
+     */
+    public function getMonto()
+    {
+        return $this->monto;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProveedor()
+    {
+        return $this->proveedor;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProyecto()
+    {
+        return $this->proyecto;
+    }
+
+    public function setProveedor(Proveedor $proveedor)
+    {
+        $proveedor->addPago($this);
+        $this->proveedor = $proveedor;
+    }
+
+    public function setProyecto(Proyecto $proyecto)
+    {
+        $proyecto->addPago($this);
+        $this->proyecto = $proyecto;
+    }
+}

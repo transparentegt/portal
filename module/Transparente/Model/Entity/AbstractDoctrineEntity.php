@@ -37,11 +37,11 @@ abstract class AbstractDoctrineEntity
             if (isset($data[$key])) {
                 $setter = 'set'.str_replace(' ','',ucwords(str_replace('_',' ',$key)));;
                 if (method_exists($this, $setter)) {
-                    try {
+                    // try {
                         $this->$setter($data[$key]);
-                    } catch (\Exception $e) {
-                        $this->$key = $data[$key];
-                    }
+                    // } catch (\Exception $e) {
+                    //    $this->$key = $data[$key];
+                    // }
                 } elseif (!is_array($data[$key])) {
                     $this->$key = $data[$key];
                 }

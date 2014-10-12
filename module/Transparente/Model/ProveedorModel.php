@@ -30,13 +30,15 @@ class ProveedorModel extends AbstractModel
      */
     public function findPendientesDeScrapearProyectos()
     {
-        $dql    = 'SELECT MAX(Proveedor.id)
+        $dql    = 'SELECT Proveedor.id
                 FROM Transparente\Model\Entity\Proveedor Proveedor
-                JOIN Proveedor.pagos
+                JOIN Proveedor.pagos Pago
+                ORDER BY Pago.id DESC
                 ';
         $query  = $this->getEntityManager()->createQuery($dql);
+        $query->setMaxResults(1);
         $result = $query->getScalarResult();
-        $result = (int) $result[0][1];
+        $result = (int) $result[0]['id'];
         $dql    = "SELECT Proveedor
                 FROM Transparente\Model\Entity\Proveedor Proveedor
                 WHERE Proveedor.id >= $result

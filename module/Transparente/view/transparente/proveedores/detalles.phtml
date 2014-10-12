@@ -24,7 +24,9 @@ HTML;
 <style>
 .dl-horizontal dt { width: 200px; }
 .dl-horizontal dd { margin-left: 210px;}
-.empleados-municipales {height: 16em; overflow: auto}
+#empleados-municipales,
+#proyectos
+    {height: 16em; overflow: auto}
 </style>
 <script>
 function openModal(id,title, body) {
@@ -111,17 +113,21 @@ $(function() {
                 <?=implode('<br /><span class="glyphicon glyphicon-inbox"></span>', explode(',', $entidad->getEmail()))?>
             </dd>
 
+            <? $fecha = ($entidad->getInscripciónFechaConstitución()) ? $entidad->getInscripciónFechaConstitución()->format('d/m/Y') : '--'?>
             <dt>fecha de constitución<dt>
-            <dd><?=$entidad->getInscripciónFechaConstitución()->format('d/m/Y')?></dd>
+            <dd><?=$fecha?></dd>
 
+            <? $fecha = ($entidad->getInscripciónFechaProvisional()) ? $entidad->getInscripciónFechaProvisional()->format('d/m/Y') : '--'?>
             <dt>fecha inscripción provisional<dt>
-            <dd><?=$entidad->getInscripciónFechaProvisional()->format('d/m/Y')?></dd>
+            <dd><?=$fecha?></dd>
 
+            <? $fecha = ($entidad->getInscripciónFechaDefinitiva()) ? $entidad->getInscripciónFechaDefinitiva()->format('d/m/Y') : '--'?>
             <dt>fecha inscripción definitiva<dt>
-            <dd><?=$entidad->getInscripciónFechaDefinitiva()->format('d/m/Y')?></dd>
+            <dd><?=$fecha?></dd>
 
+            <? $fecha = ($entidad->getInscripciónFechaSat()) ? $entidad->getInscripciónFechaSat()->format('d/m/Y') : '--'?>
             <dt>fecha inscripción en la SAT<dt>
-            <dd><?=$entidad->getInscripciónFechaSat()->format('d/m/Y')?></dd>
+            <dd><?=$fecha?></dd>
 
             <dt>número de escritura<dt>
             <dd><?=$entidad->getInscripciónNúmeroEscritura()?></dd>
@@ -177,7 +183,7 @@ $(function() {
                         <span class="glyphicon glyphicon-question-sign"></span>
                     </button>
                 </p>
-                <ul class="empleados-municipales">
+                <ul id="empleados-municipales">
                     <?php foreach ($this->empleadosMunicipales as  $empleadoMunicipal) : /* @var \Transparente\Model\Entity\EmpleadoMunicipal */?>
                     <li>
                         <?=$empleadoMunicipal->getNombre()?> <br />
@@ -192,18 +198,19 @@ $(function() {
         </div>
         <?php endif ?>
 
-        <?php if ($entidad->getProyectos()) :?>
+        <?php if ($entidad->getPagos()) :?>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Proyectos</h3>
                 </div>
                 <div class="panel-body">
-                    <ul>
-                        <?php foreach ($entidad->getProyectos() as $proyecto) :?>
+                    <ul id="proyectos">
+                        <?php foreach ($entidad->getPagos() as $pago) :?>
                             <li>
-                                <a href="<?=$this->url()?>proyecto/detalles/<?=$proyecto->getId()?>">
-                                    <?=$proyecto->getNombre()?>
+                                <a href="<?=$this->url()?>proyecto/detalles/<?=$pago->getProyecto()->getId()?>">
+                                    <?=$pago->getProyecto()->getNombre()?>
                                 </a>
+                                (Q <?=number_format($pago->getMonto(), 2)?>)
                             </li>
                         <?php endforeach ?>
                     </ul>

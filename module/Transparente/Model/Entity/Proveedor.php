@@ -103,7 +103,7 @@ class Proveedor extends AbstractDoctrineEntity
     /**
      * Pagos al proveedor
      *
-     * @ORM\OneToMany(targetEntity="Pago", mappedBy="proveedor")
+     * @ORM\OneToMany(targetEntity="Pago", mappedBy="proveedor", cascade={"persist"})
      */
     protected $pagos;
 
@@ -186,10 +186,10 @@ class Proveedor extends AbstractDoctrineEntity
         $this->representantes_legales = new ArrayCollection();
     }
 
-    public function addProyecto(Proyecto $proyecto)
+
+    public function addPago(Pago $pago)
     {
-        $proyecto->addProveedor($this);
-        $this->proyectos[] = $proyecto;
+        $this->pagos[] = $pago;
     }
 
     public function appendNombreComercial(ProveedorNombreComercial $nombreComercial)
@@ -317,12 +317,13 @@ class Proveedor extends AbstractDoctrineEntity
     }
 
     /**
-     * @return Proyecto
+     * @return Pago[]
      */
-    public function getProyectos()
+    public function getPagos()
     {
-        return $this->proyectos;
+        return $this->pagos;
     }
+
 
     public function getRepLegalesUpdated ()
     {

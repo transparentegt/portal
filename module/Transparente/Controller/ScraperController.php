@@ -137,6 +137,7 @@ class ScraperController extends AbstractActionController
         foreach($proveedores as $proveedor) {
             $proyectosList = $proyectoModel->scrapList($proveedor);
             foreach ($proyectosList as $id) {
+                if ($proyectoModel->find($id)) continue;
                 $proyecto = $proyectoModel->scrap($id);
                 $proyectoModel->save($proyecto);
             }

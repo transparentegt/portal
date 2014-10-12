@@ -3,6 +3,7 @@ namespace Transparente\Model;
 
 use Transparente\Model\Entity\Proveedor;
 use Transparente\Model\Entity\Proyecto;
+use Transparente\Model\Entity\Pago;
 
 class ProyectoModel extends AbstractModel
 {
@@ -14,6 +15,7 @@ class ProyectoModel extends AbstractModel
      *
      * @todo scrapear entidad compradora
      * @todo scrapear unidad compradora
+     * @todo ¿Qué hacer con los proveedores extranjeros?
      */
     public function scrap($id)
     {
@@ -37,14 +39,35 @@ class ProyectoModel extends AbstractModel
             'tipo_recepción_oferta'       => '//*[@id="MasterGC_ContentBlockHolder_txtRecepcionOferta"]',
         ];
 
-        $data   = ['id' => $id,] + ScraperModel::fetchData($xpaths, $página);
-        $entity = new Proyecto();
-        $entity->exchangeArray($data);
+        $data     = ['id' => $id,] + ScraperModel::fetchData($xpaths, $página);
+        $proyecto = new Proyecto();
+        $proyecto->exchangeArray($data);
 
-        echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($entity); die();
+        $pagosNodes = '//*[@id="MasterGC_ContentBlockHolder_dgProveedores"]//tr[starts-with(@class, "TablaFilaMix")]';
+        $pagosNodes = $página->queryXpath($pagosNodes);
+        foreach($pagosNodes as $node) {
+            $proveedor = null;
+            $monto     = iterator_to_array($node->childNodes);
+            $monto     = $monto[3]->nodeValue;
+            $monto     = (float) trim(str_replace(['Q',','], null, $monto));
 
+            $subnodos = iterator_to_array($node->getElementsByTagName('a'));
+            // si no se detectó el proveedor, es un país extranjero
+            if ($subnodos) {
+                $proveedor = parse_url($subnodos[0]->getAttribute('href'));
+                parse_str($proveedor['query'], $proveedor);
+                $proveedor = (int) $proveedor['lprv'];
+                $proveedor = $this->getEntityManager()->getRepository('Transparente\Model\Entity\Proveedor')->find($proveedor);
+            }
 
-        return $entity;
+            $pago = new Pago();
+            $pago->exchangeArray([
+                'monto'     => $monto,
+                'proyecto'  => $proyecto,
+                'proveedor' => $proveedor,
+            ]);
+        }
+        return $proyecto;
     }
 
     /**

@@ -225,7 +225,7 @@ class ScraperModel
     {
         $meses = [
             [null, 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
-            [null, 'eneero', 'febrero', 'marzo', 'abrbril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+            [null, 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
         ] ;
         preg_match('/(\d+)\.(\w+)\.(\d+)/', $date, $matches);
         $día = $matches[1];
@@ -234,6 +234,7 @@ class ScraperModel
             $mes = array_search($matches[2], $nombres);
             if ($mes) break;
         }
+        if (!$mes) throw new \Exception("No se pudo detectar la fecha para el mes: '{$matches[2]}'");
         $fecha = "$año-$mes-$día";
         $fecha = new \DateTime($fecha);
         return $fecha;
