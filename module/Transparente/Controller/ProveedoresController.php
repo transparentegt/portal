@@ -30,7 +30,6 @@ class ProveedoresController extends AbstractActionController
         }else{
             $page = 1;
         }
-        var_dump($page);
         $max = 20;
 
         //
