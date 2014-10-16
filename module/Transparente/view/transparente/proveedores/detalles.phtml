@@ -151,6 +151,27 @@ $(function() {
 
     <div class="col-md-6">
 
+        <?php if ($entidad->getPagos()) :?>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Proyectos</h3>
+                </div>
+                <div class="panel-body">
+                    <p>Listado de <span class="badge"><?=number_format(count($entidad->getPagos()))?></span> proyectos adjudicados</p>
+                    <ul id="proyectos">
+                        <?php foreach ($entidad->getPagos() as $pago) :?>
+                            <li>
+                                <a href="<?=$this->url()?>proyecto/detalles/<?=$pago->getProyecto()->getId()?>">
+                                    <?=$pago->getProyecto()->getNombre()?>
+                                </a>
+                                (Q <?=number_format($pago->getMonto(), 2)?>)
+                            </li>
+                        <?php endforeach ?>
+                    </ul>
+                </div>
+            </div>
+        <?php endif ?>
+
         <?php if ($entidad->getRepresentantesLegales()) :?>
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -198,25 +219,6 @@ $(function() {
         </div>
         <?php endif ?>
 
-        <?php if ($entidad->getPagos()) :?>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Proyectos</h3>
-                </div>
-                <div class="panel-body">
-                    <ul id="proyectos">
-                        <?php foreach ($entidad->getPagos() as $pago) :?>
-                            <li>
-                                <a href="<?=$this->url()?>proyecto/detalles/<?=$pago->getProyecto()->getId()?>">
-                                    <?=$pago->getProyecto()->getNombre()?>
-                                </a>
-                                (Q <?=number_format($pago->getMonto(), 2)?>)
-                            </li>
-                        <?php endforeach ?>
-                    </ul>
-                </div>
-            </div>
-        <?php endif ?>
 
     </div>
 </div>
