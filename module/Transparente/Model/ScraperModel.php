@@ -13,6 +13,8 @@ class ScraperModel
     const PAGE_MODE_POST  = 'POST';
     CONST PAGE_MODE_PAGER = 'PAGER';
 
+    private static $cache;
+
     public static function fetchData($xpaths, \Zend\Dom\Query $dom)
     {
         $element = [];
@@ -27,8 +29,6 @@ class ScraperModel
                         try {
                             $nodes = $dom->queryXpath($path);
                         } catch (\Exception $e) {
-                            echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($dom->getDocument()); die();
-
                             throw new \Exception("No se encontríó el path '$path'", null, $e);
                         }
                     } else {
@@ -50,6 +50,21 @@ class ScraperModel
         return $element;
     }
 
+    public static function getCache()
+    {
+        if (!self::$cache) {
+            self::$cache = \Zend\Cache\StorageFactory::factory([
+                'adapter' => [
+                    'name'    => 'filesystem',
+                    'ttl'     => PHP_INT_MAX,
+                    'options' => ['cache_dir' => realpath('./data/cache')],
+                ],
+                'plugins' => array('serializer'),
+            ]);
+        }
+        return self::$cache;
+    }
+
     /**
      * Retorna el contenido de la página solicitada, y la guarda en cache por si la vuelven a pedir
      *
@@ -62,20 +77,15 @@ class ScraperModel
      */
     public static function getCachedUrl($url, $key, $method = self::PAGE_MODE_GET, &$vars = [])
     {
-        $key  .= "-$method";
-        $cache = \Zend\Cache\StorageFactory::factory([
-            'adapter' => [
-                'name'    => 'filesystem',
-                'ttl'     => PHP_INT_MAX,
-                'options' => ['cache_dir' => realpath('./data/cache')],
-            ],
-            'plugins' => array('serializer'),
-        ]);
+        $downloaded = false;
+        $key       .= "-$method";
+        $cache      = self::getCache();
         if ($cache->hasItem($key)) {
             echo sprintf("Leyendo cache:   \t%-40s\t%s\n", $key, $url);
             $content = $cache->getItem($key);
         } else {
             echo sprintf("Leyendo original:\t%-40s\t%s\n", $key, $url);
+            $downloaded = true;
             switch ($method) {
                 case self::PAGE_MODE_GET:
                     $content = null;
@@ -108,19 +118,29 @@ class ScraperModel
                         $domQuery                = ScraperModel::getCachedUrl($url, $key, self::PAGE_MODE_GET, $vars);
 
                         $cssItems   = "span#MasterGC_ContentBlockHolder_lblFilas";
-                        $totalItems = explode(' ',$domQuery->execute($cssItems)[0]->textContent)[4];
+                        $totalItems = $domQuery->execute($cssItems);
+                        $totalItems = $totalItems[0]->textContent;
+                        $totalItems = explode(' ',$totalItems)[4];
                         $totalItems = \NumberFormatter::create('en_US', \NumberFormatter::DECIMAL)->parse($totalItems);
+                        if (!$totalItems) {
+                            return false;
+                        }
                         $totalPages = ceil($totalItems/50);
 
                         $vars['totalItems'] = $totalItems;
                         $vars['totalPages'] = $totalPages;
 
                         // definir llaves del paginador basados en la primera página
-                        $cssEventValidation        = 'input[name="__EVENTVALIDATION"]';
-                        $vars['__EVENTVALIDATION'] = $domQuery->execute($cssEventValidation)[0]->getAttribute('value');
-                        $cssViewState              = 'input[name="__VIEWSTATE"]';
-                        $vars['__VIEWSTATE']       = $domQuery->execute($cssViewState)[0]->getAttribute('value');
-
+                        $node = 'input[name="__EVENTVALIDATION"]';
+                        $node = $domQuery->execute($node);
+                        if ($node) {
+                            $vars['__EVENTVALIDATION'] = $node[0]->getAttribute('value');
+                        }
+                        $node = 'input[name="__VIEWSTATE"]';
+                        $node = $domQuery->execute($node)[0];
+                        if ($node) {
+                            $vars['__VIEWSTATE'] = $node->getAttribute('value');
+                        }
                         // la llamada recursiva nos devuelve el objeto ya listo para retornarlo
                         return $domQuery;
                     }
@@ -162,7 +182,9 @@ class ScraperModel
         if (!$content) {
             throw new \Exception("No se pudo leer la URL $url");
         }
-        $cache->setItem($key, $content);
+        if ($downloaded) {
+            $cache->setItem($key, $content);
+        }
         $dom = new \Zend\Dom\Query($content);
         return $dom;
     }
@@ -173,10 +195,48 @@ class ScraperModel
      * @param string $string
      * @return string
      */
-    public static function nombresPropios($string)
+    public static function nombresPropios($nombre)
     {
-        $string = mb_convert_case(trim($string), MB_CASE_TITLE, 'UTF-8');
-        return $string;
+        $nombre  = str_replace('"', '', $nombre);
+        $nombres = preg_split('/[\s,\.]+/', $nombre);
+        $nombre  = '';
+        foreach ($nombres as $n) {
+            $n = trim($n);
+            if (!$n) continue;
+            $nombre .= ' ';
+            // detectamos si tiene caracteres extraños
+            if (preg_match('/[^a-zÑñÁÉÍÓÚáéíóúÜü]/i', $n)) {
+                $nombre .= mb_convert_case(trim($n), MB_CASE_UPPER, 'UTF-8');
+            } else {
+                // en caso contrario es un nombre propio
+                $nombre .= mb_convert_case(trim($n), MB_CASE_TITLE, 'UTF-8');
+            }
+        }
+        $nombre = trim($nombre);
+        return $nombre;
     }
 
+    /**
+     * Convierte las fechas de formato GTC dia.mesEnEspañol.año en un objeto DateTime
+     * @param  string    $date
+     * @return \DateTime
+     */
+    public static function fecha($date)
+    {
+        $meses = [
+            [null, 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+            [null, 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+        ] ;
+        preg_match('/(\d+)\.(\w+)\.(\d+)/', $date, $matches);
+        $día = $matches[1];
+        $año = $matches[3];
+        foreach ($meses as $nombres) {
+            $mes = array_search($matches[2], $nombres);
+            if ($mes) break;
+        }
+        if (!$mes) throw new \Exception("No se pudo detectar la fecha para el mes: '{$matches[2]}'");
+        $fecha = "$año-$mes-$día";
+        $fecha = new \DateTime($fecha);
+        return $fecha;
+    }
 }

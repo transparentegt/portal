@@ -7,6 +7,10 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Paginator\Paginator;
 use Zend\View\Model\ViewModel;
 
+
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
+use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
+
 class RepresentanteLegalController extends AbstractActionController
 {
     /**
@@ -17,13 +21,22 @@ class RepresentanteLegalController extends AbstractActionController
      */
     public function indexAction()
     {
-        $modelo    = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');
-        $entidades = $modelo->findAll();
-        $paginator        = new Paginator(new Adapter(new ArrayCollection($entidades)));
-        if (!empty($_GET['page'])) {
-            $paginator->setCurrentPageNumber($_GET['page']);
-        }
+
+        $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        $modelo = $entityManager->getRepository('Transparente\Model\Entity\RepresentanteLegal');
+
+
+        $query = $modelo->createQueryBuilder('RepresentanteLegal');
+        $adapter = new DoctrineAdapter(new ORMPaginator($query));
+        $paginator = new Paginator($adapter);
+        $paginator->setDefaultItemCountPerPage(20);
+
+        $page = (int)$this->params()->fromQuery('page');
+        if($page) $paginator->setCurrentPageNumber($page);
+
+
         return new ViewModel(compact('paginator'));
+
     }
 
     /**

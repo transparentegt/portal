@@ -10,10 +10,23 @@
 
 $entidad = $this->vars('entity');
 /* @var $entidad Transparente\Model\Entity\Proveedor */
+
+
+function dl($term, $value) {
+    if (!$value) $value = '--';
+    return <<< HTML
+<dt title="$term">$term</dt>
+<dd>$value</dd>
+HTML;
+
+}
 ?>
 <style>
-.dl-horizontal dt { width: 260px; }
-.dl-horizontal dd { margin-left: 270px;}
+.dl-horizontal dt { width: 200px; }
+.dl-horizontal dd { margin-left: 210px;}
+#empleados-municipales,
+#proyectos
+    {height: 16em; overflow: auto}
 </style>
 <script>
 function openModal(id,title, body) {
@@ -50,7 +63,12 @@ $(function() {
     <div class="col-md-6">
         <dl class="dl-horizontal">
             <dt>nombre<dt>
-                <dd><?=$entidad->getNombre()?></dd>
+            <dd>
+                <a title="abrir en Guatecompras" href="http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=8&lprv=<?=$entidad->getId()?>">
+                    <?=$entidad->getNombre()?>
+                </a>
+            </dd>
+            <?=dl('actualizado por SAT', $entidad->getUpdatedSat()->format('d/m/Y'))?>
 
             <?php if (($nombresComerciales = $entidad->getNombresComerciales()) != false) : ?>
                 <dt>nombres comerciales<dt>
@@ -60,65 +78,74 @@ $(function() {
             <?php endif ?>
 
             <dt>NIT<dt>
-                <dd><?=$entidad->getNit()?></dd>
+            <dd><?=$entidad->getNit()?></dd>
 
             <?php if (($domicilio = $entidad->getDomicilioFiscal()) != false) : /* @var $domicilio Transparente\Model\Entity\Domicilio */?>
             <dt>domicilio fiscal<dt>
-                <dd>
-                    <address>
-                        <?=$domicilio->getDireccion()?><br />
-                        <a href="<?=$this->url()?>municipio/detalles/<?=$domicilio->getMunicipio()->getId()?>">
-                            <?=$domicilio->getMunicipio()->getNombre()?></a>,
-                        <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
-                        <span class="glyphicon glyphicon-earphone"></span> tel: <?=$domicilio->getTelefonos()?><br />
-                        <span class="glyphicon glyphicon-print"></span>    fax: <?=$domicilio->getFax()?>
-                    </address>
-                </dd>
+            <dd>
+                <address>
+                    <?=$domicilio->getDireccion()?><br />
+                    <a href="<?=$this->url()?>municipio/detalles/<?=$domicilio->getMunicipio()->getId()?>">
+                        <?=$domicilio->getMunicipio()->getNombre()?></a>,
+                    <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
+                    <span class="glyphicon glyphicon-earphone"></span> tel: <?=$domicilio->getTelefonos()?><br />
+                    <span class="glyphicon glyphicon-print"></span>    fax: <?=$domicilio->getFax()?>
+                </address>
+            </dd>
             <?php endif ?>
 
             <?php if (($domicilio = $entidad->getDomicilioComercial()) != false) : /* @var $domicilio Transparente\Model\Entity\Domicilio */?>
             <dt>domicilio comercial<dt>
-                <dd>
-                    <address>
-                        <?=$domicilio->getDireccion()?><br />
-                        <a href="<?=$this->url()?>municipio/detalles/<?=$domicilio->getMunicipio()->getId()?>">
-                            <?=$domicilio->getMunicipio()->getNombre()?></a>,
-                        <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
-                        <span class="glyphicon glyphicon-earphone"></span> tel: <?=$domicilio->getTelefonos()?><br />
-                        <span class="glyphicon glyphicon-print"></span>    fax: <?=$domicilio->getFax()?>
-                    </address>
-                </dd>
+            <dd>
+                <address>
+                    <?=$domicilio->getDireccion()?><br />
+                    <a href="<?=$this->url()?>municipio/detalles/<?=$domicilio->getMunicipio()->getId()?>">
+                        <?=$domicilio->getMunicipio()->getNombre()?></a>,
+                    <?=$domicilio->getMunicipio()->getDepartamento()->getNombre()?><br />
+                    <span class="glyphicon glyphicon-earphone"></span> tel: <?=$domicilio->getTelefonos()?><br />
+                    <span class="glyphicon glyphicon-print"></span>    fax: <?=$domicilio->getFax()?>
+                </address>
+            </dd>
             <?php endif ?>
 
+            <dt>e-mail<dt>
+            <dd><span class="glyphicon glyphicon-inbox"></span>
+                <?=implode('<br /><span class="glyphicon glyphicon-inbox"></span>', explode(',', $entidad->getEmail()))?>
+            </dd>
+
+            <? $fecha = ($entidad->getInscripciónFechaConstitución()) ? $entidad->getInscripciónFechaConstitución()->format('d/m/Y') : '--'?>
+            <dt>fecha de constitución<dt>
+            <dd><?=$fecha?></dd>
+
+            <? $fecha = ($entidad->getInscripciónFechaProvisional()) ? $entidad->getInscripciónFechaProvisional()->format('d/m/Y') : '--'?>
+            <dt>fecha inscripción provisional<dt>
+            <dd><?=$fecha?></dd>
+
+            <? $fecha = ($entidad->getInscripciónFechaDefinitiva()) ? $entidad->getInscripciónFechaDefinitiva()->format('d/m/Y') : '--'?>
+            <dt>fecha inscripción definitiva<dt>
+            <dd><?=$fecha?></dd>
+
+            <? $fecha = ($entidad->getInscripciónFechaSat()) ? $entidad->getInscripciónFechaSat()->format('d/m/Y') : '--'?>
+            <dt>fecha inscripción en la SAT<dt>
+            <dd><?=$fecha?></dd>
+
+            <dt>número de escritura<dt>
+            <dd><?=$entidad->getInscripciónNúmeroEscritura()?></dd>
+
+            <?=dl('principal actividad', $entidad->getPrincipalActividad())?>
+            <?=dl('principal trabajo',   $entidad->getPrincipalTrabajo())?>
+
             <dt>status<dt>
-                <dd><?=$entidad->getStatus($human = true)?></dd>
+            <dd><?=$entidad->getStatus($human = true)?></dd>
 
             <dt>tiene acceso al sistema<dt>
-                <dd><?=$entidad->getTieneAccesoSistema($human = true)?></dd>
-
-            <dt>URL<dt>
-                <dd><?=$entidad->getUrl()?></dd>
-
-            <dt>e-mail<dt>
-                <dd><?=$entidad->getEmail()?></dd>
+            <dd><?=$entidad->getTieneAccesoSistema($human = true)?></dd>
 
             <dt>tipo de organización<dt>
-                <dd><?=$entidad->getTipoOrganizacion()?></dd>
+            <dd><?=$entidad->getTipoOrganización()?></dd>
 
-            <dt>número de escritura de constitución<dt>
-                <dd><?=$entidad->getConstNumEscritura()?></dd>
-
-            <dt>fecha de constitución<dt>
-                <dd><?=$entidad->getConstFecha()?></dd>
-
-            <dt>fecha inscripción provisional<dt>
-                <dd><?=$entidad->getInscripcionProvisional()?></dd>
-
-            <dt>fecha inscripción definitiva<dt>
-                <dd><?=$entidad->getInscripcionDefinitiva()?></dd>
-
-            <dt>fecha inscripción en la SAT<dt>
-                <dd><?=$entidad->getInscripcionSat()?></dd>
+            <dt>URL<dt>
+            <dd><a href="http://<?=$entidad->getUrl()?>"><?=$entidad->getUrl()?></a></dd>
         </dl>
     </div>
 
@@ -139,7 +166,7 @@ $(function() {
                     </li>
                     <?php endforeach ?>
                 </ul>
-                <span class="small">última fecha de actualización: <?=$entidad->getRepLegalesUpdated()?></span>
+                <span class="small">actualizado en SAT: <?=$entidad->getRepLegalesUpdated()->format('d/m/Y')?></span>
             </div>
         </div>
         <?php endif ?>
@@ -156,7 +183,7 @@ $(function() {
                         <span class="glyphicon glyphicon-question-sign"></span>
                     </button>
                 </p>
-                <ul>
+                <ul id="empleados-municipales">
                     <?php foreach ($this->empleadosMunicipales as  $empleadoMunicipal) : /* @var \Transparente\Model\Entity\EmpleadoMunicipal */?>
                     <li>
                         <?=$empleadoMunicipal->getNombre()?> <br />
@@ -170,5 +197,26 @@ $(function() {
             </div>
         </div>
         <?php endif ?>
+
+        <?php if ($entidad->getPagos()) :?>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Proyectos</h3>
+                </div>
+                <div class="panel-body">
+                    <ul id="proyectos">
+                        <?php foreach ($entidad->getPagos() as $pago) :?>
+                            <li>
+                                <a href="<?=$this->url()?>proyecto/detalles/<?=$pago->getProyecto()->getId()?>">
+                                    <?=$pago->getProyecto()->getNombre()?>
+                                </a>
+                                (Q <?=number_format($pago->getMonto(), 2)?>)
+                            </li>
+                        <?php endforeach ?>
+                    </ul>
+                </div>
+            </div>
+        <?php endif ?>
+
     </div>
 </div>

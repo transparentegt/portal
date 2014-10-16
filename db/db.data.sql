@@ -113,7 +113,7 @@ START TRANSACTION;
     (NULL, 'Masagua', 6, 'Masagua'),
     (NULL, 'Nueva Concepción', 6, 'Nueva Concepción'),
     (NULL, 'Palín', 6, 'Palín'),
-    (NULL, 'San José', 6, 'San José'),
+    (NULL, 'San José', 6, 'Puerto San Jose'),
     (NULL, 'San Vicente Pacaya', 6, 'San Vicente Pacaya'),
     (NULL, 'Santa Lucía Cotzumalguapa', 6, 'Santa luc!a cotzumalguapa'),
     (NULL, 'Siquinalá', 6, 'Siquinal'),

@@ -5,7 +5,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use DoctrineModule\Paginator\Adapter\Collection as Adapter;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Paginator\Paginator;
+//use Doctrine\ORM\Tools\Pagination\Paginator;
 use Zend\View\Model\ViewModel;
+use Transparente\Model\DoctrinePaginatorAdapter;
 
 class ProveedoresController extends AbstractActionController
 {
@@ -19,12 +21,34 @@ class ProveedoresController extends AbstractActionController
     public function indexAction()
     {
         $proveedoresModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
-        $entities         = $proveedoresModel->findAll();
-        $paginator        = new Paginator(new Adapter(new ArrayCollection($entities)));
+        // $entities         = $proveedoresModel->findAll();
+        // $total            = number_format(count($entities));
+        // $paginator        = new Paginator(new Adapter(new ArrayCollection($entities)));
+        
         if (!empty($_GET['page'])) {
-            $paginator->setCurrentPageNumber($_GET['page']);
+            $page = $_GET['page'];
+        }else{
+            $page = 1;
         }
-        return new ViewModel(compact('paginator'));
+        $max = 20;
+
+        //
+
+        $results = $proveedoresModel->getPaginator(($page - 1) * 20, $max);
+
+        $adapter = new DoctrinePaginatorAdapter($results);
+
+        $paginator = new Paginator($adapter);
+
+         
+        $paginator->setCurrentPageNumber($page);
+        //$paginator->setCurrentPageNumber($page);
+        $paginator->setItemCountPerPage($max);
+        $total     = $paginator->count();
+
+
+        
+        return new ViewModel(compact('paginator', 'total'));
     }
 
     /**

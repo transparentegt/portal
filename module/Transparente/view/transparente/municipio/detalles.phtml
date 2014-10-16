@@ -10,33 +10,6 @@ $municipio = $this->municipio;
 
 $representantes = $this->representantes;
 ?>
-<script>
-function openModal(id,title, body) {
-    $('body').append('<div class="modal fade" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> \
-            <div class="modal-dialog"> \
-              <div class="modal-content"> \
-                <div class="modal-header"> \
-                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> \
-                  <h4 class="modal-title" id="myModalLabel">' + title + '</h4> \
-                </div> \
-                <div class="modal-body">' + body + '</div> \
-                <div class="modal-footer"> \
-                  <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button> \
-                </div> \
-              </div> \
-            </div> \
-          </div>\
-      ');
-}
-$(function() {
-    openModal('representantesLegalesModal', '¿Porqué queremos ver los representantes legales?',
-            'Un empleado municipal tiene poder de decición para contratar a los proveedores. Éste puede decidir darles \
-            el trabajo a sus familiares con quienes ya ha acordado un precio para repartirse las ganancias. Esto es \
-            ilegal<sup>se necesita link al artículo</sup>, pero es difícil de encontrar; es por eso que buscamos listar \
-            los apellidos relacionados para encontrar estos actos de corrupción.');
-});
-
-</script>
 <style >
 .empleado {float: left; height: 360px; width: 100%;}
 .logo-partido {height: 100px; margin-right: 10px;}
@@ -47,22 +20,25 @@ $(function() {
 </style>
 <h1>Municipio: <?=$municipio->getNombre()?>, <?=$municipio->getDepartamento()->getNombre()?></h1>
 
-<p>Listado de los empleados municipales del consejo municipal.</p>
+<p>Listado de los miembros del consejo municipal.</p>
+<p>
+    Los miembros del consejo tienen poder de decición para contratar a los proveedores. Éste puede decidir darles el
+    trabajo a sus familiares con quienes ya ha acordado un precio para repartirse las ganancias. Esto es ilegal, pero es
+    difícil de encontrar; es por eso que buscamos listar los apellidos relacionados para encontrar estas posibles
+    relaciónes entre familiares.
+</p>
 <div class="row">
     <?php foreach($this->empleadosMunicipales as $empleado) :?>
     <div class="col-sm-6">
     <div class="panel panel-default empleado">
         <div class="panel-heading"><?=$empleado->getCargo()?></div>
             <div class="panel-body">
-                <img class="pull-left logo-partido"
+                <img class="pull-left logo-partido img-thumbnail"
+                     title="<?=$empleado->getPartidoPolítico()->getNombre()?>"  alt="<?=$empleado->getPartidoPolítico()->getNombre()?>"
                      src="<?=$this->basePath()?>/Transparente/img/logos-partidos/<?=$empleado->getPartidoPolítico()->getIniciales()?>.svg"  />
                 <h4><?=$empleado->getNombre()?></h4>
                 <?php if ($representantes[$empleado->getId()]) :?>
-                    <p>Apellidos en común con:
-                        <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#representantesLegalesModal">
-                        <span class="glyphicon glyphicon-question-sign"></span>
-                    </button>
-                    </p>
+                    <p>Apellidos en común con:</p>
                     <ul class="rep-legales">
                         <?php foreach($representantes[$empleado->getId()] as $representanteLegal) : /* @var $representanteLegal \Transparente\Model\Entity\RepresentanteLegal */?>
                             <li>

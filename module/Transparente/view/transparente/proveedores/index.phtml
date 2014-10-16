@@ -21,14 +21,10 @@ $pager = $this->paginationControl(
 ?>
 <h1>Proveedores</h1>
 <p>
-    Catálogo de proveedores importados.
-    <a href="http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper=2014">Guatecompras</a> reporta un total
-    de <span class="badge">3,883</span> proveedores adjudicados para este año*, después de importar todos los proveedores
-    encontramos <span class="badge">520</span> proveedores duplicados para un total de <span class="badge">3,363</span>
-    proveedores reales.
-</p>
-<p class="small">
-    * (hasta la última fecha de importación)
+    Listado de todos los proveedores importados del portal de
+    <a href="http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper=2014">Guatecompras</a>. Se lograron
+    importar <span class="badge"><?=$total?></span> proveedores que han vendido algún
+    producto o servico al gobierno durante este año <?=date('Y')?>.
 </p>
 <table class="table">
     <thead>

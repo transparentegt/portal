@@ -16,7 +16,9 @@ use Transparente\Model\ScraperModel;
  *
  * @link http://guatecompras.gt/info/preguntasFrecProv.aspx#_lbl10
  *
- * @todo dejar de tener campos NOT NULL
+ * @todo Leer inconformidads presentadas
+ * @todo Leer inhabilitaciones recibidas
+ * @todo Leer publicaciones sin concurso
  *
  * @ORM\Entity(repositoryClass="Transparente\Model\ProveedorModel")
  * @ORM\Table(name="proveedor")
@@ -24,56 +26,16 @@ use Transparente\Model\ScraperModel;
 class Proveedor extends AbstractDoctrineEntity
 {
     /**
-     * No es autoincrement para usaar el mismo ID que en GTC
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     */
-    protected $id;
-
-    /**
-     * Nombre o razón social
-     * @ORM\Column(type="string")
-     */
-    protected $nombre;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $nit;
-
-    /**
-     * HABILITADO / INHABILITADO
-     *
-     * @ORM\Column(type="boolean")
-     */
-    protected $status;
-
-    /**
-     * En GTC se muestra como CON/SIN CONTRASEÑA
-     *
-     * @ORM\Column(type="boolean")
-     */
-    protected $tiene_acceso_sistema;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Domicilio", cascade="persist")
-     * @ORM\JoinColumn(name="id_domicilio_fiscal", referencedColumnName="id")
-     */
-    protected $domicilio_fiscal;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Domicilio", cascade="persist")
      * @ORM\JoinColumn(name="id_domicilio_comercial", referencedColumnName="id")
      */
     protected $domicilio_comercial;
 
     /**
-     * Está en domicilio comercial, pero no queremos meter eso en la tabla domicilios.
-     *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Domicilio", cascade="persist")
+     * @ORM\JoinColumn(name="id_domicilio_fiscal", referencedColumnName="id")
      */
-    protected $url;
+    protected $domicilio_fiscal;
 
     /**
      * Está en domicilio comercial, pero no queremos meter eso en la tabla domicilios.
@@ -83,9 +45,86 @@ class Proveedor extends AbstractDoctrineEntity
     protected $email;
 
     /**
+     * No es autoincrement para usaar el mismo ID que en GTC
+     *
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     */
+    protected $id;
+
+    /**
+     * Fecha de constitución:
+     * @ORM\Column(type="date", nullable=true)
+     */
+    protected $inscripción_fecha_constitución;
+
+    /**
+     * Inscripción DEFINITIVA en el Registro Mercantil
+     * @ORM\Column(type="date", nullable=true)
+     */
+    protected $inscripción_fecha_definitiva;
+
+    /**
+     * Inscripción PROVISIONAL en el Registro Mercantil
+     * @ORM\Column(type="date", nullable=true)
+     */
+    protected $inscripción_fecha_provisional;
+
+    /**
+     * Inscripción en la SAT
+     *
+     * @ORM\Column(type="date", nullable=true)
+     */
+    protected $inscripción_fecha_sat;
+
+    /**
+     * Número de escritura de constitución
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $inscripción_número_escritura;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $nit;
+
+    /**
+     * Nombre o razón social
+     * @ORM\Column(type="string")
+     */
+    protected $nombre;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ProveedorNombreComercial", mappedBy="proveedor", cascade="persist")
+     */
+    protected $nombres_comerciales;
+
+    /**
+     * Pagos al proveedor
+     *
+     * @ORM\OneToMany(targetEntity="Pago", mappedBy="proveedor", cascade={"persist"})
+     */
+    protected $pagos;
+
+    /**
+     * Algunos proveedores no tienen este campo
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $principal_actividad;
+
+    /**
+     * Algunos proveedores no tienen este campo
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $principal_trabajo;
+
+    /**
      * Última fecha que se actualizaron los representantes legales
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="date", nullable=true)
      */
     protected $rep_legales_updated;
 
@@ -104,62 +143,53 @@ class Proveedor extends AbstractDoctrineEntity
     protected $representantes_legales;
 
     /**
+     * HABILITADO / INHABILITADO
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $status;
+
+    /**
+     * En GTC se muestra como CON/SIN CONTRASEÑA
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $tiene_acceso_sistema;
+
+    /**
      * Los valores encontrados han sido: SOCIEDAD ANÓNIMA, INDIVIDUAL
      *
      * @todo tiene que ser un listado limitado
      *
      * @ORM\Column(type="string")
      */
-    // protected $tipo_organizacion;
+    protected $tipo_organización;
 
     /**
-     * Datos recibidos de la SAT
-     * @ORM\Column(type="datetime")
-     */
-    // protected $actualizado_sat;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    // protected $const_fecha;
-
-    /**
-     * Número de escritura de constitucioń (WTF? será número entero)
+     * Última fecha que se actualizaron los representantes legales
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="date")
      */
-    //protected $const_num_escritura;
+    protected $updated_sat;
 
     /**
-     * @ORM\Column(type="string")
+     * Está en domicilio comercial, pero no queremos meter eso en la tabla domicilios.
+     *
+     * @ORM\Column(type="string", nullable=true)
      */
-    // protected $inscripcion_provisional;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    // protected $inscripcion_definitiva;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    // protected $inscripcion_sat;
-
-    /**
-     * @ORM\OneToMany(targetEntity="ProveedorNombreComercial", mappedBy="proveedor", cascade="persist")
-     */
-    protected $nombres_comerciales;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Proyecto", mappedBy="proveedor", cascade="persist")
-     */
-    protected $proyectos;
+    protected $url;
 
     public function __construct()
     {
         $this->nombres_comerciales    = new ArrayCollection();
-        $this->proyectos              = new ArrayCollection();
+        $this->pagos                  = new ArrayCollection();
         $this->representantes_legales = new ArrayCollection();
+    }
+
+
+    public function addPago(Pago $pago)
+    {
+        $this->pagos[] = $pago;
     }
 
     public function appendNombreComercial(ProveedorNombreComercial $nombreComercial)
@@ -176,9 +206,88 @@ class Proveedor extends AbstractDoctrineEntity
         return $this;
     }
 
+    public function getConstFecha ()
+    {
+        return $this->const_fecha;
+    }
+
+    public function getConstNumEscritura ()
+    {
+        return $this->const_num_escritura;
+    }
+
+    public function getDomicilioComercial ()
+    {
+        return $this->domicilio_comercial;
+    }
+
+    public function getDomicilioFiscal ()
+    {
+        return $this->domicilio_fiscal;
+    }
+
+    public function getEmail ()
+    {
+        return $this->email;
+    }
+
     public function getId ()
     {
         return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInscripciónFechaConstitución()
+    {
+        return $this->inscripción_fecha_constitución;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInscripciónFechaDefinitiva()
+    {
+        return $this->inscripción_fecha_definitiva;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInscripciónFechaProvisional()
+    {
+        return $this->inscripción_fecha_provisional;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInscripciónFechaSat()
+    {
+        return $this->inscripción_fecha_sat;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInscripciónNúmeroEscritura()
+    {
+        return $this->inscripción_número_escritura;
+    }
+
+    /**
+     * Se retorna el NIT con el guión del dígito verificador final
+     *
+     * @return string
+     *
+     * @todo validar cuando el nit es inválido
+     */
+    public function getNit()
+    {
+        $nit = $this->nit;
+        $nit = substr($nit, 0, strlen($nit) -1) . '-' . substr($nit, -1, 1);
+        return $nit;
     }
 
     public function getNombre ()
@@ -186,17 +295,39 @@ class Proveedor extends AbstractDoctrineEntity
         return $this->nombre;
     }
 
-    public function setNombre ($nombre)
-    {
-        $nombre = ScraperModel::nombresPropios($nombre);
-        $nombre = str_replace('Sociedad Anonima', 'S.A.', $nombre);
-        $this->nombre = $nombre;
-        return $this;
-    }
-
     public function getNombresComerciales()
     {
         return $this->nombres_comerciales;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrincipalActividad()
+    {
+        return $this->principal_actividad;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrincipalTrabajo()
+    {
+        return $this->principal_trabajo;
+    }
+
+    /**
+     * @return Pago[]
+     */
+    public function getPagos()
+    {
+        return $this->pagos;
+    }
+
+
+    public function getRepLegalesUpdated ()
+    {
+        return $this->rep_legales_updated;
     }
 
     /**
@@ -216,26 +347,6 @@ class Proveedor extends AbstractDoctrineEntity
         return $ordenados;
     }
 
-    /**
-     * Se retorna el NIT con el guión del dígito verificador final
-     *
-     * @return string
-     *
-     * @todo validar cuando el nit es inválido
-     */
-    public function getNit()
-    {
-        $nit = $this->nit;
-        $nit = substr($nit, 0, strlen($nit) -1) . '-' . substr($nit, -1, 1);
-        return $nit;
-    }
-
-    public function setNit ($nit)
-    {
-        $this->nit = $nit;
-        return $this;
-    }
-
     public function getStatus ($human = false)
     {
         $flag = $this->status;
@@ -243,12 +354,6 @@ class Proveedor extends AbstractDoctrineEntity
             $flag = ($flag) ? 'activo' : 'inactivo';
         }
         return $flag;
-    }
-
-    public function setStatus ($status)
-    {
-        $this->status = $status;
-        return $this;
     }
 
     public function getTieneAccesoSistema ($human = false)
@@ -260,32 +365,17 @@ class Proveedor extends AbstractDoctrineEntity
         return $flag;
     }
 
-    public function setTieneAccesoSistema ($tiene_acceso_sistema)
+    public function getTipoOrganización ()
     {
-        $this->tiene_acceso_sistema = $tiene_acceso_sistema;
-        return $this;
+        return $this->tipo_organización;
     }
 
-    public function getDomicilioFiscal ()
+    /**
+     * @return mixed
+     */
+    public function getUpdatedSat()
     {
-        return $this->domicilio_fiscal;
-    }
-
-    public function setDomicilioFiscal (\Transparente\Model\Entity\Domicilio $domicilio)
-    {
-        $this->domicilio_fiscal = $domicilio;
-        return $this;
-    }
-
-    public function getDomicilioComercial ()
-    {
-        return $this->domicilio_comercial;
-    }
-
-    public function setDomicilioComercial (\Transparente\Model\Entity\Domicilio $domicilio)
-    {
-        $this->domicilio_comercial = $domicilio;
-        return $this;
+        return $this->updated_sat;
     }
 
     public function getUrl ()
@@ -304,97 +394,153 @@ class Proveedor extends AbstractDoctrineEntity
         return $url;
     }
 
-    public function setUrl ($url)
-    {
-        $this->url = $url;
-        return $this;
-    }
-
-    public function getEmail ()
-    {
-        return $this->email;
-    }
-
-    public function setEmail ($email)
-    {
-        $this->email = $email;
-        return $this;
-    }
-
-    public function getRepLegalesUpdated ()
-    {
-        return $this->rep_legales_updated;
-    }
-
-    public function setRepLegalesUpdated ($rep_legales_updated)
-    {
-        $this->rep_legales_updated = $rep_legales_updated;
-        return $this;
-    }
-
-    public function getTipoOrganizacion ()
-    {
-        return $this->tipo_organizacion;
-    }
-
-    public function setTipoOrganizacion ($tipo_organizacion)
-    {
-        $this->tipo_organizacion = $tipo_organizacion;
-        return $this;
-    }
-
-    public function getConstNumEscritura ()
-    {
-        return $this->const_num_escritura;
-    }
-
-    public function setConstNumEscritura ($const_num_escritura)
-    {
-        $this->const_num_escritura = $const_num_escritura;
-        return $this;
-    }
-
-    public function getConstFecha ()
-    {
-        return $this->const_fecha;
-    }
-
     public function setConstFecha ($const_fecha)
     {
         $this->const_fecha = $const_fecha;
         return $this;
     }
 
-    public function getInscripcionProvisional ()
+    public function setDomicilioComercial (\Transparente\Model\Entity\Domicilio $domicilio)
     {
-        return $this->inscripcion_provisional;
-    }
-
-    public function setInscripcionProvisional ($inscripcion_provisional)
-    {
-        $this->inscripcion_provisional = $inscripcion_provisional;
+        $this->domicilio_comercial = $domicilio;
         return $this;
     }
 
-    public function getInscripcionDefinitiva ()
+    public function setDomicilioFiscal (\Transparente\Model\Entity\Domicilio $domicilio)
     {
-        return $this->inscripcion_definitiva;
-    }
-
-    public function setInscripcionDefinitiva ($inscripcion_definitiva)
-    {
-        $this->inscripcion_definitiva = $inscripcion_definitiva;
+        $this->domicilio_fiscal = $domicilio;
         return $this;
     }
 
-    public function getInscripcionSat ()
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
     {
-        return $this->inscripcion_sat;
+        $this->email = ($email != '[--No Especificado--]') ? $email : null;
     }
 
-    public function setInscripcionSat ($inscripcion_sat)
+    /**
+     * @param string $inscripción_fecha_constitución
+     */
+    public function setInscripciónFechaConstitución($inscripción_fecha_constitución)
     {
-        $this->inscripcion_sat = $inscripcion_sat;
+        $inscripción_fecha_constitución       = ScraperModel::fecha($inscripción_fecha_constitución);
+        $this->inscripción_fecha_constitución = $inscripción_fecha_constitución;
         return $this;
+    }
+
+    /**
+     * @param string $inscripción_fecha_definitiva
+     */
+    public function setInscripciónFechaDefinitiva($inscripción_fecha_definitiva)
+    {
+        $inscripción_fecha_definitiva       = ScraperModel::fecha($inscripción_fecha_definitiva);
+        $this->inscripción_fecha_definitiva = $inscripción_fecha_definitiva;
+        return $this;
+    }
+
+    /**
+     * @param mixed $inscripción_fecha_provisional
+     */
+    public function setInscripciónFechaProvisional($inscripción_fecha_provisional)
+    {
+        $inscripción_fecha_provisional       = ScraperModel::fecha($inscripción_fecha_provisional);
+        $this->inscripción_fecha_provisional = $inscripción_fecha_provisional;
+        return $this;
+    }
+
+    /**
+     * @param mixed $inscripción_fecha_sat
+     */
+    public function setInscripciónFechaSat($inscripción_fecha_sat)
+    {
+        $inscripción_fecha_sat       = ScraperModel::fecha($inscripción_fecha_sat);
+        $this->inscripción_fecha_sat = $inscripción_fecha_sat;
+        return $this;
+    }
+
+    /**
+     * @param mixed $inscripción_número_escritura
+     */
+    public function setInscripciónNúmeroEscritura($inscripción_número_escritura)
+    {
+        $this->inscripción_número_escritura = (int) $inscripción_número_escritura;
+    }
+
+    public function setNombre ($nombre)
+    {
+        $nombre = ScraperModel::nombresPropios($nombre);
+        $nombre = preg_replace('/\s?sociedad anonima/i', ', S.A.', $nombre);
+        $nombre = trim($nombre);
+        $this->nombre = $nombre;
+        return $this;
+    }
+
+    public function setNit ($nit)
+    {
+        $this->nit = $nit;
+        return $this;
+    }
+
+    /**
+     * @param mixed $principal_actividad
+     */
+    public function setPrincipalActividad($principal_actividad)
+    {
+        $this->principal_actividad = ucfirst(strtolower($principal_actividad));
+    }
+
+    /**
+     * @param mixed $principal_trabajo
+     */
+    public function setPrincipalTrabajo($principal_trabajo)
+    {
+        $this->principal_trabajo = ucfirst(strtolower($principal_trabajo));
+    }
+
+    /**
+     * @param mixed $rep_legales_updated
+     */
+    public function setRepLegalesUpdated($rep_legales_updated)
+    {
+        $this->rep_legales_updated = ScraperModel::fecha($rep_legales_updated);
+    }
+
+    public function setStatus ($status)
+    {
+        $this->status = ($status == 'HABILITADO');;
+        return $this;
+    }
+
+    public function setTieneAccesoSistema ($tiene_acceso_sistema)
+    {
+        $this->tiene_acceso_sistema = ($tiene_acceso_sistema == 'CON CONTRASEÑA');
+        return $this;
+    }
+
+    /**
+     * @param string $tipo_organización
+     */
+    public function setTipoOrganización($tipo_organización)
+    {
+        $this->tipo_organización = mb_strtolower($tipo_organización, 'UTF-8');
+    }
+
+    /**
+     * @param string $updated_sat
+     */
+    public function setUpdatedSat($updated_sat)
+    {
+        $this->updated_sat = ScraperModel::fecha($updated_sat);
+        return $this;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = ($url  != '[--No Especificado--]') ? $url : null;
     }
 }

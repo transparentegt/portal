@@ -178,7 +178,7 @@ class RepresentanteLegalModel extends AbstractModel
             'nit'                  => '//*[@id="MasterGC_ContentBlockHolder_lblNIT"]',
             'status'               => '//*[@id="MasterGC_ContentBlockHolder_lblHabilitado"]',
             'tiene_acceso_sistema' => '//*[@id="MasterGC_ContentBlockHolder_lblContraSnl"]',
-            'domicilio_fiscal'     => [
+            'fiscal' => [
                 'updated'      => 'div#MasterGC_ContentBlockHolder_divDomicilioFiscal span.AvisoGrande span.AvisoGrande',
                 'departamento' => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioFiscal2"]//tr[1]//td[2]',
                 'municipio'    => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioFiscal2"]//tr[2]//td[2]',
@@ -186,7 +186,7 @@ class RepresentanteLegalModel extends AbstractModel
                 'telefonos'    => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioFiscal2"]//tr[4]//td[2]',
                 'fax'          => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioFiscal2"]//tr[5]//td[2]',
             ],
-            'domicilio_comercial'     => [
+            'comercial' => [
                 'updated'      => null,
                 'departamento' => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[3]//td[2]',
                 'municipio'    => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[4]//td[2]',
@@ -210,13 +210,13 @@ class RepresentanteLegalModel extends AbstractModel
         $data['status']               = ($data['status'] == 'HABILITADO');
         $data['tiene_acceso_sistema'] = ($data['tiene_acceso_sistema'] == 'CON CONTRASEÑA');
         // descartar direcciones vacías
-        if ($data['domicilio_fiscal']['direccion'] == '[--No Especificado--]' ||
-            $data['domicilio_fiscal']['municipio'] == '[--No Especificado--]') {
-                unset($data['domicilio_fiscal']);
+        if ($data['fiscal']['direccion'] == '[--No Especificado--]' ||
+            $data['fiscal']['municipio'] == '[--No Especificado--]') {
+                unset($data['fiscal']);
         }
-        if ($data['domicilio_comercial']['direccion'] == '[--No Especificado--]' ||
-            $data['domicilio_comercial']['municipio'] == '[--No Especificado--]') {
-                unset($data['domicilio_comercial']);
+        if ($data['comercial']['direccion'] == '[--No Especificado--]' ||
+            $data['comercial']['municipio'] == '[--No Especificado--]') {
+                unset($data['comercial']);
         }
 
         // algunas fechas no están bien parseadas
