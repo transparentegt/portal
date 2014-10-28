@@ -34,14 +34,13 @@
             <div class="panel-body">
                 <p>Estos son los datos recopilados hasta el momento:</p>
                 <ul>
-                    <li><span class="badge">3,363</span> proveedores</li>
-                    <li><span class="badge">2,257</span> domicilios registrados</li>
-                    <li><span class="badge">2,245</span> representantes legales</li>
+                    <? foreach ($this->totals as $count) :?>
+                    <li><span class="badge"><?=number_format($count['total'])?></span> <?=$count['entidad']?></li>
+                    <? endforeach ?>
                     <li><span class="badge">4</span> reportes de inconsistencias</li>
                 </ul>
                 <p>
-                    ¿Es realmente transparente? ¿Van a liberar la base de datos? El RDBMS es
-                    <a href="http://www.mysql.com/">Oracle's MySQL</a>, lista para ser descargada.
+                    Descarga la base de datos en formato <a href="http://www.mysql.com/">Oracle's MySQL</a>.
                 </p>
 
                 <a class="btn btn-success pull-right" href="<?=$this->basepath()?>/Transparente/db-latest.sql.bz2">
