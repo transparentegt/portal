@@ -174,7 +174,6 @@ class ProveedorModel extends AbstractModel
         return $nombres;
     }
 
-
     /**
      * @param int $offset
      * @param int $limit
@@ -182,24 +181,12 @@ class ProveedorModel extends AbstractModel
      */
     public function getPaginator($offset = 0, $limit = 20)
     {
-
-
-
-         $dql = 'SELECT Proveedor 
-         FROM Transparente\Model\Entity\Proveedor Proveedor
-                ORDER BY Proveedor.nombre
-                ';
+        $dql   = 'SELECT Proveedor FROM Transparente\Model\Entity\Proveedor Proveedor ORDER BY Proveedor.nombre';
         $query = $this->getEntityManager()
-                        ->createQuery($dql)
-                        ->setMaxResults($limit)
-                        ->setFirstResult($offset);
-        //return $query->getResult();
-
-        /***********************************************/
-
-
+                    ->createQuery($dql)
+                    ->setMaxResults($limit)
+                    ->setFirstResult($offset);
         $paginator = new Paginator($query);
-
         return $paginator;
     }
 
