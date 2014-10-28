@@ -19,14 +19,21 @@ $representantes = $this->representantes;
 .dl-horizontal dd { margin-left: 270px;}
 </style>
 <h1>Municipio: <?=$municipio->getNombre()?>, <?=$municipio->getDepartamento()->getNombre()?></h1>
+<div class="row">
+    <div class="col-sm-4">
 
-<p>Listado de los miembros del consejo municipal.</p>
-<p>
-    Los miembros del consejo tienen poder de decición para contratar a los proveedores. Éste puede decidir darles el
-    trabajo a sus familiares con quienes ya ha acordado un precio para repartirse las ganancias. Esto es ilegal, pero es
-    difícil de encontrar; es por eso que buscamos listar los apellidos relacionados para encontrar estas posibles
-    relaciónes entre familiares.
-</p>
+        <p>Listado de los miembros del consejo municipal.</p>
+        <p>
+            Los miembros del consejo tienen poder de decición para contratar a los proveedores. Éste puede decidir darles el
+            trabajo a sus familiares con quienes ya ha acordado un precio para repartirse las ganancias. Esto es ilegal, pero es
+            difícil de encontrar; es por eso que buscamos listar los apellidos relacionados para encontrar estas posibles
+            relaciónes entre familiares.
+        </p>
+    </div>
+    <div class="col-sm-8">
+        <iframe width="560" height="315" src="//www.youtube.com/embed/m-JozsD_IxQ?rel=0&end=50" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div>
 <div class="row">
     <?php foreach($this->empleadosMunicipales as $empleado) :?>
     <div class="col-sm-6">
