@@ -21,4 +21,6 @@ vendor/symfony/
 data/cache*
 data/*.key
 data/DoctrineORMModule/
+data/*
 db/*.bz2
+
