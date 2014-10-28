@@ -77,6 +77,11 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     protected $status;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    protected $tipo;
+
+    /**
      * En GTC se muestra como CON/SIN CONTRASEÑA
      *
      * @ORM\Column(type="boolean")
@@ -136,12 +141,12 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     protected $representantes_legales;
 
     /**
-     * Última fecha que se actualizaron los representantes legales
+     * Última fecha de actualización por SAT
      * (Datos recibidos de la SAT el: 01.jul.2014 16:45:44)
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="date")
      */
-    protected $rep_legales_updated;
+    protected $updated_sat;
 
     /**
      * Tipo de representante legal, tiene que ser un listado limitado.
@@ -324,9 +329,27 @@ class RepresentanteLegal extends AbstractDoctrineEntity
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getUpdatedSat()
+    {
+        return $this->updated_sat;
+    }
+
+
     public function getUrl ()
     {
         return $this->url;
+    }
+
+    /**
+     * @param string $updated_sat
+     */
+    public function setUpdatedSat($updated_sat)
+    {
+        $this->updated_sat = ScraperModel::fecha($updated_sat);
+        return $this;
     }
 
     public function setUrl ($url)
@@ -351,81 +374,9 @@ class RepresentanteLegal extends AbstractDoctrineEntity
         return $this->proveedores;
     }
 
-    public function getRepLegalesUpdated ()
+    public function getTipo()
     {
-        return $this->rep_legales_updated;
-    }
-
-    public function setRepLegalesUpdated ($rep_legales_updated)
-    {
-        $this->rep_legales_updated = $rep_legales_updated;
-        return $this;
-    }
-
-    public function getTipoOrganizacion ()
-    {
-        return $this->tipo_organizacion;
-    }
-
-    public function setTipoOrganizacion ($tipo_organizacion)
-    {
-        $this->tipo_organizacion = $tipo_organizacion;
-        return $this;
-    }
-
-    public function getConstNumEscritura ()
-    {
-        return $this->const_num_escritura;
-    }
-
-    public function setConstNumEscritura ($const_num_escritura)
-    {
-        $this->const_num_escritura = $const_num_escritura;
-        return $this;
-    }
-
-    public function getConstFecha ()
-    {
-        return $this->const_fecha;
-    }
-
-    public function setConstFecha ($const_fecha)
-    {
-        $this->const_fecha = $const_fecha;
-        return $this;
-    }
-
-    public function getInscripcionProvisional ()
-    {
-        return $this->inscripcion_provisional;
-    }
-
-    public function setInscripcionProvisional ($inscripcion_provisional)
-    {
-        $this->inscripcion_provisional = $inscripcion_provisional;
-        return $this;
-    }
-
-    public function getInscripcionDefinitiva ()
-    {
-        return $this->inscripcion_definitiva;
-    }
-
-    public function setInscripcionDefinitiva ($inscripcion_definitiva)
-    {
-        $this->inscripcion_definitiva = $inscripcion_definitiva;
-        return $this;
-    }
-
-    public function getInscripcionSat ()
-    {
-        return $this->inscripcion_sat;
-    }
-
-    public function setInscripcionSat ($inscripcion_sat)
-    {
-        $this->inscripcion_sat = $inscripcion_sat;
-        return $this;
+        return $this->tipo;
     }
 
     public function representa(Proveedor $proveedor)

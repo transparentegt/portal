@@ -166,7 +166,8 @@ class Proveedor extends AbstractDoctrineEntity
     protected $tipo_organización;
 
     /**
-     * Última fecha que se actualizaron los representantes legales
+     * Última fecha de actualización por SAT
+     * (Datos recibidos de la SAT el: 01.jul.2014 16:45:44)
      *
      * @ORM\Column(type="date")
      */
