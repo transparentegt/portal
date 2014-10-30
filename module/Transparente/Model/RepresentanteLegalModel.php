@@ -174,10 +174,13 @@ class RepresentanteLegalModel extends AbstractModel
         $url    = "http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=10&lprv={$id}";
         $página = ScraperModel::getCachedUrl($url, "representante-legal-$id");
         $xpaths = [
-            'nombre'               => '//*[@id="MasterGC_ContentBlockHolder_lblNombreProv"]',
-            'nit'                  => '//*[@id="MasterGC_ContentBlockHolder_lblNIT"]',
-            'status'               => '//*[@id="MasterGC_ContentBlockHolder_lblHabilitado"]',
-            'tiene_acceso_sistema' => '//*[@id="MasterGC_ContentBlockHolder_lblContraSnl"]',
+            'email'                 => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[2]//td[2]',
+            'inscripción_fecha_sat' => '//*[@id="MasterGC_ContentBlockHolder_pnl_DatosInscripcion2"]//tr[2]/td[@class="ValorForm"]',
+            'nombre'                => '//*[@id="MasterGC_ContentBlockHolder_lblNombreProv"]',
+            'nit'                   => '//*[@id="MasterGC_ContentBlockHolder_lblNIT"]',
+            'status'                => '//*[@id="MasterGC_ContentBlockHolder_lblHabilitado"]',
+            'tiene_acceso_sistema'  => '//*[@id="MasterGC_ContentBlockHolder_lblContraSnl"]',
+            'tipo'                  => '//*[@id="MasterGC_ContentBlockHolder_pnl_DatosInscripcion2"]//tr[1]/td[@class="ValorForm"]',
             'fiscal' => [
                 'updated'      => 'div#MasterGC_ContentBlockHolder_divDomicilioFiscal span.AvisoGrande span.AvisoGrande',
                 'departamento' => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioFiscal2"]//tr[1]//td[2]',
@@ -194,9 +197,8 @@ class RepresentanteLegalModel extends AbstractModel
                 'telefonos'    => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[6]//td[2]',
                 'fax'          => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[7]//td[2]',
             ],
+            'updated_sat'         => '//*[@id="MasterGC_ContentBlockHolder_lblFechaInfo"]',
             'url'                 => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[1]//td[2]',
-            'email'               => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[2]//td[2]',
-            'rep_legales_updated' => '//*[@id="MasterGC_ContentBlockHolder_divRepresentantesLegales"]//span/span',
         ];
 
         $data = ['id' => $id] + ScraperModel::fetchData($xpaths, $página);
@@ -218,13 +220,6 @@ class RepresentanteLegalModel extends AbstractModel
             $data['comercial']['municipio'] == '[--No Especificado--]') {
                 unset($data['comercial']);
         }
-
-        // algunas fechas no están bien parseadas
-        $data['rep_legales_updated']  = strptime($data['rep_legales_updated'], '(Datos recibidos de la SAT el: %d.%b.%Y %T ');
-        $data['rep_legales_updated']  = 1900+$data['rep_legales_updated']['tm_year']
-        . '-' . (1 + $data['rep_legales_updated']['tm_mon'])
-        . '-' . ($data['rep_legales_updated']['tm_mday'])
-        ;
         $data['url']                  = ($data['url']   != '[--No Especificado--]') ? $data['url'] : null;
         $data['email']                = ($data['email'] != '[--No Especificado--]') ? $data['email'] : null;
 
@@ -288,11 +283,11 @@ class RepresentanteLegalModel extends AbstractModel
         foreach($nodos as $nodo) {
             $url         = parse_url($nodo->getAttribute('href'));
             parse_str($url['query'], $url);
-            $id          = $url['lprv'];
+            $id          = (int) $url['lprv'];
             if ( ($parentId == $id) || in_array($id, $elementos)) continue;
-            $elementos[] = (int) $id;
+            $elementos[$id] = $id;
         }
-        sort($elementos);
+        asort($elementos);
         return $elementos;
     }
 }

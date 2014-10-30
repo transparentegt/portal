@@ -169,7 +169,7 @@ $(function() {
             </div>
         <?php endif ?>
 
-        <?php if ($entidad->getRepresentantesLegales()) :?>
+        <?php if (count($entidad->getRepresentantesLegales())) :?>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Representantes Legales</h3>

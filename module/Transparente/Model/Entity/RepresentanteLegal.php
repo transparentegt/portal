@@ -60,6 +60,13 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     protected $apellido3;
 
     /**
+     * Inscripción en la SAT
+     *
+     * @ORM\Column(type="date", nullable=true)
+     */
+    protected $inscripción_fecha_sat;
+
+    /**
      * @ORM\Column(type="string")
      */
     protected $nit;
@@ -223,6 +230,14 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     }
 
     /**
+     * @return \DateTime
+     */
+    public function getInscripciónFechaSat()
+    {
+        return $this->inscripción_fecha_sat;
+    }
+
+    /**
      * Se retorna el NIT con el guión del dígito verificador final
      *
      * @return string
@@ -268,6 +283,16 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     public function setNombre2($nombre2)
     {
         $this->nombre2 = ScraperModel::nombresPropios($nombre2);
+        return $this;
+    }
+
+    /**
+     * @param string $inscripción_fecha_sat
+     */
+    public function setInscripciónFechaSat($inscripción_fecha_sat)
+    {
+        $inscripción_fecha_sat       = ScraperModel::fecha($inscripción_fecha_sat);
+        $this->inscripción_fecha_sat = $inscripción_fecha_sat;
         return $this;
     }
 

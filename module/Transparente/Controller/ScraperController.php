@@ -70,15 +70,12 @@ class ScraperController extends AbstractActionController
     {
         $proveedorModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
         /* @var $proveedorModel ProveedorModel */
-        $repModel    = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');
-        /* @var $repModel RepresentanteLegalModel */
         $domicilioModel = $this->getServiceLocator()->get('Transparente\Model\DomicilioModel');
         /* @var $domicilioModel DomicilioModel */
         $proveedores = $proveedorModel->scrapList();
         foreach ($proveedores as $idProveedor) {
             $data      = $proveedorModel->scrap($idProveedor);
             $data     += ['nombres_comerciales'    => $proveedorModel->scrapNombresComerciales($idProveedor)];
-            $data     += ['representantes_legales' => $repModel->scrapRepresentantesLegales($idProveedor)];
             $proveedor = new \Transparente\Model\Entity\Proveedor();
             $proveedor->exchangeArray($data);
 
@@ -114,12 +111,6 @@ class ScraperController extends AbstractActionController
                 $proveedor->appendNombreComercial($nombreComercial);
             }
 
-            foreach ($data['representantes_legales'] as $idRep) {
-                $repLegal = $repModel->scrap($idRep);
-                if ($repLegal) {
-                    $proveedor->appendRepresentanteLegal($repLegal);
-                }
-            }
             $proveedorModel->save($proveedor);
        }
     }
@@ -145,6 +136,34 @@ class ScraperController extends AbstractActionController
     }
 
     /**
+     * Lee los representantes legales de todos los proveedores
+     */
+    private function scrapRepresentantesLegales()
+    {
+        $proveedorModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
+        /* @var $proveedorModel ProveedorModel */
+        $repModel       = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');
+        /* @var $repModel RepresentanteLegalModel */
+        $proveedores    = $proveedorModel->findPendientesDeScrapearRepresentantesLegales();
+        foreach($proveedores as $proveedor) {
+            $repList = $repModel->scrapRepresentantesLegales($proveedor->getId());
+            foreach ($repList as $id) {
+                if ($id == 4696944) {
+                    echo "\n\n$id\n\n";
+                }
+
+                $repLegal = $repModel->find($id);
+                if (!$repLegal) {
+                    $repLegal = $repModel->scrap($id);
+                }
+                $proveedor->appendRepresentanteLegal($repLegal);
+            }
+            $proveedorModel->save($proveedor);
+        }
+    }
+
+
+    /**
      * Iniciando el scraper
      *
      * @todo preguntar en el CLI si se quiere hacer cada paso
@@ -162,8 +181,10 @@ class ScraperController extends AbstractActionController
         // $this->scrapEmpleadosMunicipales();
         // empezamos la barrida de Guatecompras buscando los proveedores
         // $this->scrapProveedores();
+        // luego la barrida de los representantes legales de los proveedores
+        $this->scrapRepresentantesLegales();
         // Ahora que ya tenemos los proveedores en la base de datos, ya podemos importar los proyectos
-        $this->scrapProyectosAdjudicados();
+        // $this->scrapProyectosAdjudicados();
     }
 
 

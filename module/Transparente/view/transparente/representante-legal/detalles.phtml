@@ -115,7 +115,7 @@ HTML;
         </div>
         <?php endif ?>
 
-        <?php if ($entidad->getRepresentantesLegales()) :?>
+        <?php if (count($entidad->getRepresentantesLegales())) :?>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Representantes Legales</h3>
@@ -130,7 +130,7 @@ HTML;
                     </li>
                     <?php endforeach ?>
                 </ul>
-                <span class="small">actualizado en SAT: <?=$entidad->getRepLegalesUpdated()->format('d/m/Y')?></span>
+                <span class="small">actualizado en SAT: <?=$entidad->getUpdatedSat()->format('d/m/Y')?></span>
             </div>
         </div>
         <?php endif ?>

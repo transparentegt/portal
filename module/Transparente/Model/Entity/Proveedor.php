@@ -238,7 +238,7 @@ class Proveedor extends AbstractDoctrineEntity
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getInscripciónFechaConstitución()
     {
@@ -246,7 +246,7 @@ class Proveedor extends AbstractDoctrineEntity
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getInscripciónFechaDefinitiva()
     {
@@ -254,7 +254,7 @@ class Proveedor extends AbstractDoctrineEntity
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getInscripciónFechaProvisional()
     {
@@ -262,7 +262,7 @@ class Proveedor extends AbstractDoctrineEntity
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getInscripciónFechaSat()
     {
@@ -442,7 +442,7 @@ class Proveedor extends AbstractDoctrineEntity
     }
 
     /**
-     * @param mixed $inscripción_fecha_provisional
+     * @param string $inscripción_fecha_provisional
      */
     public function setInscripciónFechaProvisional($inscripción_fecha_provisional)
     {
@@ -452,7 +452,7 @@ class Proveedor extends AbstractDoctrineEntity
     }
 
     /**
-     * @param mixed $inscripción_fecha_sat
+     * @param string $inscripción_fecha_sat
      */
     public function setInscripciónFechaSat($inscripción_fecha_sat)
     {
