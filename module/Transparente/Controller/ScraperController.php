@@ -148,14 +148,11 @@ class ScraperController extends AbstractActionController
         foreach($proveedores as $proveedor) {
             $repList = $repModel->scrapRepresentantesLegales($proveedor->getId());
             foreach ($repList as $id) {
-                if ($id == 4696944) {
-                    echo "\n\n$id\n\n";
-                }
-
                 $repLegal = $repModel->find($id);
                 if (!$repLegal) {
                     $repLegal = $repModel->scrap($id);
                 }
+                if (!$repLegal) continue;
                 $proveedor->appendRepresentanteLegal($repLegal);
             }
             $proveedorModel->save($proveedor);
@@ -178,13 +175,13 @@ class ScraperController extends AbstractActionController
         ini_set('memory_limit', -1);
 
         // la lectura de los empleados municipales son datos locales
-        // $this->scrapEmpleadosMunicipales();
+        $this->scrapEmpleadosMunicipales();
         // empezamos la barrida de Guatecompras buscando los proveedores
-        // $this->scrapProveedores();
+        $this->scrapProveedores();
         // luego la barrida de los representantes legales de los proveedores
         $this->scrapRepresentantesLegales();
         // Ahora que ya tenemos los proveedores en la base de datos, ya podemos importar los proyectos
-        // $this->scrapProyectosAdjudicados();
+        $this->scrapProyectosAdjudicados();
     }
 
 
