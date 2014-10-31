@@ -10,6 +10,11 @@
     "require": {
         "php": ">=5.4.0",
         "zendframework/zendframework": "2.3.*",
-        "doctrine/doctrine-orm-module": "0.*"
+        "doctrine/doctrine-orm-module": "0.*",
+        "zfcampus/zf-apigility": "~1.0"
+    },
+    "require-dev": {
+        "zfcampus/zf-apigility-admin": "~1.0",
+        "zfcampus/zf-development-mode": "~2.0"
     }
 }

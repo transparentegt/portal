@@ -18,6 +18,13 @@ vendor/bin
 vendor/doctrine/
 vendor/symfony/
 
+# Apigility
+config/development.config.php
+vendor/bshaffer/
+vendor/kriswallsmith/
+vendor/rwoverdijk/
+vendor/zfcampus/
+
 data/cache*
 data/*.key
 data/DoctrineORMModule/
