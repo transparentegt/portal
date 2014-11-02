@@ -24,6 +24,7 @@ vendor/bshaffer/
 vendor/kriswallsmith/
 vendor/rwoverdijk/
 vendor/zfcampus/
+vendor/rhumsaa/
 
 data/cache*
 data/*.key
