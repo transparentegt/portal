@@ -11,16 +11,27 @@ return array(
                     ),
                 ),
             ),
+            'api.rest.proyecto' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/proyecto[/:proyecto_id]',
+                    'defaults' => array(
+                        'controller' => 'Api\\V1\\Rest\\Proyecto\\Controller',
+                    ),
+                ),
+            ),
         ),
     ),
     'zf-versioning' => array(
         'uri' => array(
             0 => 'api.rest.proveedor',
+            1 => 'api.rest.proyecto',
         ),
     ),
     'service_manager' => array(
         'factories' => array(
             'Api\\V1\\Rest\\Proveedor\\ProveedorResource' => 'Api\\V1\\Rest\\Proveedor\\ProveedorResourceFactory',
+            'Api\\V1\\Rest\\Proyecto\\ProyectoResource' => 'Api\\V1\\Rest\\Proyecto\\ProyectoResourceFactory',
         ),
     ),
     'zf-rest' => array(
@@ -32,9 +43,7 @@ return array(
             'entity_http_methods' => array(
                 0 => 'GET',
             ),
-            'collection_http_methods' => array(
-                0 => 'GET',
-            ),
+            'collection_http_methods' => array(),
             'collection_query_whitelist' => array(),
             'page_size' => 25,
             'page_size_param' => null,
@@ -42,10 +51,27 @@ return array(
             'collection_class' => 'Api\\V1\\Rest\\Proveedor\\ProveedorCollection',
             'service_name' => 'Proveedor',
         ),
+        'Api\\V1\\Rest\\Proyecto\\Controller' => array(
+            'listener' => 'Api\\V1\\Rest\\Proyecto\\ProyectoResource',
+            'route_name' => 'api.rest.proyecto',
+            'route_identifier_name' => 'proyecto_id',
+            'collection_name' => 'proyecto',
+            'entity_http_methods' => array(
+                0 => 'GET',
+            ),
+            'collection_http_methods' => array(),
+            'collection_query_whitelist' => array(),
+            'page_size' => 25,
+            'page_size_param' => null,
+            'entity_class' => 'Api\\V1\\Rest\\Proyecto\\ProyectoEntity',
+            'collection_class' => 'Api\\V1\\Rest\\Proyecto\\ProyectoCollection',
+            'service_name' => 'Proyecto',
+        ),
     ),
     'zf-content-negotiation' => array(
         'controllers' => array(
             'Api\\V1\\Rest\\Proveedor\\Controller' => 'HalJson',
+            'Api\\V1\\Rest\\Proyecto\\Controller' => 'HalJson',
         ),
         'accept_whitelist' => array(
             'Api\\V1\\Rest\\Proveedor\\Controller' => array(
@@ -53,9 +79,18 @@ return array(
                 1 => 'application/hal+json',
                 2 => 'application/json',
             ),
+            'Api\\V1\\Rest\\Proyecto\\Controller' => array(
+                0 => 'application/vnd.api.v1+json',
+                1 => 'application/hal+json',
+                2 => 'application/json',
+            ),
         ),
         'content_type_whitelist' => array(
             'Api\\V1\\Rest\\Proveedor\\Controller' => array(
+                0 => 'application/vnd.api.v1+json',
+                1 => 'application/json',
+            ),
+            'Api\\V1\\Rest\\Proyecto\\Controller' => array(
                 0 => 'application/vnd.api.v1+json',
                 1 => 'application/json',
             ),
@@ -75,11 +110,26 @@ return array(
                 'route_identifier_name' => 'nit',
                 'is_collection' => true,
             ),
+            'Api\\V1\\Rest\\Proyecto\\ProyectoEntity' => array(
+                'entity_identifier_name' => 'id',
+                'route_name' => 'api.rest.proyecto',
+                'route_identifier_name' => 'proyecto_id',
+                'hydrator' => 'Zend\\Stdlib\\Hydrator\\ObjectProperty',
+            ),
+            'Api\\V1\\Rest\\Proyecto\\ProyectoCollection' => array(
+                'entity_identifier_name' => 'id',
+                'route_name' => 'api.rest.proyecto',
+                'route_identifier_name' => 'proyecto_id',
+                'is_collection' => true,
+            ),
         ),
     ),
     'zf-content-validation' => array(
         'Api\\V1\\Rest\\Proveedor\\Controller' => array(
             'input_filter' => 'Api\\V1\\Rest\\Proveedor\\Validator',
+        ),
+        'Api\\V1\\Rest\\Proyecto\\Controller' => array(
+            'input_filter' => 'Api\\V1\\Rest\\Proyecto\\Validator',
         ),
     ),
     'input_filter_specs' => array(
@@ -161,6 +211,106 @@ return array(
                 'required' => true,
                 'filters' => array(),
                 'validators' => array(),
+            ),
+        ),
+        'Api\\V1\\Rest\\Proyecto\\Validator' => array(
+            0 => array(
+                'name' => 'id',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+                'description' => 'Número de identificación del proyecto / Número de Operación Guatecompras (NOG)',
+            ),
+            1 => array(
+                'name' => 'categoría',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+                'description' => 'Categoría',
+            ),
+            2 => array(
+                'name' => 'entidad_compradora',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+                'description' => 'Entidad compradora',
+            ),
+            3 => array(
+                'name' => 'entidad_compradora_tipo',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+                'description' => 'Tipo de entidad',
+            ),
+            4 => array(
+                'name' => 'entidad_compradora_unidad',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+                'description' => 'Unidad compradora',
+            ),
+            5 => array(
+                'name' => 'fecha_cierre_ofertas',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+                'description' => 'Fecha de cierre de recepción de ofertas:',
+            ),
+            6 => array(
+                'name' => 'fecha_finalización',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+                'description' => 'Fecha de finalización',
+            ),
+            7 => array(
+                'name' => 'fecha_presentación_ofertas',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+                'description' => 'Fecha de presentación de ofertas',
+            ),
+            8 => array(
+                'name' => 'fecha_publicación',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+                'description' => 'Fecha de publicación',
+            ),
+            9 => array(
+                'name' => 'modalidad',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+                'description' => '[--No Especificado--], Compra directa, Compra directa por ausencia de ofertas, Contrato Abierto, Cotización, Excepción y otros procedimientos, Licitación pública, Transparencia en el uso de fondos públicos y otros contratos (Art. 54)',
+            ),
+            10 => array(
+                'name' => 'nombre',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+                'description' => 'Nombre o descrpción del proyecto',
+            ),
+            11 => array(
+                'name' => 'status',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+                'description' => 'Finalizado adjudicado cedido, Finalizado anulado (prescindido), Terminado adjudicado, Terminado Rematado',
+            ),
+            12 => array(
+                'name' => 'tipo',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+                'description' => '(Vinculación referente a Bienes y Servicios)., (Vinculación referente a infraestructura)., Público, Restringido (solamente pueden participar los proveedores previamente invitados por el comprador)',
+            ),
+            13 => array(
+                'name' => 'tipo_recepción_oferta',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+                'description' => 'NULL, Solo electrónicas, Solo en papel.',
             ),
         ),
     ),
