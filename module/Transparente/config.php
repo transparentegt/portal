@@ -87,6 +87,7 @@ return array(
                 ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'nombres-comerciales', 'label' => 'con nombres comerciales'],
                 ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-level',         'label' => 'con representantes legales'],
             ]],
+            ['uri' => ' /apigility/documentation/Api-v1',  'label' => 'API'],
             ['route' => 'transparente/default', 'controller' => 'index', 'action' => 'about',  'label' => 'info'],
         ],
     ],

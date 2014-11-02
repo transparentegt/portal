@@ -6,14 +6,17 @@ return array(
         'Api',
         'Transparente',
 
+        'AssetManager',
         'DoctrineModule',
         'DoctrineORMModule',
 
         // módulos para Apigility
+            'ZF\DevelopmentMode',
             'ZF\Apigility',
             'ZF\Apigility\Provider',
-            'AssetManager',
+            'ZF\Apigility\Documentation',
             'ZF\ApiProblem',
+            'ZF\Configuration',
             'ZF\MvcAuth',
             'ZF\OAuth2',
             'ZF\Hal',
@@ -22,8 +25,6 @@ return array(
             'ZF\Rest',
             'ZF\Rpc',
             'ZF\Versioning',
-            'ZF\DevelopmentMode',
-            'ZF\DevelopmentMode'
         // end módulos Apigility
     ),
 
