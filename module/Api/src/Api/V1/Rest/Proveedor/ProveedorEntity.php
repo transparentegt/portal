@@ -16,6 +16,11 @@ class ProveedorEntity
 
     public function getArrayCopy()
     {
+        $proyectos = [];
+        foreach ($this->entity->getPagos() as $pago) {
+            $proyectos[] = $pago->getProyecto()->getId();
+        }
+
         return [
                 'id'                             => $this->entity->getId(),
                 'email'                          => $this->entity->getEmail(),
@@ -28,6 +33,7 @@ class ProveedorEntity
                 'principal_actividad'            => $this->entity->getPrincipalActividad(),
                 'principal_trabajo'              => $this->entity->getPrincipalTrabajo(),
                 'status'                         => $this->entity->getStatus(true),
+                'proyectos'                      => $proyectos,
         ];
     }
 }
