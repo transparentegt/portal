@@ -1,15 +1,27 @@
 {
-    "name": "zendframework/skeleton-application",
-    "description": "Skeleton Application for ZF2",
-    "license": "BSD-3-Clause",
+    "name": "Maphpia/GuatemalaTransparente",
+    "description": "Guatemala Transparente",
+    "license": "GPL-3",
     "keywords": [
         "framework",
         "zf2"
     ],
-    "homepage": "http://framework.zend.com/",
+    "homepage": "http://transparente.gt/",
     "require": {
         "php": ">=5.4.0",
         "zendframework/zendframework": "2.3.*",
-        "doctrine/doctrine-orm-module": "0.*"
+        "doctrine/doctrine-orm-module": "0.*",
+        "zfcampus/zf-apigility": "~1.0",
+        "zfcampus/zf-apigility-documentation" : "~1.0",
+        "zfcampus/zf-development-mode" : "~2.0"
+    },
+    "require-dev": {
+        "zendframework/zftool" : "dev-master",
+        "zendframework/zend-developer-tools" : "dev-master",
+        "zfcampus/zf-apigility-admin": "~1.0",
+        "zfcampus/zf-deploy" : "~1.0",
+        "zfr/zfr-cors" : "~1.0",
+        "zfcampus/zf-development-mode": "~2.0",
+        "zend/zend-studio-development-mode" : "~1.0"
     }
 }

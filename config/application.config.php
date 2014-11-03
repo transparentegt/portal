@@ -2,10 +2,30 @@
 return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
+
+        'Api',
+        'Transparente',
+
+        'AssetManager',
         'DoctrineModule',
         'DoctrineORMModule',
-        'Transparente',
-        // 'ZendDeveloperTools',
+
+        // módulos para Apigility
+            'ZF\DevelopmentMode',
+            'ZF\Apigility',
+            'ZF\Apigility\Provider',
+            'ZF\Apigility\Documentation',
+            'ZF\ApiProblem',
+            'ZF\Configuration',
+            'ZF\MvcAuth',
+            'ZF\OAuth2',
+            'ZF\Hal',
+            'ZF\ContentNegotiation',
+            'ZF\ContentValidation',
+            'ZF\Rest',
+            'ZF\Rpc',
+            'ZF\Versioning',
+        // end módulos Apigility
     ),
 
     // These are various options for the listeners attached to the ModuleManager

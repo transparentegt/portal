@@ -9,9 +9,10 @@ namespace Transparente\Model;
  */
 class ScraperModel
 {
+    const BASE_URL        = 'http://transparente.gt';
     const PAGE_MODE_GET   = 'GET';
     const PAGE_MODE_POST  = 'POST';
-    CONST PAGE_MODE_PAGER = 'PAGER';
+    const PAGE_MODE_PAGER = 'PAGER';
 
     private static $cache;
 

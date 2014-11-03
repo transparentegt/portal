@@ -118,6 +118,78 @@ class Proyecto extends AbstractDoctrineEntity
     }
 
     /**
+     *
+     * @return the unknown_type
+     */
+    public function getCategoría ()
+    {
+        return $this->categoría;
+    }
+
+    /**
+     *
+     * @return the unknown_type
+     */
+    public function getEntidadCompradora ()
+    {
+        return $this->entidad_compradora;
+    }
+
+    /**
+     *
+     * @return the unknown_type
+     */
+    public function getEntidadCompradoraTipo ()
+    {
+        return $this->entidad_compradora_tipo;
+    }
+
+    /**
+     *
+     * @return the unknown_type
+     */
+    public function getEntidadCompradoraUnidad ()
+    {
+        return $this->entidad_compradora_unidad;
+    }
+
+    /**
+     *
+     * @return the unknown_type
+     */
+    public function getFechaCierreOfertas ()
+    {
+        return $this->fecha_cierre_ofertas;
+    }
+
+    /**
+     *
+     * @return the unknown_type
+     */
+    public function getFechaFinalización ()
+    {
+        return $this->fecha_finalización;
+    }
+
+    /**
+     *
+     * @return the unknown_type
+     */
+    public function getFechaPresentaciónOfertas ()
+    {
+        return $this->fecha_presentación_ofertas;
+    }
+
+    /**
+     *
+     * @return the unknown_type
+     */
+    public function getFechaPublicación ()
+    {
+        return $this->fecha_publicación;
+    }
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -126,11 +198,55 @@ class Proyecto extends AbstractDoctrineEntity
     }
 
     /**
+     *
+     * @return the unknown_type
+     */
+    public function getModalidad ()
+    {
+        return $this->modalidad;
+    }
+
+    /**
      * @return string
      */
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * @return Pago[]
+     */
+    public function getPagos()
+    {
+        return $this->pagos;
+    }
+
+    /**
+     *
+     * @return the unknown_type
+     */
+    public function getStatus ()
+    {
+        return $this->status;
+    }
+
+    /**
+     *
+     * @return the unknown_type
+     */
+    public function getTipo ()
+    {
+        return $this->tipo;
+    }
+
+    /**
+     *
+     * @return the unknown_type
+     */
+    public function getTipoRecepciónOferta ()
+    {
+        return $this->tipo_recepción_oferta;
     }
 
     /**
