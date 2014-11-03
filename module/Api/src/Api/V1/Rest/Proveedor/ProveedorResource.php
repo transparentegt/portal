@@ -26,7 +26,6 @@ class ProveedorResource extends AbstractResourceListener
      */
     public function fetch($nit)
     {
-
         $nit = str_replace('-', '', $nit);
         $proveedorModel = $this->serviceManager->get('Transparente\Model\ProveedorModel');
         /* @var $proveedorModel \Transparente\Model\ProveedorModel */

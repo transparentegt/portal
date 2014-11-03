@@ -1,6 +1,8 @@
 <?php
 namespace Api\V1\Rest\Proveedor;
 
+use Transparente\Model\ScraperModel;
+
 class ProveedorEntity
 {
     /**
@@ -18,7 +20,12 @@ class ProveedorEntity
     {
         $proyectos = [];
         foreach ($this->entity->getPagos() as $pago) {
-            $proyectos[] = $pago->getProyecto()->getId();
+            $proyectos[] =  [
+                'id'     => $pago->getProyecto()->getId(),
+                'nombre' => $pago->getProyecto()->getNombre(),
+                'monto'  => $pago->getMonto(),
+                'link'   => ScraperModel::BASE_URL . '/api/proyecto/' . $pago->getProyecto()->getId(),
+            ];
         }
 
         return [

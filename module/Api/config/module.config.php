@@ -14,7 +14,7 @@ return array(
             'api.rest.proyecto' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/proyecto[/:proyecto_id]',
+                    'route' => '/api/proyecto[/:proyecto_id]',
                     'defaults' => array(
                         'controller' => 'Api\\V1\\Rest\\Proyecto\\Controller',
                     ),
@@ -114,7 +114,7 @@ return array(
                 'entity_identifier_name' => 'id',
                 'route_name' => 'api.rest.proyecto',
                 'route_identifier_name' => 'proyecto_id',
-                'hydrator' => 'Zend\\Stdlib\\Hydrator\\ObjectProperty',
+                'hydrator' => 'Zend\\Stdlib\\Hydrator\\ArraySerializable',
             ),
             'Api\\V1\\Rest\\Proyecto\\ProyectoCollection' => array(
                 'entity_identifier_name' => 'id',

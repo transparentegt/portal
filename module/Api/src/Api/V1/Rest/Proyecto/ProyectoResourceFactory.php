@@ -5,6 +5,6 @@ class ProyectoResourceFactory
 {
     public function __invoke($services)
     {
-        return new ProyectoResource();
+        return new ProyectoResource($services);
     }
 }
