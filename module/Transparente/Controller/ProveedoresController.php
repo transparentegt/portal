@@ -4,9 +4,7 @@ namespace Transparente\Controller;
 use Doctrine\Common\Collections\ArrayCollection;
 use DoctrineModule\Paginator\Adapter\Collection as Adapter;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Paginator\Paginator;
 use Zend\View\Model\ViewModel;
-use Transparente\Model\DoctrinePaginatorAdapter;
 
 class ProveedoresController extends AbstractActionController
 {
@@ -19,15 +17,9 @@ class ProveedoresController extends AbstractActionController
     public function indexAction()
     {
         $page             = (! empty($_GET['page'])) ? $_GET['page'] : 1;
-        $max              = 20;
         $proveedoresModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
-        $results          = $proveedoresModel->getPaginator(($page - 1) * 20, $max);
-        $adapter          = new DoctrinePaginatorAdapter($results);
-        $paginator        = new Paginator($adapter);
-        $total            = $paginator->count();
-        $paginator->setCurrentPageNumber($page);
-        $paginator->setItemCountPerPage($max);
-        return new ViewModel(compact('paginator', 'total'));
+        $paginator        = $proveedoresModel->getPaginator($page);
+        return new ViewModel(compact('paginator'));
     }
 
     /**

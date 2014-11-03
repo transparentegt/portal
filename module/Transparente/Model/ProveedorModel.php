@@ -1,8 +1,6 @@
 <?php
 namespace Transparente\Model;
 
-use Doctrine\ORM\Tools\Pagination\Paginator;
-
 class ProveedorModel extends AbstractModel
 {
     public function findAll($where = [], $orderBy = [])
@@ -203,14 +201,19 @@ class ProveedorModel extends AbstractModel
      * @param int $limit
      * @return Paginator
      */
-    public function getPaginator($offset = 0, $limit = 20)
+    public function getPaginator($page, $limit = 20)
     {
-        $dql   = 'SELECT Proveedor FROM Transparente\Model\Entity\Proveedor Proveedor ORDER BY Proveedor.nombre';
-        $query = $this->getEntityManager()
+        $offset = ($page - 1) * 20;
+        $dql    = 'SELECT Proveedor FROM Transparente\Model\Entity\Proveedor Proveedor ORDER BY Proveedor.nombre';
+        $query  = $this->getEntityManager()
                     ->createQuery($dql)
                     ->setMaxResults($limit)
-                    ->setFirstResult($offset);
-        $paginator = new Paginator($query);
+                    ->setFirstResult($offset)
+                    ;
+        $paginator = new \Doctrine\ORM\Tools\Pagination\Paginator($query);
+        $adapter   = new \Transparente\Model\DoctrinePaginatorAdapter($paginator);
+        $paginator = new \Zend\Paginator\Paginator($adapter);
+        $paginator->setCurrentPageNumber($page);
         return $paginator;
     }
 
