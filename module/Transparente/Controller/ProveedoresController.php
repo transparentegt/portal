@@ -1,14 +1,11 @@
 <?php
 namespace Transparente\Controller;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use DoctrineModule\Paginator\Adapter\Collection as Adapter;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class ProveedoresController extends AbstractActionController
 {
-
     /**
      * Listar Proveedores
      *
@@ -16,9 +13,8 @@ class ProveedoresController extends AbstractActionController
      */
     public function indexAction()
     {
-        $page             = (! empty($_GET['page'])) ? $_GET['page'] : 1;
         $proveedoresModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
-        $paginator        = $proveedoresModel->getPaginator($page);
+        $paginator        = $proveedoresModel->getPaginator();
         return new ViewModel(compact('paginator'));
     }
 
@@ -46,12 +42,9 @@ class ProveedoresController extends AbstractActionController
     public function noFiscalAction()
     {
         $proveedoresModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
-        $entities         = $proveedoresModel->findByNoDomicilioFiscal();
-        $paginator        = new Paginator(new Adapter(new ArrayCollection($entities)));
-        if (!empty($_GET['page'])) {
-            $paginator->setCurrentPageNumber($_GET['page']);
-        }
-        return new ViewModel(compact('paginator'));
+        $paginator        = $proveedoresModel->getPagerSinDomicilioFiscal();
+        $total            = count($proveedoresModel->findAll());
+        return new ViewModel(compact('total', 'paginator'));
     }
 
 }

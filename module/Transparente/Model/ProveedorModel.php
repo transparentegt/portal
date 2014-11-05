@@ -11,15 +11,15 @@ class ProveedorModel extends AbstractModel
         return $this->findBy($where, $orderBy);
     }
 
-    public function findByNoDomicilioFiscal()
+    public function getPagerSinDomicilioFiscal()
     {
         $dql = 'SELECT Proveedor
                 FROM Transparente\Model\Entity\Proveedor Proveedor
                 WHERE Proveedor.domicilio_fiscal IS NULL
                 ORDER BY Proveedor.nombre
                 ';
-        $query = $this->getEntityManager()->createQuery($dql);
-        return $query->getResult();
+        $paginator = $this->getPaginatorFromDql($dql);
+        return $paginator;
 
     }
 
@@ -197,23 +197,14 @@ class ProveedorModel extends AbstractModel
     }
 
     /**
-     * @param int $offset
-     * @param int $limit
+     * Paginar los datos del proveedor
+     *
      * @return Paginator
      */
-    public function getPaginator($page, $limit = 20)
+    public function getPaginator()
     {
-        $offset = ($page - 1) * 20;
-        $dql    = 'SELECT Proveedor FROM Transparente\Model\Entity\Proveedor Proveedor ORDER BY Proveedor.nombre';
-        $query  = $this->getEntityManager()
-                    ->createQuery($dql)
-                    ->setMaxResults($limit)
-                    ->setFirstResult($offset)
-                    ;
-        $paginator = new \Doctrine\ORM\Tools\Pagination\Paginator($query);
-        $adapter   = new \Transparente\Model\DoctrinePaginatorAdapter($paginator);
-        $paginator = new \Zend\Paginator\Paginator($adapter);
-        $paginator->setCurrentPageNumber($page);
+        $dql       = 'SELECT Proveedor FROM Transparente\Model\Entity\Proveedor Proveedor ORDER BY Proveedor.nombre';
+        $paginator = $this->getPaginatorFromDql($dql);
         return $paginator;
     }
 

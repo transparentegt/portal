@@ -159,7 +159,6 @@ class ScraperController extends AbstractActionController
         }
     }
 
-
     /**
      * Iniciando el scraper
      *
@@ -183,6 +182,5 @@ class ScraperController extends AbstractActionController
         // Ahora que ya tenemos los proveedores en la base de datos, ya podemos importar los proyectos
         $this->scrapProyectosAdjudicados();
     }
-
 
 }

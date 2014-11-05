@@ -100,7 +100,7 @@ class RepresentanteLegalModel extends AbstractModel
      *
      * @return Transparente\Model\Entity\RepresentanteLegal[]
      */
-    public function findByMultiProveedor()
+    public function findPaginatorByMultiProveedor()
     {
         $dql = 'SELECT RepresentanteLegal
                 FROM Transparente\Model\Entity\RepresentanteLegal  RepresentanteLegal
@@ -113,7 +113,7 @@ class RepresentanteLegalModel extends AbstractModel
                     RepresentanteLegal.nombre1 ASC,
                     RepresentanteLegal.nombre2 ASC
                 ';
-        $rs = $this->getEntityManager()->createQuery($dql)->execute();
+        $rs = $this->getPaginatorFromDql($dql);
         return $rs;
     }
 
@@ -135,8 +135,22 @@ class RepresentanteLegalModel extends AbstractModel
                     RepresentanteLegal.nombre1 ASC,
                     RepresentanteLegal.nombre2 ASC
                 ';
-        $rs = $this->getEntityManager()->createQuery($dql)->execute();
-        return $rs;
+        $paginator = $this->getPaginatorFromDql($dql);
+        return $paginator;
+    }
+
+    /**
+     * Paginar los datos
+     *
+     * @return Paginator
+     */
+    public function getPaginator()
+    {
+        $dql = 'SELECT RepresentanteLegal
+                FROM Transparente\Model\Entity\RepresentanteLegal RepresentanteLegal
+                ORDER BY RepresentanteLegal.apellido1, RepresentanteLegal.apellido2, RepresentanteLegal.apellido3, RepresentanteLegal.nombre1 ';
+        $paginator = $this->getPaginatorFromDql($dql);
+        return $paginator;
     }
 
     /**

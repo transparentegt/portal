@@ -21,9 +21,9 @@ $pager = $this->paginationControl(
 <h1>Proveedores sin domicilio fiscal</h1>
 <p>
     Del catálogo de proveedores recopilados, este es el listado de los proveedores que no tienen dirección fiscal
-    publicada. De los  <span class="badge">3,363</span> proveedores en Guatecompras, más del <span class="badge">60%</span>
-    de proveedores no tienen su dirección fiscal publicada en por el portal de Guatecompras.  Ponemos a la par si
-    detectamos o no la dirección comercial como comparativa.
+    publicada. De los  <span class="badge"><?=number_format($this->total)?></span> proveedores en Guatecompras, más del
+    <span class="badge">60%</span> de proveedores no tienen su dirección fiscal publicada en por el portal de
+    Guatecompras.  Ponemos a la par si detectamos o no la dirección comercial como comparativa.
 </p>
 <table class="table">
     <thead>

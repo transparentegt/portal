@@ -198,7 +198,7 @@ class ScraperModel
      */
     public static function nombresPropios($nombre)
     {
-        $nombre  = str_replace('"', '', $nombre);
+        $nombre  = str_replace(['"', '(', ')'], ['', ', ', ''], $nombre);
         $nombres = preg_split('/[\s,\.]+/', $nombre);
         $nombre  = '';
         foreach ($nombres as $n) {
