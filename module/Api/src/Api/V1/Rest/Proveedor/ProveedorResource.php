@@ -28,7 +28,7 @@ class ProveedorResource extends AbstractResourceListener
         $proveedorModel = $this->serviceManager->get('Transparente\Model\ProveedorModel');
         /* @var $proveedorModel \Transparente\Model\ProveedorModel */
         if (strstr($id, '-')) { // si tiene un guión es un NIT
-            $nit       = str_replace('-', '', $nit);
+            $nit       = str_replace('-', '', $id);
             $proveedor = $proveedorModel->findOneBy(['nit' => $nit]);
         } else {
             $proveedor = $proveedorModel->find($id);
