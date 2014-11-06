@@ -17,19 +17,22 @@ class ProveedorResource extends AbstractResourceListener
         $this->serviceManager = $serviceManager;
     }
 
-
     /**
      * Fetch a resource
      *
      * @param  string          $nit
      * @return ProveedorEntity
      */
-    public function fetch($nit)
+    public function fetch($id)
     {
-        $nit = str_replace('-', '', $nit);
         $proveedorModel = $this->serviceManager->get('Transparente\Model\ProveedorModel');
         /* @var $proveedorModel \Transparente\Model\ProveedorModel */
-        $proveedor      = $proveedorModel->findOneBy(['nit' => $nit]);
+        if (strstr($id, '-')) { // si tiene un guión es un NIT
+            $nit       = str_replace('-', '', $nit);
+            $proveedor = $proveedorModel->findOneBy(['nit' => $nit]);
+        } else {
+            $proveedor = $proveedorModel->find($id);
+        }
         if (!$proveedor) return false;
         return new ProveedorEntity($proveedor);
     }
@@ -42,7 +45,10 @@ class ProveedorResource extends AbstractResourceListener
      */
     public function fetchAll($params = array())
     {
-        return new ApiProblem(405, 'The GET method has not been defined for collections');
+        $proveedorModel = $this->serviceManager->get('Transparente\Model\ProveedorModel');
+        /* @var $proveedorModel \Transparente\Model\ProveedorModel */
+        $proveedor      = $proveedorModel->getPaginator();
+        return new ProveedorCollection($proveedor->getAdapter());
     }
 
 }

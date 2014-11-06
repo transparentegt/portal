@@ -43,7 +43,9 @@ return array(
             'entity_http_methods' => array(
                 0 => 'GET',
             ),
-            'collection_http_methods' => array(),
+            'collection_http_methods' => array(
+                0 => 'GET',
+            ),
             'collection_query_whitelist' => array(),
             'page_size' => 25,
             'page_size_param' => null,
