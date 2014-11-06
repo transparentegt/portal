@@ -1,0 +1,97 @@
+<?php
+/**
+ * Vista detalle del proveedor
+ *
+ * @todo Hacer plugin del modal para bootstrap estilo plugins de JQuery
+ */
+
+/* @var $this Zend\View\Renderer\PhpRenderer */
+
+$entidad = $this->vars('entity');
+/* @var $entidad Transparente\Model\Entity\Proyecto */
+
+
+function dl($term, $value) {
+    if (!$value) $value = '--';
+    return <<< HTML
+<dt title="$term">$term</dt>
+<dd>$value</dd>
+HTML;
+
+}
+?>
+<style>
+.dl-horizontal dt { width: 200px; }
+.dl-horizontal dd { margin-left: 210px;}
+#empleados-municipales,
+#proyectos
+    {height: 16em; overflow: auto}
+</style>
+<script>
+function openModal(id,title, body) {
+    $('body').append('<div class="modal fade" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> \
+            <div class="modal-dialog"> \
+              <div class="modal-content"> \
+                <div class="modal-header"> \
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> \
+                  <h4 class="modal-title" id="myModalLabel">' + title + '</h4> \
+                </div> \
+                <div class="modal-body">' + body + '</div> \
+                <div class="modal-footer"> \
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button> \
+                </div> \
+              </div> \
+            </div> \
+          </div>\
+      ');
+}
+$(function() {
+    openModal('empleadosMunicipalesModal', '¿Porqué queremos ver los empleados municipales?',
+            '<iframe width="560" height="315" src="//www.youtube.com/embed/m-JozsD_IxQ?rel=0&end=50" frameborder="0" allowfullscreen></iframe>'
+            );
+});
+
+</script>
+
+<h1>Proyecto: <?=$entidad->getNombre()?></h1>
+
+<div class="row">
+
+    <div class="col-md-12">
+        <dl class="dl-horizontal">
+            <dt>nombre<dt>
+            <dd>
+                <a title="abrir en Guatecompras" href="http://guatecompras.gt/concursos/consultaDetalleCon.aspx?o=5&nog=<?=$entidad->getId()?>">
+                    <?=$entidad->getNombre()?>
+                </a>
+            </dd>
+            <?=dl('Categoría', $entidad->getCategoría())?>
+            <?=dl('Entidad compradora', $entidad->getEntidadCompradora())?>
+            <?=dl('Tipo de entidad compradora', $entidad->getEntidadCompradoraTipo())?>
+            <?=dl('Unidad compradora', $entidad->getEntidadCompradoraUnidad())?>
+            <?=dl('Cierre de ofertas', ($entidad->getFechaCierreOfertas()) ? $entidad->getFechaCierreOfertas()->format('d/m/Y') : '')?>
+            <?=dl('Fecha finalizacioń', ($entidad->getFechaFinalización()) ? $entidad->getFechaFinalización()->format('d/m/Y') : '')?>
+            <?=dl('Fecha presentación de ofertas', ($entidad->getFechaPresentaciónOfertas()) ? $entidad->getFechaPresentaciónOfertas()->format('d/m/Y') : '')?>
+            <?=dl('Fecha publicación', ($entidad->getFechaPublicación()) ? $entidad->getFechaPublicación()->format('d/m/Y') : '')?>
+            <?=dl('Modalidad', $entidad->getModalidad())?>
+            <?=dl('Estatus', $entidad->getStatus())?>
+            <?=dl('Tipo', $entidad->getTipo())?>
+            <?=dl('Tipo de recepción de ofertas', $entidad->getTipoRecepciónOferta())?>
+
+            <dt>Proveedores:</dt>
+            <dd>
+                <ul>
+                    <? $total = 0; foreach ($entidad->getPagos() as $pago) :?>
+                        <? $total += $pago->getMonto();?>
+                        <li>
+                            <a href="/transparente/proveedores/detalles/<?=$pago->getProveedor()->getId()?>">
+                                <?=$pago->getProveedor()->getNombre()?>
+                            </a> Q <?=number_format($pago->getMonto(), 2)?>
+                        </li>
+                    <? endforeach;?>
+                </ul>
+            </dd>
+            <?=dl('Total del proyecto', 'Q '.number_format($total, 2))?>
+        </dl>
+    </div>
+</div>

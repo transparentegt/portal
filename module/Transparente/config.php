@@ -26,6 +26,7 @@ return array(
             'Transparente\Controller\Index'              => 'Transparente\Controller\Index',
             'Transparente\Controller\Municipio'          => 'Transparente\Controller\MunicipioController',
             'Transparente\Controller\Proveedores'        => 'Transparente\Controller\ProveedoresController',
+            'Transparente\Controller\Proyecto'           => 'Transparente\Controller\ProyectoController',
             'Transparente\Controller\RepresentanteLegal' => 'Transparente\Controller\RepresentanteLegalController',
             'Transparente\Controller\Scraper'            => 'Transparente\Controller\ScraperController',
        ),
