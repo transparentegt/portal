@@ -11,15 +11,10 @@
         <img alt="Guatemala Transparente" title="Guatemala Transparente" src="<?=$this->basePath()?>/Transparente/img/logo-home.png">
     </div>
     <p>
-        <a href="http://gtt.maphpia.com">Guatemala Transparente</a> busca ser la primera fuente de datos totalmente
-        libre para análisis público. La meta es ser una herramienta de ayuda para periodistas e investigadores en la
-        tarea de evidenciar prácticas de corrupción entre las municipalidades y las empresas contratadas para proveer
-        servicios y productos al gobierno.
-    </p>
-    <p>
-        Actualmente ya recopilamos los datos de todos los <span class="badge">3,363</span> proveedores que han ganado
-        más de algún concurso durante este año (2014). Ya tenemos recopilados los datos generales, nombres comerciales y
-        representantes legales; nuestra meta es poder tener todo almacenado para intetificar los problemas.
+        El proyecto <abbr title="Guatemala Transparente">GTT</abbr> busca ser la primera <strong> fuente de
+        <a href="http://es.wikipedia.org/wiki/Datos_abiertos">datos abiertos</a></strong> para Guatemala, recopilando los datos
+        que por ley ya son públicos, y convertir esos datos <i>translúcidos</i> en datos realmente transparentes, datos que se
+        puedan procesar para servir como herramienta para una investigación profunda.
     </p>
 </div>
 
@@ -33,14 +28,13 @@
             <div class="panel-body">
                 <p>Estos son los datos recopilados hasta el momento:</p>
                 <ul>
-                    <li><span class="badge">3,363</span> proveedores</li>
-                    <li><span class="badge">2,257</span> domicilios registrados</li>
-                    <li><span class="badge">2,245</span> representantes legales</li>
+                    <? foreach ($this->totals as $count) :?>
+                    <li><span class="badge"><?=number_format($count['total'])?></span> <?=$count['entidad']?></li>
+                    <? endforeach ?>
                     <li><span class="badge">4</span> reportes de inconsistencias</li>
                 </ul>
                 <p>
-                    ¿Es realmente transparente? ¿Van a liberar la base de datos? El RDBMS es
-                    <a href="http://www.mysql.com/">Oracle's MySQL</a>, lista para ser descargada.
+                    Descarga la base de datos en formato <a href="http://www.mysql.com/">Oracle's MySQL</a>.
                 </p>
 
                 <a class="btn btn-success pull-right" href="<?=$this->basepath()?>/Transparente/db-latest.sql.bz2">

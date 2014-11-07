@@ -18,6 +18,11 @@ use Zend\Mvc\Controller\AbstractActionController;
  */
 class ScraperController extends AbstractActionController
 {
+    /**
+     * Lee los empleados municipales del archivo data/xls2import/empleados_municipales.csv
+     *
+     * @return void
+     */
     private function scrapEmpleadosMunicipales()
     {
         $domicilioModel       = $this->getServiceLocator()->get('Transparente\Model\DomicilioModel');
@@ -65,32 +70,20 @@ class ScraperController extends AbstractActionController
     {
         $proveedorModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
         /* @var $proveedorModel ProveedorModel */
-        $repModel    = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');
-        /* @var $repModel RepresentanteLegalModel */
         $domicilioModel = $this->getServiceLocator()->get('Transparente\Model\DomicilioModel');
         /* @var $domicilioModel DomicilioModel */
-
-        $totales = [
-            'proveedores' => 0,
-            'domicilios'  => 0,
-            'repLegales'  => 0,
-        ];
-
         $proveedores = $proveedorModel->scrapList();
         foreach ($proveedores as $idProveedor) {
-            $totales['proveedores']++;
             $data      = $proveedorModel->scrap($idProveedor);
             $data     += ['nombres_comerciales'    => $proveedorModel->scrapNombresComerciales($idProveedor)];
-            $data     += ['representantes_legales' => $repModel->scrapRepresentantesLegales($idProveedor)];
             $proveedor = new \Transparente\Model\Entity\Proveedor();
             $proveedor->exchangeArray($data);
 
-            if (!empty($data['domicilio_fiscal'])) {
-                $totales['domicilios']++;
+            if (!empty($data['fiscal'])) {
                 $domicilio = new \Transparente\Model\Entity\Domicilio();
-                $domicilio->exchangeArray($data['domicilio_fiscal']);
+                $domicilio->exchangeArray($data['fiscal']);
                 try {
-                    $domicilio = $domicilioModel->createFromScrappedData($data['domicilio_fiscal']);
+                    $domicilio = $domicilioModel->createFromScrappedData($data['fiscal']);
                     if ($domicilio) {
                         $proveedor->setDomicilioFiscal($domicilio);
                     }
@@ -99,12 +92,11 @@ class ScraperController extends AbstractActionController
                 }
             }
 
-            if (!empty($data['domicilio_comercial'])) {
-                $totales['domicilios']++;
+            if (!empty($data['comercial'])) {
                 $domicilio = new \Transparente\Model\Entity\Domicilio();
-                $domicilio->exchangeArray($data['domicilio_comercial']);
+                $domicilio->exchangeArray($data['comercial']);
                 try {
-                    $domicilio = $domicilioModel->createFromScrappedData($data['domicilio_comercial']);
+                    $domicilio = $domicilioModel->createFromScrappedData($data['comercial']);
                     if ($domicilio) {
                         $proveedor->setDomicilioComercial($domicilio);
                     }
@@ -119,26 +111,59 @@ class ScraperController extends AbstractActionController
                 $proveedor->appendNombreComercial($nombreComercial);
             }
 
-            foreach ($data['representantes_legales'] as $idRep) {
-                $totales['repLegales']++;
-                /* @var $domicilioModel DomicilioModel */
-                $repLegal = $repModel->scrap($idRep);
-                $proveedor->appendRepresentanteLegal($repLegal);
-            }
-            // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; Doctrine\Common\Util\Debug::dump($proveedor); die();
-            // echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($data); die();
             $proveedorModel->save($proveedor);
        }
-        $db = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
-        /* @var $db Doctrine\ORM\EntityManager */
-        $db->flush();
+    }
+
+    /**
+     * Lee los proyectos de todos los proveedores
+     */
+    private function scrapProyectosAdjudicados()
+    {
+        $proyectoModel  = $this->getServiceLocator()->get('Transparente\Model\ProyectoModel');
+        /* @var $protectoModel ProyectoModel */
+        $proveedorModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
+        /* @var $proveedorModel ProveedorModel */
+        $proveedores    = $proveedorModel->findPendientesDeScrapearProyectos();
+        foreach($proveedores as $proveedor) {
+            $proyectosList = $proyectoModel->scrapList($proveedor);
+            foreach ($proyectosList as $id) {
+                if ($proyectoModel->find($id)) continue;
+                $proyecto = $proyectoModel->scrap($id);
+                $proyectoModel->save($proyecto);
+            }
+        }
+    }
+
+    /**
+     * Lee los representantes legales de todos los proveedores
+     */
+    private function scrapRepresentantesLegales()
+    {
+        $proveedorModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
+        /* @var $proveedorModel ProveedorModel */
+        $repModel       = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');
+        /* @var $repModel RepresentanteLegalModel */
+        $proveedores    = $proveedorModel->findPendientesDeScrapearRepresentantesLegales();
+        foreach($proveedores as $proveedor) {
+            $repList = $repModel->scrapRepresentantesLegales($proveedor->getId());
+            foreach ($repList as $id) {
+                $repLegal = $repModel->find($id);
+                if (!$repLegal) {
+                    $repLegal = $repModel->scrap($id);
+                }
+                if (!$repLegal) continue;
+                $proveedor->appendRepresentanteLegal($repLegal);
+            }
+            $proveedorModel->save($proveedor);
+        }
     }
 
     /**
      * Iniciando el scraper
      *
-     * @todo volver a encender el scraper de proveedores
      * @todo preguntar en el CLI si se quiere hacer cada paso
+     * @todo reiniciar la DB desde PHP y no desde el bash
      */
     public function indexAction()
     {
@@ -148,9 +173,14 @@ class ScraperController extends AbstractActionController
         }
         ini_set('memory_limit', -1);
 
-        $this->scrapProveedores();
+        // la lectura de los empleados municipales son datos locales
         $this->scrapEmpleadosMunicipales();
+        // empezamos la barrida de Guatecompras buscando los proveedores
+        $this->scrapProveedores();
+        // luego la barrida de los representantes legales de los proveedores
+        $this->scrapRepresentantesLegales();
+        // Ahora que ya tenemos los proveedores en la base de datos, ya podemos importar los proyectos
+        $this->scrapProyectosAdjudicados();
     }
-
 
 }

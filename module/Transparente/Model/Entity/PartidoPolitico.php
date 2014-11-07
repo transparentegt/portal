@@ -17,6 +17,7 @@ class PartidoPolitico extends AbstractDoctrineEntity
 {
     /**
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
     protected $id;
@@ -32,7 +33,15 @@ class PartidoPolitico extends AbstractDoctrineEntity
     protected $iniciales;
 
     /**
-     * @ORM\OneToMany(targetEntity="EmpleadoMunicipal", mappedBy="municipio")
+     * @return mixed
+     */
+    public function getIniciales()
+    {
+        return $this->iniciales;
+    }
+
+    /**
+     * @ORM\OneToMany(targetEntity="EmpleadoMunicipal", mappedBy="partido_político")
      */
     private $empleados_municipales;
 
@@ -47,6 +56,19 @@ class PartidoPolitico extends AbstractDoctrineEntity
         $empleadoMunicipal->setPartidoPolítico($this);
         $this->empleados_municipales[] = $empleadoMunicipal;
         return $this;
+    }
+
+    /**
+     * Partidos que no tenemos el nombre, por lo menos devolver las iniciales.
+     * @return string
+     */
+    public function getNombre()
+    {
+        $nombre = $this->nombre;
+        if (!$nombre) {
+            $nombre = $this->getIniciales();
+        }
+        return $nombre;
     }
 
     public function getId ()

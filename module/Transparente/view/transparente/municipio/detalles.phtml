@@ -10,60 +10,43 @@ $municipio = $this->municipio;
 
 $representantes = $this->representantes;
 ?>
-<script>
-function openModal(id,title, body) {
-    $('body').append('<div class="modal fade" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> \
-            <div class="modal-dialog"> \
-              <div class="modal-content"> \
-                <div class="modal-header"> \
-                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> \
-                  <h4 class="modal-title" id="myModalLabel">' + title + '</h4> \
-                </div> \
-                <div class="modal-body">' + body + '</div> \
-                <div class="modal-footer"> \
-                  <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button> \
-                </div> \
-              </div> \
-            </div> \
-          </div>\
-      ');
-}
-$(function() {
-    openModal('representantesLegalesModal', '¿Porqué queremos ver los representantes legales?',
-            'Un empleado municipal tiene poder de decición para contratar a los proveedores. Éste puede decidir darles \
-            el trabajo a sus familiares con quienes ya ha acordado un precio para repartirse las ganancias. Esto es \
-            ilegal<sup>se necesita link al artículo</sup>, pero es difícil de encontrar; es por eso que buscamos listar \
-            los apellidos relacionados para encontrar estos actos de corrupción.');
-});
+<style >
+.empleado {float: left; height: 360px; width: 100%;}
+.logo-partido {height: 100px; margin-right: 10px;}
+.rep-legales {height: 16em; overflow: auto}
 
-</script>
-<style>
 .dl-horizontal dt { width: 260px; }
 .dl-horizontal dd { margin-left: 270px;}
 </style>
 <h1>Municipio: <?=$municipio->getNombre()?>, <?=$municipio->getDepartamento()->getNombre()?></h1>
+<div class="row">
+    <div class="col-sm-4">
 
-<p>Listado de los empleados municipales del consejo municipal.</p>
-
-<div class="panel-group" id="accordion">
-
+        <p>Listado de los miembros del consejo municipal.</p>
+        <p>
+            Los miembros del consejo tienen poder de decición para contratar a los proveedores. Éste puede decidir darles el
+            trabajo a sus familiares con quienes ya ha acordado un precio para repartirse las ganancias. Esto es ilegal, pero es
+            difícil de encontrar; es por eso que buscamos listar los apellidos relacionados para encontrar estas posibles
+            relaciónes entre familiares.
+        </p>
+    </div>
+    <div class="col-sm-8">
+        <iframe width="560" height="315" src="//www.youtube.com/embed/m-JozsD_IxQ?rel=0&end=50" style="border: none;"></iframe>
+    </div>
+</div>
+<div class="row">
     <?php foreach($this->empleadosMunicipales as $empleado) :?>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-<?=$empleado->getId()?>">
-                    <?=$empleado->getNombre()?> -- <?=$empleado->getCargo()?>
-                </a>
-            </h4>
-        </div>
-        <div id="collapse-<?=$empleado->getId()?>" class="panel-collapse collapse">
+    <div class="col-sm-6">
+    <div class="panel panel-default empleado">
+        <div class="panel-heading"><?=$empleado->getCargo()?></div>
             <div class="panel-body">
+                <img class="pull-left logo-partido img-thumbnail"
+                     title="<?=$empleado->getPartidoPolítico()->getNombre()?>"  alt="<?=$empleado->getPartidoPolítico()->getNombre()?>"
+                     src="<?=$this->basePath()?>/Transparente/img/logos-partidos/<?=$empleado->getPartidoPolítico()->getIniciales()?>.svg"  />
+                <h4><?=$empleado->getNombre()?></h4>
                 <?php if ($representantes[$empleado->getId()]) :?>
-                    Representantes Legales con apellidos en común:
-                    <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#representantesLegalesModal">
-                        <span class="glyphicon glyphicon-question-sign"></span>
-                    </button>
-                    <ul>
+                    <p>Apellidos en común con:</p>
+                    <ul class="rep-legales">
                         <?php foreach($representantes[$empleado->getId()] as $representanteLegal) : /* @var $representanteLegal \Transparente\Model\Entity\RepresentanteLegal */?>
                             <li>
                                 <a href="<?=$this->url()?>representante-legal/detalles/<?=$representanteLegal->getId()?>">
@@ -74,7 +57,7 @@ $(function() {
                     </ul>
                 <?php endif ?>
           </div>
-        </div>
+    </div>
     </div>
     <?php endforeach ?>
 </div>

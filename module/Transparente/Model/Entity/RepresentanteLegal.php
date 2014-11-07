@@ -21,6 +21,8 @@ use Transparente\Model\ScraperModel;
 class RepresentanteLegal extends AbstractDoctrineEntity
 {
     /**
+     * no es autoincrement para usaar el mismo ID que en GTC
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      */
@@ -30,7 +32,7 @@ class RepresentanteLegal extends AbstractDoctrineEntity
      * Datos recibidos de la SAT
      * @ORM\Column(type="datetime")
      */
-    protected $actualizado_sat;
+    // protected $actualizado_sat;
 
     /**
      * @ORM\Column(type="string")
@@ -58,6 +60,13 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     protected $apellido3;
 
     /**
+     * Inscripción en la SAT
+     *
+     * @ORM\Column(type="date", nullable=true)
+     */
+    protected $inscripción_fecha_sat;
+
+    /**
      * @ORM\Column(type="string")
      */
     protected $nit;
@@ -68,11 +77,20 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     protected $nombres_comerciales;
 
     /**
+     * GTC: HABILITADO / INHABILITADO
+     *
      * @ORM\Column(type="boolean")
      */
     protected $status;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    protected $tipo;
+
+    /**
+     * En GTC se muestra como CON/SIN CONTRASEÑA
+     *
      * @ORM\Column(type="boolean")
      */
     protected $tiene_acceso_sistema = false;
@@ -90,16 +108,22 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     protected $domicilio_comercial;
 
     /**
-     * @ORM\Column(type="string")
+     * Está en domicilio comercial, pero no queremos meter eso en la tabla domicilios
+     *
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $url;
 
     /**
-     * @ORM\Column(type="string")
+     * está en domicilio comercial, pero no queremos meter eso en la tabla domicilios
+     *
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $email;
 
     /**
+     * Un representante legal puede representar muchas empresas. Una empresa puede estar representada por muchos representantes.
+     *
      * @ORM\ManyToMany(targetEntity="Proveedor", mappedBy="representantes_legales", cascade="persist")
      * @ORM\JoinTable(name="proveedor_representado_por")
      *
@@ -108,7 +132,9 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     protected $proveedores;
 
     /**
-     * @ORM\ManyToMany ( targetEntity = "RepresentanteLegal", inversedBy = "represento", cascade = "persist" )
+     * Un representante legal puede tener muchos representantes legales.
+     *
+     * @ORM\ManyToMany ( targetEntity = "RepresentanteLegal", cascade = "persist" )
      * @ORM\JoinTable (
      *      name               = "representante_representado_por",
      *      joinColumns        = { @ORM\JoinColumn (name = "id_representante_legal", referencedColumnName = "id") },
@@ -116,47 +142,53 @@ class RepresentanteLegal extends AbstractDoctrineEntity
      * )
      *
      * @var ArrayCollection
+     *
+     * @todo Esta relación no debería de existir y debería de unificarse como proveedor
      */
     protected $representantes_legales;
 
     /**
-     * (Datos recibidos de la SAT el: 01.jul.2014 16:45:44
+     * Última fecha de actualización por SAT
+     * (Datos recibidos de la SAT el: 01.jul.2014 16:45:44)
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="date")
      */
-    protected $rep_legales_updated;
+    protected $updated_sat;
 
     /**
+     * Tipo de representante legal, tiene que ser un listado limitado.
      * Los valores encontrados han sido: SOCIEDAD ANÓNIMA, INDIVIDUAL
      *
      * @ORM\Column(type="string")
      */
-    protected $tipo_organizacion;
+    // protected $tipo_organizacion;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $const_fecha;
+    // protected $const_fecha;
+
+    /**
+     * Número de escritura de constitucioń (WTF? será número entero)
+     *
+     * @ORM\Column(type="string")
+     */
+    // protected $const_num_escritura;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $const_num_escritura;
+    // protected $inscripcion_provisional;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $inscripcion_provisional;
+    // protected $inscripcion_definitiva;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $inscripcion_definitiva;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $inscripcion_sat;
+    // protected $inscripcion_sat;
 
     public function __construct()
     {
@@ -195,6 +227,14 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     public function getNombresComerciales()
     {
         return $this->nombres_comerciales;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getInscripciónFechaSat()
+    {
+        return $this->inscripción_fecha_sat;
     }
 
     /**
@@ -243,6 +283,16 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     public function setNombre2($nombre2)
     {
         $this->nombre2 = ScraperModel::nombresPropios($nombre2);
+        return $this;
+    }
+
+    /**
+     * @param string $inscripción_fecha_sat
+     */
+    public function setInscripciónFechaSat($inscripción_fecha_sat)
+    {
+        $inscripción_fecha_sat       = ScraperModel::fecha($inscripción_fecha_sat);
+        $this->inscripción_fecha_sat = $inscripción_fecha_sat;
         return $this;
     }
 
@@ -304,9 +354,27 @@ class RepresentanteLegal extends AbstractDoctrineEntity
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getUpdatedSat()
+    {
+        return $this->updated_sat;
+    }
+
+
     public function getUrl ()
     {
         return $this->url;
+    }
+
+    /**
+     * @param string $updated_sat
+     */
+    public function setUpdatedSat($updated_sat)
+    {
+        $this->updated_sat = ScraperModel::fecha($updated_sat);
+        return $this;
     }
 
     public function setUrl ($url)
@@ -331,81 +399,9 @@ class RepresentanteLegal extends AbstractDoctrineEntity
         return $this->proveedores;
     }
 
-    public function getRepLegalesUpdated ()
+    public function getTipo()
     {
-        return $this->rep_legales_updated;
-    }
-
-    public function setRepLegalesUpdated ($rep_legales_updated)
-    {
-        $this->rep_legales_updated = $rep_legales_updated;
-        return $this;
-    }
-
-    public function getTipoOrganizacion ()
-    {
-        return $this->tipo_organizacion;
-    }
-
-    public function setTipoOrganizacion ($tipo_organizacion)
-    {
-        $this->tipo_organizacion = $tipo_organizacion;
-        return $this;
-    }
-
-    public function getConstNumEscritura ()
-    {
-        return $this->const_num_escritura;
-    }
-
-    public function setConstNumEscritura ($const_num_escritura)
-    {
-        $this->const_num_escritura = $const_num_escritura;
-        return $this;
-    }
-
-    public function getConstFecha ()
-    {
-        return $this->const_fecha;
-    }
-
-    public function setConstFecha ($const_fecha)
-    {
-        $this->const_fecha = $const_fecha;
-        return $this;
-    }
-
-    public function getInscripcionProvisional ()
-    {
-        return $this->inscripcion_provisional;
-    }
-
-    public function setInscripcionProvisional ($inscripcion_provisional)
-    {
-        $this->inscripcion_provisional = $inscripcion_provisional;
-        return $this;
-    }
-
-    public function getInscripcionDefinitiva ()
-    {
-        return $this->inscripcion_definitiva;
-    }
-
-    public function setInscripcionDefinitiva ($inscripcion_definitiva)
-    {
-        $this->inscripcion_definitiva = $inscripcion_definitiva;
-        return $this;
-    }
-
-    public function getInscripcionSat ()
-    {
-        return $this->inscripcion_sat;
-    }
-
-    public function setInscripcionSat ($inscripcion_sat)
-    {
-        $this->inscripcion_sat = $inscripcion_sat;
-        return $this;
+        return $this->tipo;
     }
 
     public function representa(Proveedor $proveedor)

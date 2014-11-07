@@ -1,11 +1,10 @@
 <?php
 namespace Transparente\Model;
 
-use Doctrine\ORM\EntityRepository;
 use Transparente\Model\Entity\EmpleadoMunicipal;
 use Transparente\Model\Entity\RepresentanteLegal;
 
-class RepresentanteLegalModel extends EntityRepository
+class RepresentanteLegalModel extends AbstractModel
 {
     protected static $scraped = [];
 
@@ -76,7 +75,6 @@ class RepresentanteLegalModel extends EntityRepository
         return $rs;
     }
 
-
     /**
      * Genera el reporte de los representantes legales que tienen representantes legales
      *
@@ -102,7 +100,7 @@ class RepresentanteLegalModel extends EntityRepository
      *
      * @return Transparente\Model\Entity\RepresentanteLegal[]
      */
-    public function findByMultiProveedor()
+    public function findPaginatorByMultiProveedor()
     {
         $dql = 'SELECT RepresentanteLegal
                 FROM Transparente\Model\Entity\RepresentanteLegal  RepresentanteLegal
@@ -115,7 +113,7 @@ class RepresentanteLegalModel extends EntityRepository
                     RepresentanteLegal.nombre1 ASC,
                     RepresentanteLegal.nombre2 ASC
                 ';
-        $rs = $this->getEntityManager()->createQuery($dql)->execute();
+        $rs = $this->getPaginatorFromDql($dql);
         return $rs;
     }
 
@@ -137,8 +135,22 @@ class RepresentanteLegalModel extends EntityRepository
                     RepresentanteLegal.nombre1 ASC,
                     RepresentanteLegal.nombre2 ASC
                 ';
-        $rs = $this->getEntityManager()->createQuery($dql)->execute();
-        return $rs;
+        $paginator = $this->getPaginatorFromDql($dql);
+        return $paginator;
+    }
+
+    /**
+     * Paginar los datos
+     *
+     * @return Paginator
+     */
+    public function getPaginator()
+    {
+        $dql = 'SELECT RepresentanteLegal
+                FROM Transparente\Model\Entity\RepresentanteLegal RepresentanteLegal
+                ORDER BY RepresentanteLegal.apellido1, RepresentanteLegal.apellido2, RepresentanteLegal.apellido3, RepresentanteLegal.nombre1 ';
+        $paginator = $this->getPaginatorFromDql($dql);
+        return $paginator;
     }
 
     /**
@@ -150,26 +162,14 @@ class RepresentanteLegalModel extends EntityRepository
      */
     private function splitNombre(&$data)
     {
-        $nombres           = explode(',', $data['nombre']);
-        $nombre            = explode(',', $nombres[1]);
+        $nombres = explode(',', $data['nombre']);
+        if (count($nombres) != 5) throw new \Exception('Formato de nombre inválido');
         $data['nombre1']   = $nombres[3];
         $data['nombre2']   = $nombres[4];
         $data['apellido1'] = $nombres[0];
         $data['apellido2'] = $nombres[1];
         $data['apellido3'] = $nombres[2];
         unset($data['nombre']);
-    }
-
-    /**
-     * Guardar un representante legal
-     * @param RepresentanteLegal $entity
-     *
-     * @todo se usa? lo que guardamos es el proveedor y en cascada todo el representante legal
-     */
-    public function save(RepresentanteLegal $entity)
-    {
-        $em = $this->getEntityManager();
-        $em->persist($entity);
     }
 
     /**
@@ -186,13 +186,16 @@ class RepresentanteLegalModel extends EntityRepository
         }
 
         $url    = "http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=10&lprv={$id}";
-        $página = ScraperModel::getCachedUrl($url);
+        $página = ScraperModel::getCachedUrl($url, "representante-legal-$id");
         $xpaths = [
-            'nombre'               => '//*[@id="MasterGC_ContentBlockHolder_lblNombreProv"]',
-            'nit'                  => '//*[@id="MasterGC_ContentBlockHolder_lblNIT"]',
-            'status'               => '//*[@id="MasterGC_ContentBlockHolder_lblHabilitado"]',
-            'tiene_acceso_sistema' => '//*[@id="MasterGC_ContentBlockHolder_lblContraSnl"]',
-            'domicilio_fiscal'     => [
+            'email'                 => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[2]//td[2]',
+            'inscripción_fecha_sat' => '//*[@id="MasterGC_ContentBlockHolder_pnl_DatosInscripcion2"]//tr[2]/td[@class="ValorForm"]',
+            'nombre'                => '//*[@id="MasterGC_ContentBlockHolder_lblNombreProv"]',
+            'nit'                   => '//*[@id="MasterGC_ContentBlockHolder_lblNIT"]',
+            'status'                => '//*[@id="MasterGC_ContentBlockHolder_lblHabilitado"]',
+            'tiene_acceso_sistema'  => '//*[@id="MasterGC_ContentBlockHolder_lblContraSnl"]',
+            'tipo'                  => '//*[@id="MasterGC_ContentBlockHolder_pnl_DatosInscripcion2"]//tr[1]/td[@class="ValorForm"]',
+            'fiscal' => [
                 'updated'      => 'div#MasterGC_ContentBlockHolder_divDomicilioFiscal span.AvisoGrande span.AvisoGrande',
                 'departamento' => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioFiscal2"]//tr[1]//td[2]',
                 'municipio'    => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioFiscal2"]//tr[2]//td[2]',
@@ -200,7 +203,7 @@ class RepresentanteLegalModel extends EntityRepository
                 'telefonos'    => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioFiscal2"]//tr[4]//td[2]',
                 'fax'          => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioFiscal2"]//tr[5]//td[2]',
             ],
-            'domicilio_comercial'     => [
+            'comercial' => [
                 'updated'      => null,
                 'departamento' => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[3]//td[2]',
                 'municipio'    => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[4]//td[2]',
@@ -208,32 +211,29 @@ class RepresentanteLegalModel extends EntityRepository
                 'telefonos'    => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[6]//td[2]',
                 'fax'          => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[7]//td[2]',
             ],
+            'updated_sat'         => '//*[@id="MasterGC_ContentBlockHolder_lblFechaInfo"]',
             'url'                 => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[1]//td[2]',
-            'email'               => '//*[@id="MasterGC_ContentBlockHolder_pnl_domicilioComercial2"]//tr[2]//td[2]',
-            'rep_legales_updated' => '//*[@id="MasterGC_ContentBlockHolder_divRepresentantesLegales"]//span/span',
         ];
 
         $data = ['id' => $id] + ScraperModel::fetchData($xpaths, $página);
-        $this->splitNombre($data);
+        try {
+            $this->splitNombre($data);
+        } catch (\Exception $e) {
+            return false;
+        }
+
         // después de capturar los datos, hacemos un postproceso
         $data['status']               = ($data['status'] == 'HABILITADO');
         $data['tiene_acceso_sistema'] = ($data['tiene_acceso_sistema'] == 'CON CONTRASEÑA');
         // descartar direcciones vacías
-        if ($data['domicilio_fiscal']['direccion'] == '[--No Especificado--]' ||
-            $data['domicilio_fiscal']['municipio'] == '[--No Especificado--]') {
-                unset($data['domicilio_fiscal']);
+        if ($data['fiscal']['direccion'] == '[--No Especificado--]' ||
+            $data['fiscal']['municipio'] == '[--No Especificado--]') {
+                unset($data['fiscal']);
         }
-        if ($data['domicilio_comercial']['direccion'] == '[--No Especificado--]' ||
-            $data['domicilio_comercial']['municipio'] == '[--No Especificado--]') {
-                unset($data['domicilio_comercial']);
+        if ($data['comercial']['direccion'] == '[--No Especificado--]' ||
+            $data['comercial']['municipio'] == '[--No Especificado--]') {
+                unset($data['comercial']);
         }
-
-        // algunas fechas no están bien parseadas
-        $data['rep_legales_updated']  = strptime($data['rep_legales_updated'], '(Datos recibidos de la SAT el: %d.%b.%Y %T ');
-        $data['rep_legales_updated']  = 1900+$data['rep_legales_updated']['tm_year']
-        . '-' . (1 + $data['rep_legales_updated']['tm_mon'])
-        . '-' . ($data['rep_legales_updated']['tm_mday'])
-        ;
         $data['url']                  = ($data['url']   != '[--No Especificado--]') ? $data['url'] : null;
         $data['email']                = ($data['email'] != '[--No Especificado--]') ? $data['email'] : null;
 
@@ -265,7 +265,8 @@ class RepresentanteLegalModel extends EntityRepository
      */
     public function scrapNombresComerciales($id)
     {
-        $página  = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaProveeNomCom.aspx?rqp=8&lprv='.$id);
+        $url     = 'http://guatecompras.gt/proveedores/consultaProveeNomCom.aspx?rqp=8&lprv='.$id;
+        $página  = ScraperModel::getCachedUrl($url, "replegal-nombre-comercial-$id");
         $xpath   = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]';
         $nodos   = $página->queryXpath($xpath);
         $nombres = [];
@@ -288,18 +289,19 @@ class RepresentanteLegalModel extends EntityRepository
      */
     public function scrapRepresentantesLegales($parentId)
     {
-        $página    = ScraperModel::getCachedUrl('http://guatecompras.gt/proveedores/consultaprrepleg.aspx?rqp=8&lprv=' . $parentId);
+        $url       = 'http://guatecompras.gt/proveedores/consultaprrepleg.aspx?rqp=8&lprv=' . $parentId;
+        $página    = ScraperModel::getCachedUrl($url, "proveedor-$parentId-reprlegales");
         $xpath     = '//*[@id="MasterGC_ContentBlockHolder_dgResultado"]//tr[not(@class="TablaTitulo")]/td[2]/a';
         $nodos     = $página->queryXpath($xpath);
         $elementos = [];
         foreach($nodos as $nodo) {
             $url         = parse_url($nodo->getAttribute('href'));
             parse_str($url['query'], $url);
-            $id          = $url['lprv'];
+            $id          = (int) $url['lprv'];
             if ( ($parentId == $id) || in_array($id, $elementos)) continue;
-            $elementos[] = (int) $id;
+            $elementos[$id] = $id;
         }
-        sort($elementos);
+        asort($elementos);
         return $elementos;
     }
 }
