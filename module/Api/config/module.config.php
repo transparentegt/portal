@@ -46,7 +46,11 @@ return array(
             'collection_http_methods' => array(
                 0 => 'GET',
             ),
-            'collection_query_whitelist' => array(),
+            'collection_query_whitelist' => array(
+                0 => 'sort',
+                1 => 'order',
+                2 => 'where',
+            ),
             'page_size' => '10',
             'page_size_param' => 'size',
             'entity_class' => 'Api\\V1\\Rest\\Proveedor\\ProveedorEntity',

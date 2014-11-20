@@ -41,14 +41,14 @@ class ProveedorResource extends AbstractResourceListener
      * Fetch all or a subset of resources
      *
      * @param  array $params
-     * @return ApiProblem|mixed
+     * @return ProveedorCollection
      */
-    public function fetchAll($params = array())
+    public function fetchAll($params = [])
     {
         $proveedorModel = $this->serviceManager->get('Transparente\Model\ProveedorModel');
         /* @var $proveedorModel \Transparente\Model\ProveedorModel */
-        $proveedor      = $proveedorModel->getPaginator();
+        $proveedor      = $proveedorModel->getPaginator($params);
+        /* @var $proveedor \Zend\Paginator\Paginator */
         return new ProveedorCollection($proveedor->getAdapter());
     }
-
 }

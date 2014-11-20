@@ -10,12 +10,19 @@
 <script type="text/javascript">
 $(document).ready(function(){
     $('.data-table').DataTable({
+        processing: true,
         serverSide: true,
         ajax: function(data, callback, settings) {
             // console.log(data);
             // console.log(settings);
-            var page = 1 + (data.start / data.length);
-            var url = '/api/proveedor?page=' + page + '&size=' + data.length;
+            var cols   = ['Proveedor.nombre', 'Proveedor.nit'];
+            var params = $.param({
+                page:  1 + (data.start / data.length),
+                size:  data.length,
+                order: cols[data.order[0].column],
+                sort:  data.order[0].dir
+            });
+            var url = '/api/proveedor?' + params;
             $.getJSON(url, function(api) {
                 var elements = [];
                 api._embedded.proveedor.forEach(function(element) {
