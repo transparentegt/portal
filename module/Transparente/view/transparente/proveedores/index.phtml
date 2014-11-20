@@ -9,18 +9,19 @@
 ?>
 <script type="text/javascript">
 $(document).ready(function(){
-    $('.data-table').DataTable({
+    $('.data-table').dataTable({
+        language: {url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json'},
         processing: true,
         serverSide: true,
         ajax: function(data, callback, settings) {
-            // console.log(data);
-            // console.log(settings);
+            console.log(data);
             var cols   = ['Proveedor.nombre', 'Proveedor.nit'];
             var params = $.param({
-                page:  1 + (data.start / data.length),
-                size:  data.length,
-                order: cols[data.order[0].column],
-                sort:  data.order[0].dir
+                page:   1 + (data.start / data.length),
+                size:   data.length,
+                order:  cols[data.order[0].column],
+                sort:   data.order[0].dir,
+                filter: data.search.value,
             });
             var url = '/api/proveedor?' + params;
             $.getJSON(url, function(api) {

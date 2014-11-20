@@ -50,6 +50,7 @@ return array(
                 0 => 'sort',
                 1 => 'order',
                 2 => 'where',
+                3 => 'filter',
             ),
             'page_size' => '10',
             'page_size_param' => 'size',
