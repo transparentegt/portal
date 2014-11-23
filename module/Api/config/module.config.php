@@ -20,18 +20,29 @@ return array(
                     ),
                 ),
             ),
+            'api.rest.empleado-municipal' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/api/empleado-municipal',
+                    'defaults' => array(
+                        'controller' => 'Api\\V1\\Rest\\EmpleadoMunicipal\\Controller',
+                    ),
+                ),
+            ),
         ),
     ),
     'zf-versioning' => array(
         'uri' => array(
             0 => 'api.rest.proveedor',
             1 => 'api.rest.proyecto',
+            2 => 'api.rest.empleado-municipal',
         ),
     ),
     'service_manager' => array(
         'factories' => array(
             'Api\\V1\\Rest\\Proveedor\\ProveedorResource' => 'Api\\V1\\Rest\\Proveedor\\ProveedorResourceFactory',
             'Api\\V1\\Rest\\Proyecto\\ProyectoResource' => 'Api\\V1\\Rest\\Proyecto\\ProyectoResourceFactory',
+            'Api\\V1\\Rest\\EmpleadoMunicipal\\EmpleadoMunicipalResource' => 'Api\\V1\\Rest\\EmpleadoMunicipal\\EmpleadoMunicipalResourceFactory',
         ),
     ),
     'zf-rest' => array(
@@ -74,11 +85,33 @@ return array(
             'collection_class' => 'Api\\V1\\Rest\\Proyecto\\ProyectoCollection',
             'service_name' => 'Proyecto',
         ),
+        'Api\\V1\\Rest\\EmpleadoMunicipal\\Controller' => array(
+            'listener' => 'Api\\V1\\Rest\\EmpleadoMunicipal\\EmpleadoMunicipalResource',
+            'route_name' => 'api.rest.empleado-municipal',
+            'route_identifier_name' => 'empleado_municipal_id',
+            'collection_name' => 'list',
+            'entity_http_methods' => array(),
+            'collection_http_methods' => array(
+                0 => 'GET',
+            ),
+            'collection_query_whitelist' => array(
+                0 => 'sort',
+                1 => 'order',
+                2 => 'where',
+                3 => 'filter',
+            ),
+            'page_size' => '10',
+            'page_size_param' => 'size',
+            'entity_class' => 'Api\\V1\\Rest\\EmpleadoMunicipal\\EmpleadoMunicipalEntity',
+            'collection_class' => 'Api\\V1\\Rest\\EmpleadoMunicipal\\EmpleadoMunicipalCollection',
+            'service_name' => 'EmpleadoMunicipal',
+        ),
     ),
     'zf-content-negotiation' => array(
         'controllers' => array(
             'Api\\V1\\Rest\\Proveedor\\Controller' => 'HalJson',
             'Api\\V1\\Rest\\Proyecto\\Controller' => 'HalJson',
+            'Api\\V1\\Rest\\EmpleadoMunicipal\\Controller' => 'HalJson',
         ),
         'accept_whitelist' => array(
             'Api\\V1\\Rest\\Proveedor\\Controller' => array(
@@ -91,6 +124,11 @@ return array(
                 1 => 'application/hal+json',
                 2 => 'application/json',
             ),
+            'Api\\V1\\Rest\\EmpleadoMunicipal\\Controller' => array(
+                0 => 'application/vnd.api.v1+json',
+                1 => 'application/hal+json',
+                2 => 'application/json',
+            ),
         ),
         'content_type_whitelist' => array(
             'Api\\V1\\Rest\\Proveedor\\Controller' => array(
@@ -98,6 +136,10 @@ return array(
                 1 => 'application/json',
             ),
             'Api\\V1\\Rest\\Proyecto\\Controller' => array(
+                0 => 'application/vnd.api.v1+json',
+                1 => 'application/json',
+            ),
+            'Api\\V1\\Rest\\EmpleadoMunicipal\\Controller' => array(
                 0 => 'application/vnd.api.v1+json',
                 1 => 'application/json',
             ),
@@ -127,6 +169,18 @@ return array(
                 'entity_identifier_name' => 'id',
                 'route_name' => 'api.rest.proyecto',
                 'route_identifier_name' => 'proyecto_id',
+                'is_collection' => true,
+            ),
+            'Api\\V1\\Rest\\EmpleadoMunicipal\\EmpleadoMunicipalEntity' => array(
+                'entity_identifier_name' => 'id',
+                'route_name' => 'api.rest.empleado-municipal',
+                'route_identifier_name' => 'empleado_municipal_id',
+                'hydrator' => 'Zend\\Stdlib\\Hydrator\\ArraySerializable',
+            ),
+            'Api\\V1\\Rest\\EmpleadoMunicipal\\EmpleadoMunicipalCollection' => array(
+                'entity_identifier_name' => 'id',
+                'route_name' => 'api.rest.empleado-municipal',
+                'route_identifier_name' => 'empleado_municipal_id',
                 'is_collection' => true,
             ),
         ),

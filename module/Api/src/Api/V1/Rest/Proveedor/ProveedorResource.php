@@ -1,7 +1,6 @@
 <?php
 namespace Api\V1\Rest\Proveedor;
 
-use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
 
 class ProveedorResource extends AbstractResourceListener

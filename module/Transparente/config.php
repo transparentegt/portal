@@ -4,6 +4,7 @@
  *
  * @todo simplificar más este archivo (la documentación para un módulo mínimo es muy poca)
  * @todo el application_entities debería de ser por namespace, ahy que probar si funciona usando __NAMESPACE__
+ * @todo las rutas deberían de poder definirse desde el controlador, ver https://github.com/str/gtt/issues/48
  */
 return array(
     'doctrine' => array(
@@ -23,6 +24,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Transparente\Controller\Domicilios'         => 'Transparente\Controller\DomiciliosController',
+            'Transparente\Controller\EmpleadoMunicipal'  => 'Transparente\Controller\EmpleadoMunicipalController',
             'Transparente\Controller\Index'              => 'Transparente\Controller\Index',
             'Transparente\Controller\Municipio'          => 'Transparente\Controller\MunicipioController',
             'Transparente\Controller\Proveedores'        => 'Transparente\Controller\ProveedoresController',
