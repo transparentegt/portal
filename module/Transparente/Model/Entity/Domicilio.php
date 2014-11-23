@@ -75,7 +75,7 @@ class Domicilio extends AbstractDoctrineEntity
 
     public function setTelefonos ($telefonos)
     {
-        $this->telefonos = $telefonos;
+        $this->telefonos = ($telefonos != '[--No Especificado--]') ? $telefonos : null;
         return $this;
     }
 
@@ -86,7 +86,7 @@ class Domicilio extends AbstractDoctrineEntity
 
     public function setFax ($fax)
     {
-        $this->fax = $fax;
+        $this->fax = ($fax != '[--No Especificado--]') ? $fax : null;
         return $this;
     }
 

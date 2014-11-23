@@ -14,7 +14,6 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         ajax: function(data, callback, settings) {
-            console.log(data);
             var cols   = ['Proveedor.nombre', 'Proveedor.nit'];
             var params = $.param({
                 page:   1 + (data.start / data.length),
