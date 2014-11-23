@@ -77,16 +77,18 @@ return array(
     ),
     'navigation' => [
         'default' => [
-            // ['route' => 'home', 'label' => 'Guatemala Transparente'],
-            ['route' => 'transparente/default',     'controller' => 'proveedores', 'label' => 'proveedores', 'pages' => [
-                ['route' => 'transparente/default', 'controller' => 'proveedores', 'action' => 'index',     'label' => 'listar todos'],
-                ['route' => 'transparente/default', 'controller' => 'proveedores', 'action' => 'no-fiscal', 'label' => 'sin domicilio fiscal']
+            ['route' => 'transparente/default', 'label' => '#openData', 'pages' => [
+                ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'empleado-municipal',  'label' => 'empleados municipales'],
+                ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'municipio',           'label' => 'municipalidades'],
+                ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'partidos-políticos',  'label' => 'partidos políticos'],
+                ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'proveedores',         'label' => 'proveedores'],
+                ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'representante-legal', 'label' => 'representantes legales'],
             ]],
-            ['route' => 'transparente/default',     'controller' => 'representante-legal', 'label' => 'representantes legales', 'pages' => [
-                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'index',               'label' => 'listar todos'],
-                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-proveedor',     'label' => 'con más de 1 empresa proveedora'],
-                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'nombres-comerciales', 'label' => 'con nombres comerciales'],
-                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-level',         'label' => 'con representantes legales'],
+            ['route' => 'transparente/default', 'label' => 'reportes', 'pages' => [
+                ['route' => 'transparente/default', 'controller' => 'proveedores',         'action' => 'no-fiscal',           'label' => 'proveedores sin domicilio fiscal'],
+                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-proveedor',     'label' => 'representantes de más de una empresa proveedora'],
+                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'nombres-comerciales', 'label' => 'represenantes actuando como proveedores'],
+                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-level',         'label' => 'represenantes con representantes legales'],
             ]],
             ['uri' => ' /apigility/documentation/Api-v1',  'label' => 'API'],
             ['route' => 'transparente/default', 'controller' => 'index', 'action' => 'about',  'label' => 'info'],

@@ -43,15 +43,37 @@ echo $this->doctype();
             <?php echo $this->content; ?>
             <hr>
             <footer>
-                <a href="http://maphpia.com" title="Desarrollado por La Maphpia" >
-                    <img src="<?=$this->basePath()?>/img/maphpia_powered.png" alt="Desarrollado por La Maphpia" />
-                </a>
-                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank"  style="display: inline;">
-                    <input type="hidden" name="cmd" value="_s-xclick" />
-                    <input type="hidden" name="hosted_button_id" value="48SXBFDP69SP2" />
-                    <input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_donate_SM.gif" name="submit" alt="PayPal. La forma rápida y segura de pagar en Internet." />
-                    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" />
-                </form>
+                <style>
+                    footer .disclamer {font-size:smaller; font-style: italic;}
+                    .vertical-center * {
+                        display: inline-block;
+                        vertical-align: middle;
+                        float: none;
+                    }
+                </style>
+                <div  class="row">
+                    <div class="col-sm-9">
+                        <span class="disclamer">
+                            Los datos aquí publicados están disponibles bajo la
+                            <a href="http://opendatacommons.org/licenses/odbl/1.0/">Licencia de Base de Datos Abierta</a>.
+                            Cualquier derecho en los contenidos individuales de la base de datos están licenciados bajo la
+                            <a href="http://opendatacommons.org/licenses/dbcl/1.0">Licencia de Contenidos de Bases de Datos Abiertos</a>.
+                            © <?=date('Y')?> <a href="/transparente/index/about">Guatemala Transparente</a>
+                        </span>
+                    </div>
+
+                    <div class="col-sm-3 vertical-center text-center">
+                        <a href="http://maphpia.com" title="Desarrollado por La Maphpia" >
+                            <img src="<?=$this->basePath()?>/img/maphpia_powered.png" alt="Desarrollado por La Maphpia" />
+                        </a>
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank"  style="display: inline;">
+                            <input type="hidden" name="cmd" value="_s-xclick" />
+                            <input type="hidden" name="hosted_button_id" value="48SXBFDP69SP2" />
+                            <input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_donate_SM.gif" name="submit" alt="PayPal. La forma rápida y segura de pagar en Internet." />
+                            <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+                        </form>
+                    </div>
+                </div>
             </footer>
         </div> <!-- /container -->
         <?php echo $this->inlineScript() ?>
