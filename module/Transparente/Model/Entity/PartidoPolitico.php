@@ -23,12 +23,12 @@ class PartidoPolitico extends AbstractDoctrineEntity
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", unique=true)
      */
     protected $nombre;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", unique=true)
      */
     protected $iniciales;
 
@@ -44,7 +44,6 @@ class PartidoPolitico extends AbstractDoctrineEntity
      * @ORM\OneToMany(targetEntity="EmpleadoMunicipal", mappedBy="partido_político")
      */
     private $empleados_municipales;
-
 
     public function __construct()
     {

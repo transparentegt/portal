@@ -1,0 +1,58 @@
+<?php
+/**
+ * Listar los proveedores
+ *
+ * @todo poder reordenar el listado
+ */
+
+/* @var $this Zend\View\Renderer\PhpRenderer */
+?>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('.data-table').dataTable({
+        language: {url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json'},
+        processing: true,
+        serverSide: true,
+        ajax: function(data, callback, settings) {
+            var cols   = ['PartidoPolitico.nombre'];
+            var params = $.param({
+                page:   1 + (data.start / data.length),
+                size:   data.length,
+                order:  cols[data.order[0].column],
+                sort:   data.order[0].dir,
+                filter: data.search.value,
+            });
+            var url = '/api/partido-politico?' + params;
+            $.getJSON(url, function(api) {
+                var elements = [];
+                api._embedded.partido_politico.forEach(function(element) {
+                    console.log(element);
+                    var link = '<a href="/transparente/partido-politico/detalles/' + element.id + '">' + element.nombre + '</a>';
+                    elements.push([link]);
+                })
+                var json = {
+                    draw:            data.draw,
+                    recordsTotal:    api.total_items,
+                    recordsFiltered: api.total_items,
+                    data:            elements
+                };
+
+                console.log(json);
+                callback(json);
+            });
+        }
+    });
+});
+</script>
+
+<h1>Partidos políticos</h1>
+<p>
+    Listado de todos los partidos políticos importados al sistema.
+</p>
+<table class="table data-table">
+    <thead>
+        <tr>
+            <th>nombre</th>
+        </tr>
+    </thead>
+</table>

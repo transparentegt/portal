@@ -29,6 +29,15 @@ return array(
                     ),
                 ),
             ),
+            'api.rest.partido-politico' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/api/partido-politico[/:partido_politico_id]',
+                    'defaults' => array(
+                        'controller' => 'Api\\V1\\Rest\\PartidoPolitico\\Controller',
+                    ),
+                ),
+            ),
         ),
     ),
     'zf-versioning' => array(
@@ -36,6 +45,7 @@ return array(
             0 => 'api.rest.proveedor',
             1 => 'api.rest.proyecto',
             2 => 'api.rest.empleado-municipal',
+            3 => 'api.rest.partido-politico',
         ),
     ),
     'service_manager' => array(
@@ -43,6 +53,7 @@ return array(
             'Api\\V1\\Rest\\Proveedor\\ProveedorResource' => 'Api\\V1\\Rest\\Proveedor\\ProveedorResourceFactory',
             'Api\\V1\\Rest\\Proyecto\\ProyectoResource' => 'Api\\V1\\Rest\\Proyecto\\ProyectoResourceFactory',
             'Api\\V1\\Rest\\EmpleadoMunicipal\\EmpleadoMunicipalResource' => 'Api\\V1\\Rest\\EmpleadoMunicipal\\EmpleadoMunicipalResourceFactory',
+            'Api\\V1\\Rest\\PartidoPolitico\\PartidoPoliticoResource'     => 'Api\\V1\\Rest\\PartidoPolitico\\PartidoPoliticoResourceFactory',
         ),
     ),
     'zf-rest' => array(
@@ -106,12 +117,36 @@ return array(
             'collection_class' => 'Api\\V1\\Rest\\EmpleadoMunicipal\\EmpleadoMunicipalCollection',
             'service_name' => 'EmpleadoMunicipal',
         ),
+        'Api\\V1\\Rest\\PartidoPolitico\\Controller' => array(
+            'listener' => 'Api\\V1\\Rest\\PartidoPolitico\\PartidoPoliticoResource',
+            'route_name' => 'api.rest.partido-politico',
+            'route_identifier_name' => 'partido_politico_id',
+            'collection_name' => 'partido_politico',
+            'entity_http_methods' => array(
+                0 => 'GET',
+            ),
+            'collection_http_methods' => array(
+                0 => 'GET',
+            ),
+            'collection_query_whitelist' => array(
+                0 => 'filter',
+                1 => 'sort',
+                2 => 'where',
+                3 => 'order',
+            ),
+            'page_size' => '10',
+            'page_size_param' => 'size',
+            'entity_class' => 'Api\\V1\\Rest\\PartidoPolitico\\PartidoPoliticoEntity',
+            'collection_class' => 'Api\\V1\\Rest\\PartidoPolitico\\PartidoPoliticoCollection',
+            'service_name' => 'PartidoPolitico',
+        ),
     ),
     'zf-content-negotiation' => array(
         'controllers' => array(
             'Api\\V1\\Rest\\Proveedor\\Controller' => 'HalJson',
             'Api\\V1\\Rest\\Proyecto\\Controller' => 'HalJson',
             'Api\\V1\\Rest\\EmpleadoMunicipal\\Controller' => 'HalJson',
+            'Api\\V1\\Rest\\PartidoPolitico\\Controller' => 'HalJson',
         ),
         'accept_whitelist' => array(
             'Api\\V1\\Rest\\Proveedor\\Controller' => array(
@@ -129,6 +164,11 @@ return array(
                 1 => 'application/hal+json',
                 2 => 'application/json',
             ),
+            'Api\\V1\\Rest\\PartidoPolitico\\Controller' => array(
+                0 => 'application/vnd.api.v1+json',
+                1 => 'application/hal+json',
+                2 => 'application/json',
+            ),
         ),
         'content_type_whitelist' => array(
             'Api\\V1\\Rest\\Proveedor\\Controller' => array(
@@ -140,6 +180,10 @@ return array(
                 1 => 'application/json',
             ),
             'Api\\V1\\Rest\\EmpleadoMunicipal\\Controller' => array(
+                0 => 'application/vnd.api.v1+json',
+                1 => 'application/json',
+            ),
+            'Api\\V1\\Rest\\PartidoPolitico\\Controller' => array(
                 0 => 'application/vnd.api.v1+json',
                 1 => 'application/json',
             ),
@@ -181,6 +225,18 @@ return array(
                 'entity_identifier_name' => 'id',
                 'route_name' => 'api.rest.empleado-municipal',
                 'route_identifier_name' => 'empleado_municipal_id',
+                'is_collection' => true,
+            ),
+            'Api\\V1\\Rest\\PartidoPolitico\\PartidoPoliticoEntity' => array(
+                'entity_identifier_name' => 'id',
+                'route_name' => 'api.rest.partido-politico',
+                'route_identifier_name' => 'partido_politico_id',
+                'hydrator' => 'Zend\\Stdlib\\Hydrator\\ArraySerializable',
+            ),
+            'Api\\V1\\Rest\\PartidoPolitico\\PartidoPoliticoCollection' => array(
+                'entity_identifier_name' => 'id',
+                'route_name' => 'api.rest.partido-politico',
+                'route_identifier_name' => 'partido_politico_id',
                 'is_collection' => true,
             ),
         ),
