@@ -8,6 +8,8 @@
 $municipio = $this->municipio;
 /* @var $municipio Transparente\Model\Entity\GeoMunicipio */
 
+$this->headtitle('Municipio: '.$municipio->getNombre() . ', ' . $municipio->getDepartamento()->getNombre());
+
 $representantes = $this->representantes;
 ?>
 <style >

@@ -1,6 +1,8 @@
 <?php
 /**
  * Listar los proveedores
+ *
+ * @todo poder reordenar el listado
  */
 
 /* @var $this Zend\View\Renderer\PhpRenderer */
@@ -12,7 +14,7 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         ajax: function(data, callback, settings) {
-            var cols   = ['Proveedor.nombre', 'Proveedor.nit'];
+            var cols   = ['PartidoPolitico.nombre'];
             var params = $.param({
                 page:   1 + (data.start / data.length),
                 size:   data.length,
@@ -20,12 +22,13 @@ $(document).ready(function(){
                 sort:   data.order[0].dir,
                 filter: data.search.value,
             });
-            var url = '/api/proveedor?' + params;
+            var url = '/api/partido-politico?' + params;
             $.getJSON(url, function(api) {
                 var elements = [];
-                api._embedded.proveedor.forEach(function(element) {
-                    var link = '<a href="/transparente/proveedores/detalles/' + element.id + '">' + element.nombre + '</a>';
-                    elements.push([link, element.nit]);
+                api._embedded.partido_politico.forEach(function(element) {
+                    console.log(element);
+                    var link = '<a href="/transparente/partido-politico/detalles/' + element.id + '">' + element.nombre + '</a>';
+                    elements.push([link]);
                 })
                 var json = {
                     draw:            data.draw,
@@ -33,6 +36,8 @@ $(document).ready(function(){
                     recordsFiltered: api.total_items,
                     data:            elements
                 };
+
+                console.log(json);
                 callback(json);
             });
         }
@@ -40,16 +45,14 @@ $(document).ready(function(){
 });
 </script>
 
-<h1>Proveedores</h1>
+<h1>Partidos políticos</h1>
 <p>
-    Listado de todos los proveedores importados del portal de
-    <a href="http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper=2014">Guatecompras</a>.
+    Listado de todos los partidos políticos importados al sistema.
 </p>
 <table class="table data-table">
     <thead>
         <tr>
             <th>nombre</th>
-            <th class="text-right">nit</th>
         </tr>
     </thead>
 </table>

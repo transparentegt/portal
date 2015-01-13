@@ -10,6 +10,7 @@
 $entidad = $this->vars('entity');
 /* @var $entidad Transparente\Model\Entity\Proyecto */
 
+$this->headtitle('Proyecto: '.$entidad->getNombre());
 
 function dl($term, $value) {
     if (!$value) $value = '--';

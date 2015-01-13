@@ -11,6 +11,8 @@
 $entidad = $this->vars('entity');
 /* @var $entidad Transparente\Model\Entity\RepresentanteLegal */
 
+$this->headtitle('Representante Legal: '.$entidad->getNombre());
+
 function dl($term, $value) {
     if (!$value) $value = '--';
     return <<< HTML

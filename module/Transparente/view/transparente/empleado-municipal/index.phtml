@@ -1,6 +1,6 @@
 <?php
 /**
- * Listar los proveedores
+ * Listar los empleados municipales
  */
 
 /* @var $this Zend\View\Renderer\PhpRenderer */
@@ -12,7 +12,7 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         ajax: function(data, callback, settings) {
-            var cols   = ['Proveedor.nombre', 'Proveedor.nit'];
+            var cols   = ['EmpleadoMunicipal.apellido1', 'EmpleadoMunicipal.cargo', 'Municipio.nombre', 'Departamento.nombre'];
             var params = $.param({
                 page:   1 + (data.start / data.length),
                 size:   data.length,
@@ -20,12 +20,12 @@ $(document).ready(function(){
                 sort:   data.order[0].dir,
                 filter: data.search.value,
             });
-            var url = '/api/proveedor?' + params;
+            var url = '/api/empleado-municipal?' + params;
             $.getJSON(url, function(api) {
                 var elements = [];
-                api._embedded.proveedor.forEach(function(element) {
-                    var link = '<a href="/transparente/proveedores/detalles/' + element.id + '">' + element.nombre + '</a>';
-                    elements.push([link, element.nit]);
+                api._embedded.list.forEach(function(element) {
+                    var municipioLink = '<a href="/transparente/municipio/detalles/' + element.municipio_id + '">' + element.municipio + '</a>';
+                    elements.push([element.nombre, element.cargo, municipioLink, element.departamento]);
                 })
                 var json = {
                     draw:            data.draw,
@@ -40,16 +40,18 @@ $(document).ready(function(){
 });
 </script>
 
-<h1>Proveedores</h1>
+<h1>Empleados municipales</h1>
 <p>
-    Listado de todos los proveedores importados del portal de
-    <a href="http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper=2014">Guatecompras</a>.
+    Listado de todos los empleados municipales importados proveidos por
+    <a href="http://www.ojoconmipisto.com/">Ojo Con Mi Pisto</a>.
 </p>
 <table class="table data-table">
     <thead>
         <tr>
             <th>nombre</th>
-            <th class="text-right">nit</th>
+            <th>cargo</th>
+            <th>municipio</th>
+            <th>departamento</th>
         </tr>
     </thead>
 </table>

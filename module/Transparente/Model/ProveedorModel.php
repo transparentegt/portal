@@ -201,9 +201,25 @@ class ProveedorModel extends AbstractModel
      *
      * @return Paginator
      */
-    public function getPaginator()
+    public function getPaginator(\Zend\Stdlib\Parameters $params = null)
     {
-        $dql       = 'SELECT Proveedor FROM Transparente\Model\Entity\Proveedor Proveedor ORDER BY Proveedor.nombre';
+        $queryOptions = [
+            'order'  => 'Proveedor.nombre',
+            'sort'   => 'ASC',
+            'filter' => false,
+        ];
+        if ($params) {
+            $queryOptions = array_merge($queryOptions, $params->toArray());
+        }
+
+        $dql = 'SELECT Proveedor FROM Transparente\Model\Entity\Proveedor Proveedor';
+        if ($queryOptions['filter']) {
+            $dql .= "
+                WHERE Proveedor.nombre LIKE '%{$queryOptions['filter']}%'
+                   OR Proveedor.nit    LIKE '%{$queryOptions['filter']}%'
+            ";
+        }
+        $dql .= " ORDER BY {$queryOptions['order']} {$queryOptions['sort']}";
         $paginator = $this->getPaginatorFromDql($dql);
         return $paginator;
     }

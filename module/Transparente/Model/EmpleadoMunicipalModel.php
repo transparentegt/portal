@@ -55,4 +55,44 @@ class EmpleadoMunicipalModel extends AbstractModel
         return $rs;
 
     }
+
+    /**
+     * Paginado
+     *
+     * @return Paginator
+     */
+    public function getPaginator(\Zend\Stdlib\Parameters $params = null)
+    {
+        $queryOptions = [
+            'order'  => 'EmpleadoMunicipal.apellido1',
+            'sort'   => 'ASC',
+            'filter' => false,
+        ];
+        if ($params) {
+            $queryOptions = array_merge($queryOptions, $params->toArray());
+        }
+
+        $dql = 'SELECT EmpleadoMunicipal
+                FROM Transparente\Model\Entity\EmpleadoMunicipal EmpleadoMunicipal
+                JOIN EmpleadoMunicipal.municipio                 Municipio
+                JOIN Municipio.departamento                      Departamento
+
+                ';
+        if ($queryOptions['filter']) {
+            $dql .= "
+                WHERE EmpleadoMunicipal.nombre1   LIKE '%{$queryOptions['filter']}%'
+                   OR EmpleadoMunicipal.nombre2   LIKE '%{$queryOptions['filter']}%'
+                   OR EmpleadoMunicipal.apellido1 LIKE '%{$queryOptions['filter']}%'
+                   OR EmpleadoMunicipal.apellido2 LIKE '%{$queryOptions['filter']}%'
+                   OR EmpleadoMunicipal.apellido3 LIKE '%{$queryOptions['filter']}%'
+                   OR EmpleadoMunicipal.cargo     LIKE '%{$queryOptions['filter']}%'
+                   OR Municipio.nombre            LIKE '%{$queryOptions['filter']}%'
+                   OR Departamento.nombre         LIKE '%{$queryOptions['filter']}%'
+            ";
+        }
+        $dql .= " ORDER BY {$queryOptions['order']} {$queryOptions['sort']}";
+
+        $paginator = $this->getPaginatorFromDql($dql);
+        return $paginator;
+    }
 }
