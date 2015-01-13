@@ -14,9 +14,7 @@ class RepresentanteLegalController extends AbstractActionController
      */
     public function indexAction()
     {
-        $model     = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');
-        $paginator = $model->getPaginator();
-        return new ViewModel(compact('paginator'));
+        return new ViewModel();
     }
 
     /**

@@ -144,11 +144,34 @@ class RepresentanteLegalModel extends AbstractModel
      *
      * @return Paginator
      */
-    public function getPaginator()
+    public function getPaginator(\Zend\Stdlib\Parameters $params = null)
     {
+        $queryOptions = [
+            'order'  => 'RepresentanteLegal.apellido1, RepresentanteLegal.apellido2, RepresentanteLegal.apellido3, RepresentanteLegal.nombre1',
+            'sort'   => 'ASC',
+            'filter' => false,
+        ];
+        if ($params) {
+            $queryOptions = array_merge($queryOptions, $params->toArray());
+        }
+
         $dql = 'SELECT RepresentanteLegal
                 FROM Transparente\Model\Entity\RepresentanteLegal RepresentanteLegal
-                ORDER BY RepresentanteLegal.apellido1, RepresentanteLegal.apellido2, RepresentanteLegal.apellido3, RepresentanteLegal.nombre1 ';
+                JOIN RepresentanteLegal.proveedores Proveedor
+                ';
+        if ($queryOptions['filter']) {
+            $dql .= "
+            WHERE RepresentanteLegal.nombre1   LIKE '%{$queryOptions['filter']}%'
+            OR RepresentanteLegal.nombre2   LIKE '%{$queryOptions['filter']}%'
+            OR RepresentanteLegal.apellido1 LIKE '%{$queryOptions['filter']}%'
+            OR RepresentanteLegal.apellido2 LIKE '%{$queryOptions['filter']}%'
+            OR RepresentanteLegal.apellido3 LIKE '%{$queryOptions['filter']}%'
+            OR Proveedor.nombre            LIKE '%{$queryOptions['filter']}%'
+            ";
+        }
+        $dql .= " ORDER BY {$queryOptions['order']} {$queryOptions['sort']}";
+
+
         $paginator = $this->getPaginatorFromDql($dql);
         return $paginator;
     }
