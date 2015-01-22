@@ -138,7 +138,7 @@ class ProveedorModel extends AbstractModel
     }
 
     /**
-     * Conseguir todos los proveedores adjudicados del año en curso
+     * Conseguir todos los proveedores adjudicados de todo el sistema
      *
      * @return int[]
      *
@@ -154,7 +154,7 @@ class ProveedorModel extends AbstractModel
         ];
         $ids   = [];
         $page  = 0;
-        $start = 'http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.date('Y');
+        $start = 'http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx';
         do {
             $page++;
             $html  = ScraperModel::getCachedUrl($start, "proveedores-$page", ScraperModel::PAGE_MODE_PAGER, $pagerKeys);

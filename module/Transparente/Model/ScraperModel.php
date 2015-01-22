@@ -169,12 +169,28 @@ class ScraperModel
                     curl_setopt($ch, CURLOPT_POST,           1);
                     curl_setopt($ch, CURLOPT_POSTFIELDS,     http_build_query($postVars));
                     curl_setopt($ch, CURLOPT_HTTPHEADER,     ['Content-Type: application/x-www-form-urlencoded']);
-                    $request = curl_exec ($ch);
-                    $request = explode('|', $request);
+                    $response = curl_exec ($ch);
+                    $response = substr($response, 6);
+                    $content  = [];
+                    do {
+                        $response  = substr($response, 1);
+                        $length    = sscanf($response, '%d')[0];
+                        $response  = substr($response, strlen($length) +1);
+                        $fieldName = strstr($response, '|', true);
+                        $response  = substr($response, strlen($fieldName) +1);
+                        $tmp       = strstr($response, '|', true);
+                        if ($tmp) {
+                            $fieldName = $tmp;
+                            $response  = substr($response, strlen($tmp));
+                        }
+                        $response            = substr($response, 1);
+                        $content[$fieldName] = substr($response, 0, $length);
+                        $response            = substr($response, $length);
+                    } while (strlen($response));
 
-                    $vars['__VIEWSTATE']       = $request[19];
-                    $vars['__EVENTVALIDATION'] = $request[23];
-                    $content                   = $request[7];
+                    $vars['__VIEWSTATE']       = $content['__VIEWSTATE'];
+                    $vars['__EVENTVALIDATION'] = $content['__EVENTVALIDATION'];
+                    $content                   = array_shift($content);
                     break;
                 default:
                     throw new \Exception("Cache type '$method' not defined");

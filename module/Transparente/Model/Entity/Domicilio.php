@@ -31,20 +31,14 @@ class Domicilio extends AbstractDoctrineEntity
 
     /**
      *  Meter todos en un solo campo, porque pelan
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $telefonos;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $fax;
-
-    /**
-     * Última fecha de actualización, null si no saebmos cuando la actualizaron
-     * @ORM\Column(type="datetime")
-     */
-    // protected $updated;
 
     /**
      * @ORM\ManyToOne(targetEntity="GeoMunicipio")
@@ -87,17 +81,6 @@ class Domicilio extends AbstractDoctrineEntity
     public function setFax ($fax)
     {
         $this->fax = ($fax != '[--No Especificado--]') ? $fax : null;
-        return $this;
-    }
-
-    public function getUpdated ()
-    {
-        return $this->updated;
-    }
-
-    public function setUpdated ($updated)
-    {
-        $this->updated = $updated;
         return $this;
     }
 

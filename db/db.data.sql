@@ -7,7 +7,7 @@ SET SQL_MODE           = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone          = "+00:00";
 START TRANSACTION;
 
-    INSERT INTO geo_departamentos VALUES (null, 'Alta verapaz');
+    INSERT INTO geo_departamentos VALUES (null, 'Alta Verapaz');
     INSERT INTO geo_departamentos VALUES (null, 'Baja Verapaz');
     INSERT INTO geo_departamentos VALUES (null, 'Chimaltenango');
     INSERT INTO geo_departamentos VALUES (null, 'Chiquimula');
@@ -25,7 +25,7 @@ START TRANSACTION;
     INSERT INTO geo_departamentos VALUES (null, 'Sacatepéquez');
     INSERT INTO geo_departamentos VALUES (null, 'San Marcos');
     INSERT INTO geo_departamentos VALUES (null, 'Santa Rosa');
-    INSERT INTO geo_departamentos VALUES (null, 'Sololá');
+    INSERT INTO geo_departamentos VALUES (null, 'Solola');
     INSERT INTO geo_departamentos VALUES (null, 'Suchitepéquez');
     INSERT INTO geo_departamentos VALUES (null, 'Totonicapán');
     INSERT INTO geo_departamentos VALUES (null, 'Zacapa');
@@ -117,7 +117,7 @@ START TRANSACTION;
     (NULL, 'San Vicente Pacaya', 6, 'San Vicente Pacaya'),
     (NULL, 'Santa Lucía Cotzumalguapa', 6, 'Santa luc!a cotzumalguapa'),
     (NULL, 'Siquinalá', 6, 'Siquinal'),
-    (NULL, 'Tiquisate', 6, 'Tiquisate'),
+    (NULL, 'Tiquisate', 6, 'Pueblo Nuevo Tiquisate'),
 
       -- Guatemala
     (NULL, 'Amatitlán', 7, 'Amatitlán'),
@@ -201,7 +201,7 @@ START TRANSACTION;
     (NULL, 'Jutiapa', 11, 'Jutiapa'),
     (NULL, 'Moyuta', 11, 'Moyuta'),
     (NULL, 'Pasaco', 11, 'Pasaco'),
-    (NULL, 'Quesada', 11, 'Quesada'),
+    (NULL, 'Quesada', 11, 'Quezada'),
     (NULL, 'San José Acatempa', 11, 'San José Acatempa'),
     (NULL, 'Santa Catarina Mita', 11, 'Santa Catarina Mita'),
     (NULL, 'Yupiltepeque', 11, 'Yupiltepeque'),
@@ -351,7 +351,7 @@ START TRANSACTION;
 
     -- Sololá
     (NULL, 'Concepción', 19, 'Concepción'),
-    (NULL, 'Nahualá', 19, 'Nahualá'),
+    (NULL, 'Nahualá', 19, 'Nahual'),
     (NULL, 'Panajachel', 19, 'Panajachel'),
     (NULL, 'San Andrés Semetabaj', 19, 'San Andrés Semetabaj'),
     (NULL, 'San Antonio Palopó', 19, 'San Antonio Palopó'),
@@ -360,7 +360,7 @@ START TRANSACTION;
     (NULL, 'San Lucas Tolimán', 19, 'San Lucas Tolimán'),
     (NULL, 'San Marcos La Laguna', 19, 'San Marcos La Laguna'),
     (NULL, 'San Pablo La Laguna', 19, 'San Pablo La Laguna'),
-    (NULL, 'San Pedro La Laguna', 19, 'San Pedro La Laguna'),
+    (NULL, 'San Pedro La Laguna', 19, 'San Pedro Laguna'),
     (NULL, 'Santa Catarina Ixtahuacán', 19, 'Santa Catarina Ixtahuacán'),
     (NULL, 'Santa Catarina Palopó', 19, 'Santa Catarina Palopó'),
     (NULL, 'Santa Clara La Laguna', 19, 'Santa Clara La Laguna'),
@@ -416,86 +416,91 @@ START TRANSACTION;
     (NULL, 'Usumatlán', 22, 'Usumatlán'),
     (NULL, 'Zacapa', 22, 'Zacapa');
 
+    /**
+     * @todo Poner bien los nombres de los partidos políticos
+     */
     INSERT INTO partido_político VALUES
       (NULL, 'Acción de Desarrollo Nacional', 'ADN')
     , (NULL, 'Alternativa Nueva Nación', 'ANN')
     , (NULL, 'Bienestar Nacional', 'BIEN')
-    , (NULL, '', 'BLOCK')
+    , (NULL, 'BLOCK', 'BLOCK')
     , (NULL, 'Centro de Acción Social', 'CASA')
-    , (NULL, '', 'CCA')
-    , (NULL, '', 'C.C.A')
-    , (NULL, '', 'CCAM')
-    , (NULL, '', 'C.C.E.A')
-    , (NULL, '', 'CCEC')
-    , (NULL, '', 'C.C.E.C')
-    , (NULL, '', 'CCEEA')
-    , (NULL, '', 'CCEGC')
-    , (NULL, '', 'CCELLC')
-    , (NULL, '', 'CCET')
-    , (NULL, '', 'CCFU')
-    , (NULL, '', 'CCJK')
-    , (NULL, '', 'C.C.M.T.')
-    , (NULL, '', 'CCP')
-    , (NULL, '', 'CCPP')
-    , (NULL, '', 'CCS')
-    , (NULL, '', 'CCT')
-    , (NULL, '', 'CCTU')
-    , (NULL, '', 'CCYK')
+    , (NULL, 'CCA', 'CCA')
+    , (NULL, 'C.C.A', 'C.C.A')
+    , (NULL, 'CCAM', 'CCAM')
+    , (NULL, 'C.C.E.A', 'C.C.E.A')
+    , (NULL, 'CCEC', 'CCEC')
+    , (NULL, 'C.C.E.C', 'C.C.E.C')
+    , (NULL, 'CCEEA', 'CCEEA')
+    , (NULL, 'CCEGC', 'CCEGC')
+    , (NULL, 'CCELLC', 'CCELLC')
+    , (NULL, 'CCET', 'CCET')
+    , (NULL, 'CCFU', 'CCFU')
+    , (NULL, 'CCJK', 'CCJK')
+    , (NULL, 'C.C.M.T.', 'C.C.M.T.')
+    , (NULL, 'CCP', 'CCP')
+    , (NULL, 'CCPP', 'CCPP')
+    , (NULL, 'CCS', 'CCS')
+    , (NULL, 'CCT', 'CCT')
+    , (NULL, 'CCTU', 'CCTU')
+    , (NULL, 'CCYK', 'CCYK')
     , (NULL, 'Ciudadanos Activos de Formación Electoral', 'CAFÉ')
-    , (NULL, '', 'CHICH')
-    , (NULL, '', 'CH´OOLEJ')
-    , (NULL, '', 'CINCO')
-    , (NULL, '', 'C. I. P.')
+    , (NULL, 'CHICH', 'CHICH')
+    , (NULL, 'CH´OOLEJ', 'CH´OOLEJ')
+    , (NULL, 'CINCO', 'CINCO')
+    , (NULL, 'C. I. P.', 'C. I. P.')
     , (NULL, 'Corazón Nueva Nación', 'CNN')
-    , (NULL, '', 'CNS')
-    , (NULL, '', 'COCI')
-    , (NULL, '', 'COCICA')
-    , (NULL, '', 'COCIEA')
-    , (NULL, '', 'COCIEC')
-    , (NULL, '', 'COCIM')
-    , (NULL, '', 'COCINA')
-    , (NULL, '', 'COCIPROG')
-    , (NULL, '', 'COCISANJ')
-    , (NULL, '', 'COCT')
+    , (NULL, 'CNS', 'CNS')
+    , (NULL, 'COCI', 'COCI')
+    , (NULL, 'COCICA', 'COCICA')
+    , (NULL, 'COCIEA', 'COCIEA')
+    , (NULL, 'COCIEC', 'COCIEC')
+    , (NULL, 'COCIM', 'COCIM')
+    , (NULL, 'COCINA', 'COCINA')
+    , (NULL, 'COCIPROG', 'COCIPROG')
+    , (NULL, 'COCISANJ', 'COCISANJ')
+    , (NULL, 'COCT', 'COCT')
     , (NULL, 'Compromiso Renovación y Orden', 'CREO')
-    , (NULL, '', 'EL VENADO')
-    , (NULL, '', 'EL ZAPATO')
+    , (NULL, 'EL VENADO', 'EL VENADO')
+    , (NULL, 'EL ZAPATO', 'EL ZAPATO')
     , (NULL, 'Encuentro por Guatemala' , 'EG')
     , (NULL, 'Frente de Convergencia Nacional', 'FCN')
     , (NULL, 'Frente Repúblicano Guatemalteco', 'F R G')
     , (NULL, 'FUERZA', 'FUERZA')
     , (NULL, 'Gran Alianza Nacional', 'GANA')
-    , (NULL, '', 'IKOM')
-    , (NULL, '', 'LA MATITA DE CAFÉ')
+    , (NULL, 'IKOM', 'IKOM')
+    , (NULL, 'LA MATITA DE CAFÉ', 'LA MATITA DE CAFÉ')
     , (NULL, 'Libertad Democrática Renovada', 'LIDER')
-    , (NULL, '', 'LUNA')
-    , (NULL, '', 'MASAT')
+    , (NULL, 'LUNA', 'LUNA')
+    , (NULL, 'MASAT', 'MASAT')
     , (NULL, 'Movimiento Nueva República', 'MNR')
     , (NULL, 'Movimiento Reformador', 'MR')
-    , (NULL, '', 'M.U.P.')
+    , (NULL, 'M.U.P.', 'M.U.P.')
     , (NULL, 'Partido de Avanzada Nacional', 'P A N')
-    , (NULL, '', 'partido')
-    , (NULL, '', 'PO´T')
-    , (NULL, '', 'PP')
+    , (NULL, 'partido', 'partido')
+    , (NULL, 'PO´T', 'PO´T')
+    , (NULL, 'PP', 'PP')
     , (NULL, 'Partido Patriota', 'P P')
     , (NULL, 'Partido Republicano Institucional', 'PRI')
     , (NULL, 'Partido Socialdemócrata Guatemalteco', 'PSG')
-    , (NULL, '', 'PUNEET')
-    , (NULL, '', 'SUD')
+    , (NULL, 'PUNEET', 'PUNEET')
+    , (NULL, 'SUD', 'SUD')
     , (NULL, 'TODOS', 'TODOS')
     , (NULL, 'Unión del Cambio Nacional', 'UCN')
     , (NULL, 'Unión Democrática', 'UD')
     , (NULL, 'Unidad Nacional de la Esperanza', 'UNE')
-    , (NULL, '', 'UNE-GANA')
+    , (NULL, 'UNE-GANA', 'UNE-GANA')
     , (NULL, 'Partido Libertador Progresista', 'PLP')
     , (NULL, 'Parido Unionista', 'UNIONISTA')
     , (NULL, 'Unidad Revolucionaria Nacional Guatemalteca', 'U R N G')
-    , (NULL, '', 'URNG-ANN')
+    , (NULL, 'URNG-ANN', 'URNG-ANN')
     , (NULL, 'VICTORIA', 'VICTORIA')
     , (NULL, 'Partido Político Visión con Valores', 'VIVA')
-    , (NULL, '', 'VIVA-EG')
+    , (NULL, 'VIVA-EG', 'VIVA-EG')
     , (NULL, 'Movimiento Político WINAQ', 'WINAQ')
-    , (NULL, '', 'WINAQ-ANN');
+    , (NULL, 'WINAQ-ANN', 'WINAQ-ANN');
+
+    ALTER TABLE `empleado_municipal` ADD UNIQUE (`id_municipio` ,`nombre1` , `apellido1` , `apellido2` , `cargo`);
 
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
