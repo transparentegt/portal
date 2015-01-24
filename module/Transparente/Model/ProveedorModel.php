@@ -1,6 +1,7 @@
 <?php
 namespace Transparente\Model;
 
+use Transparente\Model\Entity\Proveedor;
 class ProveedorModel extends AbstractModel
 {
     public function findAll($where = [], $orderBy = [])
@@ -146,7 +147,7 @@ class ProveedorModel extends AbstractModel
      *
      * @todo Esto es TAN igual al ProyectoModel->scrapList() que deberíamos de moverlo a la superclase
      */
-    public function scrapList()
+    public function scrapList(Proveedor $último)
     {
         $pagerKeys   = [
             '_body:MasterGC$ContentBlockHolder$ScriptManager1' => 'MasterGC$ContentBlockHolder$UpdatePanel1|MasterGC$ContentBlockHolder$dgResultado$ctl54$ctl',
@@ -164,9 +165,9 @@ class ProveedorModel extends AbstractModel
                 /* @var $proveedor DOMElement */
                 $url = parse_url($nodo->getAttribute('href'));
                 parse_str($url['query'], $url);
-                $id   = (int) $url['lprv'];
-                if (!in_array($id, $ids)) {
-                    $ids[] = $id;
+                $id       = (int) $url['lprv'];
+                if ($id > $último->getId()) {
+                    $ids[$id] = $id;
                 }
             }
         } while ($page <= $pagerKeys['totalPages']);
