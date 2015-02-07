@@ -55,21 +55,14 @@ class ProveedorModel extends AbstractModel
      */
     public function findPendientesDeScrapearRepresentantesLegales()
     {
-        $dql    = 'SELECT Proveedor.id
-                    FROM Transparente\Model\Entity\Proveedor Proveedor
-                    JOIN Proveedor.representantes_legales RepresentanteLegal
-                    ORDER BY RepresentanteLegal.id DESC
-                    ';
-        $query  = $this->getEntityManager()->createQuery($dql);
-        $query->setMaxResults(1);
-        $result = $query->getScalarResult();
-        $result = (int) (!empty($result[0]['id'])) ? $result[0]['id'] : 0;
-        $dql    = "SELECT Proveedor
-                    FROM Transparente\Model\Entity\Proveedor Proveedor
-                    WHERE Proveedor.id >= $result
-                    ORDER BY Proveedor.id ASC";
+        $dql = 'SELECT Proveedor FROM Transparente\Model\Entity\Proveedor Proveedor
+                LEFT JOIN Proveedor.representantes_legales RepresentanteLegal
+                WHERE RepresentanteLegal.id IS NULL
+                ORDER BY RepresentanteLegal.id DESC
+                ';
         $query = $this->getEntityManager()->createQuery($dql);
-        return $query->getResult();
+        $rs    = $query->getResult();
+        return $rs;
     }
 
     /**

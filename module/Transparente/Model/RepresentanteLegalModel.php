@@ -6,8 +6,6 @@ use Transparente\Model\Entity\RepresentanteLegal;
 
 class RepresentanteLegalModel extends AbstractModel
 {
-    protected static $scraped = [];
-
     /**
      * Retorna todos los representantes legales
      *
@@ -204,8 +202,9 @@ class RepresentanteLegalModel extends AbstractModel
      */
     public function scrap($id)
     {
-        if (isset(self::$scraped[$id])) {
-            return self::$scraped[$id];
+        $inDb = $this->find($id);
+        if ($inDb) {
+            return $inDb;
         }
 
         $url    = "http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=10&lprv={$id}";
@@ -275,8 +274,6 @@ class RepresentanteLegalModel extends AbstractModel
             $nombreComercial->setNombre($nombre);
             $entity->appendNombreComercial($nombreComercial);
         }
-
-        self::$scraped[$id] = $entity;
         return $entity;
     }
 

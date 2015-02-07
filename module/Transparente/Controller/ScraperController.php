@@ -149,12 +149,10 @@ class ScraperController extends AbstractActionController
         $proveedores    = $proveedorModel->findPendientesDeScrapearRepresentantesLegales();
         foreach($proveedores as $proveedor) {
             $repList = $repModel->scrapRepresentantesLegales($proveedor->getId());
+            if (!$repList) continue;
             foreach ($repList as $id) {
-                $repLegal = $repModel->find($id);
-                if (!$repLegal) {
-                    $repLegal = $repModel->scrap($id);
-                }
-                if (!$repLegal) continue;
+                $repLegal = $repModel->scrap($id);
+                if (!$repLegal) continue; // no tiene representante legal
                 $proveedor->appendRepresentanteLegal($repLegal);
             }
             $proveedorModel->save($proveedor);
