@@ -304,7 +304,7 @@ START TRANSACTION;
       -- San Marcos
     (NULL, 'Ayutla', 17, 'Ciudad Tecun Human Ayutla'),
     (NULL, 'Catarina', 17, 'Catarina'),
-    (NULL, 'Comitancillo', 17, 'Comitancillo'),
+    (NULL, 'Comitancillo', 17, 'Comintacillo'),
     (NULL, 'Concepción Tutuapa', 17, 'Concepción Tutuapa'),
     (NULL, 'El Quetzal', 17, 'El Quetzal'),
     (NULL, 'El Tumbador', 17, 'El Tumbador'),
