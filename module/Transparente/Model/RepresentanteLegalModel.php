@@ -208,6 +208,11 @@ class RepresentanteLegalModel extends AbstractModel
             return self::$scraped[$id];
         }
 
+        $inDb = $this->find($id);
+        if ($inDb) {
+            return $inDb;
+        }
+
         $url    = "http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=10&lprv={$id}";
         $página = ScraperModel::getCachedUrl($url, "representante-legal-$id");
         $xpaths = [
@@ -275,7 +280,6 @@ class RepresentanteLegalModel extends AbstractModel
             $nombreComercial->setNombre($nombre);
             $entity->appendNombreComercial($nombreComercial);
         }
-
         self::$scraped[$id] = $entity;
         return $entity;
     }

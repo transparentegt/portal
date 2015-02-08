@@ -192,8 +192,9 @@ class RepresentanteLegal extends AbstractDoctrineEntity
 
     public function __construct()
     {
-        $this->nombres_comerciales = new ArrayCollection();
-        $this->proveedores         = new ArrayCollection();
+        $this->nombres_comerciales    = new ArrayCollection();
+        $this->proveedores            = new ArrayCollection();
+        $this->representantes_legales = new ArrayCollection();
     }
 
     public function getId ()
@@ -361,7 +362,6 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     {
         return $this->updated_sat;
     }
-
 
     public function getUrl ()
     {
