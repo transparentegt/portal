@@ -1,0 +1,29 @@
+<?php
+/**
+ * Listar el detalle del municipio
+ */
+
+/* @var $this Zend\View\Renderer\PhpRenderer */
+
+
+$this->headtitle('Departamento: '.$this->departamento->getNombre());
+
+$representantes = $this->representantes;
+?>
+<style >
+.empleado {float: left; height: 360px; width: 100%;}
+.logo-partido {height: 100px; margin-right: 10px;}
+.rep-legales {height: 16em; overflow: auto}
+
+.dl-horizontal dt { width: 260px; }
+.dl-horizontal dd { margin-left: 270px;}
+</style>
+<h1>Departamento: <?=$this->departamento->getNombre()?>, Guatemala</h1>
+
+<p>Listado de los departamentos de los cuales se tienen datos abiertos.</p>
+
+<ul>
+<?php foreach($this->departamento->getMunicipios() as $municipio) :?>
+    <li><a href="/transparente/municipio/detalles/<?=$municipio->getId()?>"><?=$municipio->getNombre()?></a></li>
+<? endforeach;?>
+</ul>
