@@ -8,8 +8,10 @@ class MunicipioController extends AbstractActionController
 {
     public function departamentoAction()
     {
-        $departamento = $this->params('id');
-
+        $departamento      = $this->params('id');
+        $departamentoModel = $this->getServiceLocator()->get('Transparente\Model\GeoDepartamentoModel');
+        $departamento      = $departamentoModel->findOneByNombre($departamento);
+        return new ViewModel(compact('departamento'));
     }
 
     /**
@@ -18,7 +20,7 @@ class MunicipioController extends AbstractActionController
     public function detallesAction()
     {
         $id             = $this->params('id');
-        $municipioModel = $this->getServiceLocator()->get('Transparente\Model\MunicipioModel');
+        $municipioModel = $this->getServiceLocator()->get('Transparente\Model\GeoMunicipioModel');
         $municipio      = $municipioModel->findOneById($id);
         /* @var GeoMunicipio $municipio */
 
