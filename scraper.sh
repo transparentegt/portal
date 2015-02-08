@@ -2,11 +2,11 @@ DBNAME=maphpia_gtt
 while getopts ":adpx" opt; do
   case $opt in
     a) # limpiar la base de datos y empezar de cero 
-      mysql $DBNAME  < db/db.data.sql
       mysqladmin drop -f $DBNAME
       mysqladmin create $DBNAME
       vendor/bin/doctrine-module orm:validate-schema
       vendor/bin/doctrine-module orm:schema-tool:update --force
+      mysql $DBNAME  < db/db.data.sql
       ;;
     d) # debug paso a paso en el IDE
       echo "DEBUG was activated!"
