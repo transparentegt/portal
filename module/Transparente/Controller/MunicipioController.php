@@ -6,6 +6,11 @@ use Zend\View\Model\ViewModel;
 
 class MunicipioController extends AbstractActionController
 {
+    public function departamentoAction()
+    {
+        $departamento = $this->params('id');
+
+    }
 
     /**
      * Ver los detalles de un proveedor
