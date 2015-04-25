@@ -17,7 +17,7 @@ use Transparente\Model\ScraperModel;
 class Proyecto extends AbstractDoctrineEntity
 {
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $categoría;
 
