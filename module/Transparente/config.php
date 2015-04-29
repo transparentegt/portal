@@ -90,8 +90,8 @@ return array(
             ['route' => 'transparente/default', 'label' => 'reportes', 'pages' => [
                 ['route' => 'transparente/default', 'controller' => 'proveedores',         'action' => 'no-fiscal',           'label' => 'proveedores sin domicilio fiscal'],
                 ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-proveedor',     'label' => 'representantes de más de una empresa proveedora'],
-                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'nombres-comerciales', 'label' => 'represenantes actuando como proveedores'],
-                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-level',         'label' => 'represenantes con representantes legales'],
+                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'nombres-comerciales', 'label' => 'representantes actuando como proveedores'],
+                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-level',         'label' => 'representantes con representantes legales'],
             ]],
             ['uri' => ' /apigility/documentation/Api-v1',  'label' => 'API'],
             ['route' => 'transparente/default', 'controller' => 'index', 'action' => 'about',  'label' => 'info'],
