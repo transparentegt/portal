@@ -13,9 +13,12 @@ abstract class AbstractModel extends EntityRepository
      */
     public function save(AbstractDoctrineEntity $entity)
     {
+        $start = $end = 0 ;
+        ScraperModel::profileTime($start, $end);
         $em = $this->getEntityManager();
         $em->persist($entity);
         $em->flush();
+        echo sprintf("\tDB time: %s", ScraperModel::profileTime($start, $end));
     }
 
     /**

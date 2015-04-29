@@ -83,7 +83,7 @@ class ProyectoModel extends AbstractModel
     {
         $key = "proveedor-{$proveedor->getId()}-proyectos-list";
         if (ScraperModel::getCache()->hasItem($key)) {
-            echo "Leyendo cache: $key\n";
+            echo "\nLeyendo cache:    $key";
             $ids = ScraperModel::getCache()->getItem($key);
         } else {
             $pagerKeys   = [

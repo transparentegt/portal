@@ -72,8 +72,7 @@ class ScraperController extends AbstractActionController
         /* @var $proveedorModel ProveedorModel */
         $domicilioModel = $this->getServiceLocator()->get('Transparente\Model\DomicilioModel');
         /* @var $domicilioModel DomicilioModel */
-        $últimoLeido = $proveedorModel->findOneBy([], ['id' => 'DESC']);
-        $proveedores = $proveedorModel->scrapList($últimoLeido);
+        $proveedores = $proveedorModel->scrapList();
         foreach ($proveedores as $idProveedor) {
             $data      = $proveedorModel->scrap($idProveedor);
             $proveedor = new \Transparente\Model\Entity\Proveedor();

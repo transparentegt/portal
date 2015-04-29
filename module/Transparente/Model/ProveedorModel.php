@@ -140,15 +140,16 @@ class ProveedorModel extends AbstractModel
      *
      * @todo Esto es TAN igual al ProyectoModel->scrapList() que deberíamos de moverlo a la superclase
      */
-    public function scrapList(Proveedor $último = null)
+    public function scrapList()
     {
         $pagerKeys   = [
             '_body:MasterGC$ContentBlockHolder$ScriptManager1' => 'MasterGC$ContentBlockHolder$UpdatePanel1|MasterGC$ContentBlockHolder$dgResultado$ctl54$ctl',
             '__EVENTTARGET'                                    => 'MasterGC$ContentBlockHolder$dgResultado$ctl54$ctl',
         ];
-        $ids   = [];
-        $page  = 0;
-        $start = 'http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx';
+        $ids    = [];
+        $page   = 0;
+        $start  = 'http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx';
+        $último = $this->findOneBy([], ['id' => 'DESC']);
         do {
             $page++;
             $html  = ScraperModel::getCachedUrl($start, "proveedores-$page", ScraperModel::PAGE_MODE_PAGER, $pagerKeys);
@@ -159,7 +160,7 @@ class ProveedorModel extends AbstractModel
                 $url = parse_url($nodo->getAttribute('href'));
                 parse_str($url['query'], $url);
                 $id       = (int) $url['lprv'];
-                if (($último === null) || $id > $último->getId()) {
+                if (($último === null) || $id >= $último->getId()) {
                     $ids[$id] = $id;
                 }
             }
