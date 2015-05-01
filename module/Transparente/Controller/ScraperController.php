@@ -107,7 +107,6 @@ class ScraperController extends AbstractActionController
             $this->scrapProyectosAdjudicados($proveedor);
             $this->scrapRepresentantesLegales($proveedor);
             $this->scrapProveedorNombresComerciales($proveedor);
-
        }
     }
 

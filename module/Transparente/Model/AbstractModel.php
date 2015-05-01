@@ -6,6 +6,25 @@ use Transparente\Model\Entity\AbstractDoctrineEntity;
 
 abstract class AbstractModel extends EntityRepository
 {
+
+    public function __destruct()
+    {
+        $this->flush();
+    }
+
+    function convert($size)
+    {
+        $unit = array('b','kb','mb','gb','tb','pb');
+        return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+    }
+
+    public function flush()
+    {
+        $em = $this->getEntityManager();
+        $em->flush();
+        $em->clear();
+    }
+
     /**
      * Guardar una entidad
      *
@@ -14,11 +33,12 @@ abstract class AbstractModel extends EntityRepository
     public function save(AbstractDoctrineEntity $entity)
     {
         $start = $end = 0 ;
+        $mem = memory_get_usage();
         ScraperModel::profileTime($start, $end);
         $em = $this->getEntityManager();
         $em->persist($entity);
-        $em->flush();
         echo sprintf("\tDB time: %s", ScraperModel::profileTime($start, $end));
+        echo sprintf("\tmem: %s", memory_get_usage() - $mem);
     }
 
     /**
