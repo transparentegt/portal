@@ -264,7 +264,7 @@ class ScraperModel
         return $nombre;
     }
 
-    public static function profileTime(&$start, &$end = null, $decimals = 3)
+    public static function profileTime(&$start, &$end = null, $decimals = 5)
     {
         $elapsed = 0;
         if (!$start) {

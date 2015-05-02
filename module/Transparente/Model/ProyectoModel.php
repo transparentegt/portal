@@ -101,7 +101,6 @@ class ProyectoModel extends AbstractModel
                 }
                 $xpath = "//a[starts-with(@href, '../Concursos/consultaDetalleCon.aspx')]";
                 $list  = $html->queryXpath($xpath);
-                $encontrados = count($list);
                 foreach ($list as $nodo) {
                     /* @var $proveedor DOMElement */
                     $url  = parse_url($nodo->getAttribute('href'));

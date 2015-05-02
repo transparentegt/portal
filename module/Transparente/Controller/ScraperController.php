@@ -64,6 +64,7 @@ class ScraperController extends AbstractActionController
         }
         fclose($handle);
         $db->flush();
+        $db->clear();
     }
 
     private function scrapProveedores()
@@ -122,13 +123,10 @@ class ScraperController extends AbstractActionController
         $proveedorModel->save($proveedor);
     }
 
-    /**
-     * Lee los proyectos de todos los proveedores
-     */
     private function scrapProyectosAdjudicados($proveedor)
     {
         $proyectoModel  = $this->getServiceLocator()->get('Transparente\Model\ProyectoModel');
-        /* @var $protectoModel ProyectoModel */
+        /* @var $protectoModel \Transparente\Model\ProyectoModel */
         $proyectosList = $proyectoModel->scrapList($proveedor);
         foreach ($proyectosList as $id) {
             if ($proyectoModel->find($id)) continue;
