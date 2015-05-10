@@ -210,6 +210,7 @@ class RepresentanteLegalModel extends AbstractModel
 
         $inDb = $this->find($id);
         if ($inDb) {
+            self::$scraped[$id] = $inDb;
             return $inDb;
         }
 
