@@ -24,7 +24,7 @@ class ProveedorNombreComercial extends AbstractDoctrineEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="Proveedor", inversedBy="nombres_comerciales")
-     * @ORM\JoinColumn(name="id_proveedor", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_proveedor", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $proveedor;
 

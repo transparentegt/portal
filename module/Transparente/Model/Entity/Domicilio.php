@@ -42,7 +42,7 @@ class Domicilio extends AbstractDoctrineEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="GeoMunicipio",cascade={"persist"}))
-     * @ORM\JoinColumn(name="id_municipio", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_municipio", referencedColumnName="id", onDelete="CASCADE")
      */
     private $municipio;
 

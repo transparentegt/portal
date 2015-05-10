@@ -20,7 +20,7 @@ class RepresentanteLegalNombreComercial extends AbstractDoctrineEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="RepresentanteLegal", inversedBy="nombres_comerciales")
-     * @ORM\JoinColumn(name="id_rep_legal", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_rep_legal", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $representante_legal;
 

@@ -97,13 +97,13 @@ class RepresentanteLegal extends AbstractDoctrineEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="Domicilio", cascade="persist")
-     * @ORM\JoinColumn(name="id_domicilio_fiscal", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_domicilio_fiscal", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $domicilio_fiscal;
 
     /**
      * @ORM\ManyToOne(targetEntity="Domicilio", cascade="persist")
-     * @ORM\JoinColumn(name="id_domicilio_comercial", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_domicilio_comercial", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $domicilio_comercial;
 
@@ -124,8 +124,9 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     /**
      * Un representante legal puede representar muchas empresas. Una empresa puede estar representada por muchos representantes.
      *
-     * @ORM\ManyToMany(targetEntity="Proveedor", mappedBy="representantes_legales", cascade="persist")
+     * @ORM\ManyToMany(targetEntity="Proveedor", mappedBy="representantes_legales", cascade="all")
      * @ORM\JoinTable(name="proveedor_representado_por")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      *
      * @var ArrayCollection
      */
@@ -134,12 +135,13 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     /**
      * Un representante legal puede tener muchos representantes legales.
      *
-     * @ORM\ManyToMany ( targetEntity = "RepresentanteLegal", cascade = "persist" )
+     * @ORM\ManyToMany ( targetEntity = "RepresentanteLegal", cascade = "all" )
      * @ORM\JoinTable (
      *      name               = "representante_representado_por",
      *      joinColumns        = { @ORM\JoinColumn (name = "id_representante_legal", referencedColumnName = "id") },
      *      inverseJoinColumns = { @ORM\JoinColumn (name = "id_representado_por",    referencedColumnName = "id") }
      * )
+     * @ORM\JoinColumn(onDelete="CASCADE")
      *
      * @var ArrayCollection
      *

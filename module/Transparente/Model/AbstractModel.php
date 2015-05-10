@@ -29,6 +29,23 @@ abstract class AbstractModel extends EntityRepository
         echo sprintf("\tDB time: %s", ScraperModel::profileTime($start, $end));
     }
 
+
+    /**
+     * Guardar una entidad
+     *
+     * @param AbstractDoctrineEntity $entity
+     */
+    public function update(AbstractDoctrineEntity $entity)
+    {
+        $start = $end = 0 ;
+        ScraperModel::profileTime($start, $end);
+        $em = $this->getEntityManager();
+        $em->merge($entity);
+        $em->flush();
+        $em->clear();
+        echo sprintf("\tDB time: %s", ScraperModel::profileTime($start, $end));
+    }
+
     /**
      * Generates a Zend Paginator based on a DQL
      *

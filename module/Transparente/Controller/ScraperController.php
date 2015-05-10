@@ -79,7 +79,6 @@ class ScraperController extends AbstractActionController
             $data     += ['nombres_comerciales'    => $proveedorModel->scrapNombresComerciales($idProveedor)];
             $proveedor = new \Transparente\Model\Entity\Proveedor();
             $proveedor->exchangeArray($data);
-
             if (!empty($data['fiscal'])) {
                 $domicilio = new \Transparente\Model\Entity\Domicilio();
                 $domicilio->exchangeArray($data['fiscal']);
@@ -143,20 +142,14 @@ class ScraperController extends AbstractActionController
         /* @var $proveedorModel ProveedorModel */
         $repModel       = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');
         /* @var $repModel RepresentanteLegalModel */
-        $proveedores    = $proveedorModel->findPendientesDeScrapearRepresentantesLegales();
+        $proveedores    = $proveedorModel->findAll([], ['id' => 'ASC']); // PendientesDeScrapearRepresentantesLegales();
         foreach($proveedores as $proveedor) {
             $repList = $repModel->scrapRepresentantesLegales($proveedor->getId());
-            $guardar = false; // no se actualiza la DB si no se agregaron representantes legales
-            if (!$repList) continue;
             foreach ($repList as $id) {
                 $repLegal = $repModel->scrap($id);
-                if (!$repLegal) continue; // no tiene representante legal
                 $proveedor->appendRepresentanteLegal($repLegal);
-                $guardar = true;
             }
-            if ($guardar) {
-                $proveedorModel->save($proveedor);
-            }
+            $proveedorModel->update($proveedor);
         }
     }
 

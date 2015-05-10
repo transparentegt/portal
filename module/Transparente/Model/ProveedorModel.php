@@ -49,16 +49,17 @@ class ProveedorModel extends AbstractModel
     }
 
     /**
-     * Retornla el arreglo de proveedores pendientes de leer sus proyectos
+     * Retorna el arreglo de proveedores sin representantes legales
      *
      * @return Proveedor[]
+     * @todo creo que ya no se usa
      */
     public function findPendientesDeScrapearRepresentantesLegales()
     {
         $dql = 'SELECT Proveedor FROM Transparente\Model\Entity\Proveedor Proveedor
                 LEFT JOIN Proveedor.representantes_legales RepresentanteLegal
                 WHERE RepresentanteLegal.id IS NULL
-                ORDER BY RepresentanteLegal.id DESC
+                ORDER BY RepresentanteLegal.id ASC
                 ';
         $query = $this->getEntityManager()->createQuery($dql);
         $rs    = $query->getResult();
@@ -146,10 +147,17 @@ class ProveedorModel extends AbstractModel
             '_body:MasterGC$ContentBlockHolder$ScriptManager1' => 'MasterGC$ContentBlockHolder$UpdatePanel1|MasterGC$ContentBlockHolder$dgResultado$ctl54$ctl',
             '__EVENTTARGET'                                    => 'MasterGC$ContentBlockHolder$dgResultado$ctl54$ctl',
         ];
-        $ids    = [];
-        $page   = 0;
-        $start  = 'http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx';
-        $último = $this->findOneBy([], ['id' => 'DESC']);
+        $ids      = [];
+        $page     = 0;
+        $start    = 'http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx';
+        $último   = $this->findOneBy([], ['id' => 'DESC']);
+        if ($último) {
+            $últimoId = $último->getId();
+            $db       = $this->getEntityManager();
+            $db->remove($último);
+            $db->flush();
+            $db->clear();
+        }
         do {
             $page++;
             $html  = ScraperModel::getCachedUrl($start, "proveedores-$page", ScraperModel::PAGE_MODE_PAGER, $pagerKeys);
@@ -160,7 +168,7 @@ class ProveedorModel extends AbstractModel
                 $url = parse_url($nodo->getAttribute('href'));
                 parse_str($url['query'], $url);
                 $id       = (int) $url['lprv'];
-                if (($último === null) || $id >= $último->getId()) {
+                if (($último === null) || $id >= $últimoId) {
                     $ids[$id] = $id;
                 }
             }
