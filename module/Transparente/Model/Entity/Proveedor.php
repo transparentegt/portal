@@ -26,13 +26,13 @@ use Transparente\Model\ScraperModel;
 class Proveedor extends AbstractDoctrineEntity
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Domicilio")
+     * @ORM\ManyToOne(targetEntity="Domicilio", cascade="all")
      * @ORM\JoinColumn(name="id_domicilio_comercial", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $domicilio_comercial;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Domicilio")
+     * @ORM\ManyToOne(targetEntity="Domicilio", cascade="all")
      * @ORM\JoinColumn(name="id_domicilio_fiscal", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $domicilio_fiscal;
@@ -96,7 +96,7 @@ class Proveedor extends AbstractDoctrineEntity
     protected $nombre;
 
     /**
-     * @ORM\OneToMany(targetEntity="ProveedorNombreComercial", mappedBy="proveedor", cascade="persist")
+     * @ORM\OneToMany(targetEntity="ProveedorNombreComercial", mappedBy="proveedor", cascade="all")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $nombres_comerciales;
