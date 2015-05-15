@@ -146,9 +146,10 @@ class ScraperController extends AbstractActionController
         foreach($proveedores as $proveedor) {
             $repList = $repModel->scrapRepresentantesLegales($proveedor->getId());
             foreach ($repList as $id) {
-                $repLegal = $repModel->scrap($id);
-                if (!$repLegal) {
-                    throw new \Exception("No se pudo construir el representante legal para el ID #$id");
+                try {
+                    $repLegal = $repModel->scrap($id);
+                } catch (\Exception $e) {
+                    throw new \Exception("No se pudo construir el representante legal #$id, para el proveedor #{$proveedor->getId()}", $id, $e);
                 }
                 $proveedor->appendRepresentanteLegal($repLegal);
             }
