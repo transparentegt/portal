@@ -179,9 +179,8 @@ class RepresentanteLegalModel extends AbstractModel
     /**
      * Partir el nombre para guardarlo ordenadamente.
      *
-     * En GTC está en formato "$apellido1, $apellido2, $apellido3?, $nombre1, $nombre2", pero se encontró el
-     * representante legal #709697, para el proveedor #30868, que su nombre está mál ingresado. Por eso tratamos de
-     * separar el nombre después por espacios
+     * En GTC está en formato "$apellido1, $apellido2, $apellido3?, $nombre1, $nombre2", pero se encontró representantes
+     * legales que su nombre está mál ingresado y realmente son una empresa.
      *
      * @param array $data
      */
@@ -195,16 +194,11 @@ class RepresentanteLegalModel extends AbstractModel
             $data['apellido2'] = $nombres[1];
             $data['apellido3'] = $nombres[2];
         } else {
-            $nombres = explode(' ', $data['nombre']);
-            if (count($nombres) == 4) {
-                $data['nombre1']   = $nombres[0];
-                $data['nombre2']   = '';
-                $data['apellido1'] = $nombres[1];
-                $data['apellido2'] = $nombres[2];
-                $data['apellido3'] = '';
-            } else {
-                throw new \Exception("Formato de nombre inválido, nombre: {$data['nombre']}");
-            }
+            $data['nombre1'] = $data['nombre'];
+            $data['nombre2']   = '';
+            $data['apellido1'] = '';
+            $data['apellido2'] = '';
+            $data['apellido3'] = '';
         }
         unset($data['nombre']);
     }
