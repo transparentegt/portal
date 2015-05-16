@@ -27,7 +27,9 @@ class ScraperModel
                 [null, 'ene',   'feb',     'mar',   'abr',   'may',  'jun',   'jul',   'ago',    'sep',        'oct',     'nov',        'dic'],
                 [null, 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
         ] ;
+        $matches = false;
         preg_match('/(\d+)\.(\w+)\.(\d+)/', $date, $matches);
+        if (!$matches) throw new \Exception("No se pudo detectar la fecha: '$date'");
         $día = $matches[1];
         $año = $matches[3];
         foreach ($meses as $nombres) {
