@@ -3,6 +3,7 @@ namespace Transparente\Model;
 
 use Transparente\Model\Entity\EmpleadoMunicipal;
 use Transparente\Model\Entity\RepresentanteLegal;
+use Transparente\Model\Entity\Exception\RepresentanteLegalException;
 
 class RepresentanteLegalModel extends AbstractModel
 {
@@ -253,6 +254,9 @@ class RepresentanteLegalModel extends AbstractModel
         ];
 
         $data = ['id' => $id] + ScraperModel::fetchData($xpaths, $página);
+        if ($data['nombre'] == '[Pendiente confirmar con SAT]') {
+            throw new RepresentanteLegalException();
+        }
         $this->splitNombre($data);
 
         // después de capturar los datos, hacemos un postproceso
@@ -274,8 +278,13 @@ class RepresentanteLegalModel extends AbstractModel
         $entity->exchangeArray($data);
 
         $repLegales = $this->scrapRepresentantesLegales($id);
-        foreach($repLegales as $newId) {
-            $newRep = $this->scrap($newId);
+        foreach($repLegales as $newId) {            
+            try {
+                $newRep = $this->scrap($newId);
+            } catch (RepresentanteLegalException $e) {
+                echo "\n Proveedor #$id incompleto, continuemos\n";
+                continue;
+            }
             $entity->appendRepresentanteLegal($newRep);
         }
 

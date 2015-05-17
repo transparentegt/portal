@@ -7,6 +7,7 @@ use Transparente\Model\RepresentanteLegalModel;
 use Transparente\Model\Entity\EmpleadoMunicipal;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Transparente\Model\Entity\Exception\RepresentanteLegalException;
 
 /**
  * ScraperController
@@ -148,6 +149,8 @@ class ScraperController extends AbstractActionController
             foreach ($repList as $id) {
                 try {
                     $repLegal = $repModel->scrap($id);
+                } catch (RepresentanteLegalException $e) {
+                    echo "\n Proveedor #$id incompleto, continuemos\n";
                 } catch (\Exception $e) {
                     throw new \Exception("No se pudo construir el representante legal #$id, para el proveedor #{$proveedor->getId()}", $id, $e);
                 }

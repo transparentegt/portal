@@ -294,8 +294,10 @@ class RepresentanteLegal extends AbstractDoctrineEntity
      */
     public function setInscripciónFechaSat($inscripción_fecha_sat)
     {
-        $inscripción_fecha_sat       = ScraperModel::fecha($inscripción_fecha_sat);
-        $this->inscripción_fecha_sat = $inscripción_fecha_sat;
+        if ($inscripción_fecha_sat) {
+            $inscripción_fecha_sat       = ScraperModel::fecha($inscripción_fecha_sat);
+            $this->inscripción_fecha_sat = $inscripción_fecha_sat;
+        }
         return $this;
     }
 
@@ -375,7 +377,9 @@ class RepresentanteLegal extends AbstractDoctrineEntity
      */
     public function setUpdatedSat($updated_sat)
     {
-        $this->updated_sat = ScraperModel::fecha($updated_sat);
+        if ($updated_sat) {
+            $this->updated_sat = ScraperModel::fecha($updated_sat);
+        }
         return $this;
     }
 
