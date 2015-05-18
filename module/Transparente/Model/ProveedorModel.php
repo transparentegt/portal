@@ -1,6 +1,7 @@
 <?php
 namespace Transparente\Model;
 
+use Transparente\Model\Entity\Proveedor;
 class ProveedorModel extends AbstractModel
 {
     public function findAll($where = [], $orderBy = [])
@@ -48,27 +49,21 @@ class ProveedorModel extends AbstractModel
     }
 
     /**
-     * Retornla el arreglo de proveedores pendientes de leer sus proyectos
+     * Retorna el arreglo de proveedores sin representantes legales
      *
      * @return Proveedor[]
+     * @todo creo que ya no se usa
      */
     public function findPendientesDeScrapearRepresentantesLegales()
     {
-        $dql    = 'SELECT Proveedor.id
-                    FROM Transparente\Model\Entity\Proveedor Proveedor
-                    JOIN Proveedor.representantes_legales RepresentanteLegal
-                    ORDER BY RepresentanteLegal.id DESC
-                    ';
-        $query  = $this->getEntityManager()->createQuery($dql);
-        $query->setMaxResults(1);
-        $result = $query->getScalarResult();
-        $result = (int) (!empty($result[0]['id'])) ? $result[0]['id'] : 0;
-        $dql    = "SELECT Proveedor
-                    FROM Transparente\Model\Entity\Proveedor Proveedor
-                    WHERE Proveedor.id >= $result
-                    ORDER BY Proveedor.id ASC";
+        $dql = 'SELECT Proveedor FROM Transparente\Model\Entity\Proveedor Proveedor
+                LEFT JOIN Proveedor.representantes_legales RepresentanteLegal
+                WHERE RepresentanteLegal.id IS NULL
+                ORDER BY RepresentanteLegal.id ASC
+                ';
         $query = $this->getEntityManager()->createQuery($dql);
-        return $query->getResult();
+        $rs    = $query->getResult();
+        return $rs;
     }
 
     /**
@@ -138,7 +133,7 @@ class ProveedorModel extends AbstractModel
     }
 
     /**
-     * Conseguir todos los proveedores adjudicados del año en curso
+     * Conseguir todos los proveedores adjudicados de todo el sistema
      *
      * @return int[]
      *
@@ -152,9 +147,17 @@ class ProveedorModel extends AbstractModel
             '_body:MasterGC$ContentBlockHolder$ScriptManager1' => 'MasterGC$ContentBlockHolder$UpdatePanel1|MasterGC$ContentBlockHolder$dgResultado$ctl54$ctl',
             '__EVENTTARGET'                                    => 'MasterGC$ContentBlockHolder$dgResultado$ctl54$ctl',
         ];
-        $ids   = [];
-        $page  = 0;
-        $start = 'http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper='.date('Y');
+        $ids      = [];
+        $page     = 0;
+        $start    = 'http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx';
+        $último   = $this->findOneBy([], ['id' => 'DESC']);
+        if ($último) {
+            $últimoId = $último->getId();
+            $db       = $this->getEntityManager();
+            $db->remove($último);
+            $db->flush();
+            $db->clear();
+        }
         do {
             $page++;
             $html  = ScraperModel::getCachedUrl($start, "proveedores-$page", ScraperModel::PAGE_MODE_PAGER, $pagerKeys);
@@ -164,9 +167,9 @@ class ProveedorModel extends AbstractModel
                 /* @var $proveedor DOMElement */
                 $url = parse_url($nodo->getAttribute('href'));
                 parse_str($url['query'], $url);
-                $id   = (int) $url['lprv'];
-                if (!in_array($id, $ids)) {
-                    $ids[] = $id;
+                $id       = (int) $url['lprv'];
+                if (($último === null) || $id >= $últimoId) {
+                    $ids[$id] = $id;
                 }
             }
         } while ($page <= $pagerKeys['totalPages']);
@@ -201,9 +204,25 @@ class ProveedorModel extends AbstractModel
      *
      * @return Paginator
      */
-    public function getPaginator()
+    public function getPaginator(\Zend\Stdlib\Parameters $params = null)
     {
-        $dql       = 'SELECT Proveedor FROM Transparente\Model\Entity\Proveedor Proveedor ORDER BY Proveedor.nombre';
+        $queryOptions = [
+            'order'  => 'Proveedor.nombre',
+            'sort'   => 'ASC',
+            'filter' => false,
+        ];
+        if ($params) {
+            $queryOptions = array_merge($queryOptions, $params->toArray());
+        }
+
+        $dql = 'SELECT Proveedor FROM Transparente\Model\Entity\Proveedor Proveedor';
+        if ($queryOptions['filter']) {
+            $dql .= "
+                WHERE Proveedor.nombre LIKE '%{$queryOptions['filter']}%'
+                   OR Proveedor.nit    LIKE '%{$queryOptions['filter']}%'
+            ";
+        }
+        $dql .= " ORDER BY {$queryOptions['order']} {$queryOptions['sort']}";
         $paginator = $this->getPaginatorFromDql($dql);
         return $paginator;
     }

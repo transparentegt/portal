@@ -14,8 +14,8 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="<?php echo $this->url('home') ?>">
-                <img src="<?=$this->basePath()?>/Transparente/img/logo-menu.png" alt="Guatemala Transparente" style="margin-right: 4px;" />
-                Guatemala Transparente
+                <img src="<?=$this->basePath()?>/Transparente/img/logo-menu.png" alt="transparente.gt" style="margin-right: 4px;" />
+                transparente.gt
             </a>
         </div>
         <div class="collapse navbar-collapse">
@@ -48,7 +48,15 @@
                 </li>
                 <?php endif ?>
             <?php endforeach ?>
-        </ul>
+            </ul>
+            <form action="http://www.google.com/cse" id="cse-search-box" class="navbar-form navbar-right" role="search" style="padding:0;">
+                <!-- <script type="text/javascript" src="http://www.google.com/cse/brand?form=cse-search-box&amp;lang=en"></script>  -->
+                <input name='cx' type='hidden' value='017086301930479271166:9j1mjxfc494'/>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="q" placeholder="buscar">
+                </div>
+                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            </form>
         </div>
     </div>
 </nav>

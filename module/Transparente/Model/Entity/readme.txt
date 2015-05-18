@@ -1,18 +1,20 @@
 Entidades de la persistencia de datos en MySQL
 
-Los nombres de las tablas y campos se ponen en español para que cualquier persona que hable español lo pueda entender. Los nombres de los campos también son más fáciles en español por el lingo legal.
+Los nombres de las tablas y campos se ponen en español para que cualquier persona que hable español lo pueda entender.
+Los nombres de los campos también son más fáciles en español por el lingo legal.
 
-Nombres de campos "flags" si se usarán en inglés para el flujo de la lectura del código, y son populares en software. Ejémplos de esto serían campos como 'id', 'status', 'created', 'updated',
+Nombres de campos "flags" si se usarán en inglés para el flujo de la lectura del código, y son populares en software.
+Ejémplos de esto serían campos como 'id', 'status', 'created', 'updated',
 
 Diccionario de términos
- - GTT: Guatemala Transparente
  - GTC: GuateCompras
 
 La estructura de la base de datos se genera a partir del módulo de Doctrine desde la raiz con el comando:
 
     $ vendor/bin/doctrine-module orm:schema-tool:create
 
-Esto se conecta a la base de datos vacía y genera las tablas y sus relaciones a partir de las anotiaciones en los docblocks. Esto ayuda a no tener des-sincronizada la estructura y el modelo en PHP.
+Esto se conecta a la base de datos vacía y genera las tablas y sus relaciones a partir de las anotiaciones en los
+docblocks. Esto ayuda a no tener des-sincronizada la estructura y el modelo en PHP.
 
 Es muy importante documentar lo más posible la estructura de datos pues es la base para entender un sistema.
 

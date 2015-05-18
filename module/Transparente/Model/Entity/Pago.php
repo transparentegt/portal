@@ -21,7 +21,7 @@ class Pago extends AbstractDoctrineEntity
     protected $id;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="decimal", precision=20, scale=2)
      * @var float
      */
     protected $monto;

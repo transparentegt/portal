@@ -97,13 +97,13 @@ class RepresentanteLegal extends AbstractDoctrineEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="Domicilio", cascade="persist")
-     * @ORM\JoinColumn(name="id_domicilio_fiscal", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_domicilio_fiscal", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $domicilio_fiscal;
 
     /**
      * @ORM\ManyToOne(targetEntity="Domicilio", cascade="persist")
-     * @ORM\JoinColumn(name="id_domicilio_comercial", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_domicilio_comercial", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $domicilio_comercial;
 
@@ -124,8 +124,9 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     /**
      * Un representante legal puede representar muchas empresas. Una empresa puede estar representada por muchos representantes.
      *
-     * @ORM\ManyToMany(targetEntity="Proveedor", mappedBy="representantes_legales", cascade="persist")
+     * @ORM\ManyToMany(targetEntity="Proveedor", mappedBy="representantes_legales", cascade="all")
      * @ORM\JoinTable(name="proveedor_representado_por")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      *
      * @var ArrayCollection
      */
@@ -134,12 +135,13 @@ class RepresentanteLegal extends AbstractDoctrineEntity
     /**
      * Un representante legal puede tener muchos representantes legales.
      *
-     * @ORM\ManyToMany ( targetEntity = "RepresentanteLegal", cascade = "persist" )
+     * @ORM\ManyToMany ( targetEntity = "RepresentanteLegal", cascade = "all" )
      * @ORM\JoinTable (
      *      name               = "representante_representado_por",
      *      joinColumns        = { @ORM\JoinColumn (name = "id_representante_legal", referencedColumnName = "id") },
      *      inverseJoinColumns = { @ORM\JoinColumn (name = "id_representado_por",    referencedColumnName = "id") }
      * )
+     * @ORM\JoinColumn(onDelete="CASCADE")
      *
      * @var ArrayCollection
      *
@@ -192,8 +194,9 @@ class RepresentanteLegal extends AbstractDoctrineEntity
 
     public function __construct()
     {
-        $this->nombres_comerciales = new ArrayCollection();
-        $this->proveedores         = new ArrayCollection();
+        $this->nombres_comerciales    = new ArrayCollection();
+        $this->proveedores            = new ArrayCollection();
+        $this->representantes_legales = new ArrayCollection();
     }
 
     public function getId ()
@@ -291,8 +294,10 @@ class RepresentanteLegal extends AbstractDoctrineEntity
      */
     public function setInscripciónFechaSat($inscripción_fecha_sat)
     {
-        $inscripción_fecha_sat       = ScraperModel::fecha($inscripción_fecha_sat);
-        $this->inscripción_fecha_sat = $inscripción_fecha_sat;
+        if ($inscripción_fecha_sat) {
+            $inscripción_fecha_sat       = ScraperModel::fecha($inscripción_fecha_sat);
+            $this->inscripción_fecha_sat = $inscripción_fecha_sat;
+        }
         return $this;
     }
 
@@ -362,7 +367,6 @@ class RepresentanteLegal extends AbstractDoctrineEntity
         return $this->updated_sat;
     }
 
-
     public function getUrl ()
     {
         return $this->url;
@@ -373,7 +377,9 @@ class RepresentanteLegal extends AbstractDoctrineEntity
      */
     public function setUpdatedSat($updated_sat)
     {
-        $this->updated_sat = ScraperModel::fecha($updated_sat);
+        if ($updated_sat) {
+            $this->updated_sat = ScraperModel::fecha($updated_sat);
+        }
         return $this;
     }
 

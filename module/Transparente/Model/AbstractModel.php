@@ -6,6 +6,13 @@ use Transparente\Model\Entity\AbstractDoctrineEntity;
 
 abstract class AbstractModel extends EntityRepository
 {
+
+    function convert($size)
+    {
+        $unit = array('b','kb','mb','gb','tb','pb');
+        return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+    }
+
     /**
      * Guardar una entidad
      *
@@ -13,10 +20,39 @@ abstract class AbstractModel extends EntityRepository
      */
     public function save(AbstractDoctrineEntity $entity)
     {
+        $start = $end = 0 ;
+        ScraperModel::profileTime($start, $end);
         $em = $this->getEntityManager();
         $em->persist($entity);
         $em->flush();
+        $em->clear();
+        echo sprintf("\tDB time: %s", ScraperModel::profileTime($start, $end));
     }
+
+    /**
+     * Guardar una entidad
+     *
+     * @param AbstractDoctrineEntity $entity
+     */
+    public function update(AbstractDoctrineEntity $entity)
+    {
+        $start = $end = 0 ;
+        ScraperModel::profileTime($start, $end);
+        $em = $this->getEntityManager();
+        $em->merge($entity);
+        $em->flush();
+        $em->clear();
+        echo sprintf("\tDB time: %s", ScraperModel::profileTime($start, $end));
+    }
+
+    public function findCount()
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery("SELECT count(t.id)  FROM {$this->_entityName} t");
+        $count = $query->getSingleScalarResult();
+        return $count;
+    }
+
 
     /**
      * Generates a Zend Paginator based on a DQL

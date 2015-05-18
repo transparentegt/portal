@@ -62,8 +62,15 @@ class Module
                     return $model;
                 },
 
-                // MunicipiolModel
-                'Transparente\Model\MunicipioModel' => function (ServiceManager $sm) {
+                // GeoDepartamentoModel
+                'Transparente\Model\GeoDepartamentoModel' => function (ServiceManager $sm) {
+                    $em    = $sm->get('Doctrine\ORM\EntityManager');
+                    $model = $em->getRepository('Transparente\Model\Entity\GeoDepartamento');
+                    return $model;
+                },
+
+                // GeoMunicipioModel
+                'Transparente\Model\GeoMunicipioModel' => function (ServiceManager $sm) {
                     $em    = $sm->get('Doctrine\ORM\EntityManager');
                     $model = $em->getRepository('Transparente\Model\Entity\GeoMunicipio');
                     return $model;

@@ -7,6 +7,8 @@ if (!empty($_SERVER['APPLICATION_ENV']) && $_SERVER['APPLICATION_ENV'] == 'devel
     ini_set("display_errors", 1);
 }
 
+date_default_timezone_set('America/Guatemala');
+
 /**
  * This makes our life easier when dealing with paths. Everything is relative
  * to the application root now.

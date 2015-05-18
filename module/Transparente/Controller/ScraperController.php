@@ -7,6 +7,7 @@ use Transparente\Model\RepresentanteLegalModel;
 use Transparente\Model\Entity\EmpleadoMunicipal;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Transparente\Model\Entity\Exception\RepresentanteLegalException;
 
 /**
  * ScraperController
@@ -64,6 +65,7 @@ class ScraperController extends AbstractActionController
         }
         fclose($handle);
         $db->flush();
+        $db->clear();
     }
 
     private function scrapProveedores()
@@ -78,7 +80,6 @@ class ScraperController extends AbstractActionController
             $data     += ['nombres_comerciales'    => $proveedorModel->scrapNombresComerciales($idProveedor)];
             $proveedor = new \Transparente\Model\Entity\Proveedor();
             $proveedor->exchangeArray($data);
-
             if (!empty($data['fiscal'])) {
                 $domicilio = new \Transparente\Model\Entity\Domicilio();
                 $domicilio->exchangeArray($data['fiscal']);
@@ -104,13 +105,11 @@ class ScraperController extends AbstractActionController
                     echo '<pre><strong>DEBUG::</strong> '.__FILE__.' +'.__LINE__."\n"; var_dump($e->getMessage(), $data); die();
                 }
             }
-
             foreach ($data['nombres_comerciales'] as $nombre) {
                 $nombreComercial = new \Transparente\Model\Entity\ProveedorNombreComercial();
                 $nombreComercial->setNombre($nombre);
                 $proveedor->appendNombreComercial($nombreComercial);
             }
-
             $proveedorModel->save($proveedor);
        }
     }
@@ -144,25 +143,29 @@ class ScraperController extends AbstractActionController
         /* @var $proveedorModel ProveedorModel */
         $repModel       = $this->getServiceLocator()->get('Transparente\Model\RepresentanteLegalModel');
         /* @var $repModel RepresentanteLegalModel */
-        $proveedores    = $proveedorModel->findPendientesDeScrapearRepresentantesLegales();
+        $proveedores    = $proveedorModel->findAll([], ['id' => 'ASC']); // PendientesDeScrapearRepresentantesLegales();
         foreach($proveedores as $proveedor) {
             $repList = $repModel->scrapRepresentantesLegales($proveedor->getId());
             foreach ($repList as $id) {
-                $repLegal = $repModel->find($id);
-                if (!$repLegal) {
+                try {
                     $repLegal = $repModel->scrap($id);
+                } catch (RepresentanteLegalException $e) {
+                    echo "\n Proveedor #$id incompleto, continuemos\n";
+                } catch (\Exception $e) {
+                    throw new \Exception("No se pudo construir el representante legal #$id, para el proveedor #{$proveedor->getId()}", $id, $e);
                 }
-                if (!$repLegal) continue;
                 $proveedor->appendRepresentanteLegal($repLegal);
             }
-            $proveedorModel->save($proveedor);
+            $proveedorModel->update($proveedor);
         }
     }
 
     /**
      * Iniciando el scraper
      *
-     * @todo preguntar en el CLI si se quiere hacer cada paso
+     * Primero leemos todos los proveedores pues hay pagos y representantes legales que necesitan tener ya insertados
+     * a los proveedores, para no asociarlos a nulos.
+     *
      * @todo reiniciar la DB desde PHP y no desde el bash
      */
     public function indexAction()

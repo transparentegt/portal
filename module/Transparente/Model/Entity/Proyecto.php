@@ -17,7 +17,7 @@ use Transparente\Model\ScraperModel;
 class Proyecto extends AbstractDoctrineEntity
 {
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $categoría;
 
@@ -89,6 +89,7 @@ class Proyecto extends AbstractDoctrineEntity
      * Pagos por el proyecto
      *
      * @ORM\OneToMany(targetEntity="Pago", mappedBy="proyecto", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $pagos;
 

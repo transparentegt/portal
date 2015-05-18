@@ -3,6 +3,7 @@ namespace Transparente\Model;
 
 use Transparente\Model\Entity\EmpleadoMunicipal;
 use Transparente\Model\Entity\RepresentanteLegal;
+use Transparente\Model\Entity\Exception\RepresentanteLegalException;
 
 class RepresentanteLegalModel extends AbstractModel
 {
@@ -144,11 +145,34 @@ class RepresentanteLegalModel extends AbstractModel
      *
      * @return Paginator
      */
-    public function getPaginator()
+    public function getPaginator(\Zend\Stdlib\Parameters $params = null)
     {
+        $queryOptions = [
+            'order'  => 'RepresentanteLegal.apellido1, RepresentanteLegal.apellido2, RepresentanteLegal.apellido3, RepresentanteLegal.nombre1',
+            'sort'   => 'ASC',
+            'filter' => false,
+        ];
+        if ($params) {
+            $queryOptions = array_merge($queryOptions, $params->toArray());
+        }
+
         $dql = 'SELECT RepresentanteLegal
                 FROM Transparente\Model\Entity\RepresentanteLegal RepresentanteLegal
-                ORDER BY RepresentanteLegal.apellido1, RepresentanteLegal.apellido2, RepresentanteLegal.apellido3, RepresentanteLegal.nombre1 ';
+                JOIN RepresentanteLegal.proveedores Proveedor
+                ';
+        if ($queryOptions['filter']) {
+            $dql .= "
+            WHERE RepresentanteLegal.nombre1   LIKE '%{$queryOptions['filter']}%'
+            OR RepresentanteLegal.nombre2   LIKE '%{$queryOptions['filter']}%'
+            OR RepresentanteLegal.apellido1 LIKE '%{$queryOptions['filter']}%'
+            OR RepresentanteLegal.apellido2 LIKE '%{$queryOptions['filter']}%'
+            OR RepresentanteLegal.apellido3 LIKE '%{$queryOptions['filter']}%'
+            OR Proveedor.nombre            LIKE '%{$queryOptions['filter']}%'
+            ";
+        }
+        $dql .= " ORDER BY {$queryOptions['order']} {$queryOptions['sort']}";
+
+
         $paginator = $this->getPaginatorFromDql($dql);
         return $paginator;
     }
@@ -156,19 +180,27 @@ class RepresentanteLegalModel extends AbstractModel
     /**
      * Partir el nombre para guardarlo ordenadamente.
      *
-     * En GTC está en formato "$apellido1, $apellido2, $apellido3?, $nombre1, $nombre2"
+     * En GTC está en formato "$apellido1, $apellido2, $apellido3?, $nombre1, $nombre2", pero se encontró representantes
+     * legales que su nombre está mál ingresado y realmente son una empresa.
      *
      * @param array $data
      */
     private function splitNombre(&$data)
     {
         $nombres = explode(',', $data['nombre']);
-        if (count($nombres) != 5) throw new \Exception('Formato de nombre inválido');
-        $data['nombre1']   = $nombres[3];
-        $data['nombre2']   = $nombres[4];
-        $data['apellido1'] = $nombres[0];
-        $data['apellido2'] = $nombres[1];
-        $data['apellido3'] = $nombres[2];
+        if (count($nombres) == 5) {
+            $data['nombre1']   = $nombres[3];
+            $data['nombre2']   = $nombres[4];
+            $data['apellido1'] = $nombres[0];
+            $data['apellido2'] = $nombres[1];
+            $data['apellido3'] = $nombres[2];
+        } else {
+            $data['nombre1'] = $data['nombre'];
+            $data['nombre2']   = '';
+            $data['apellido1'] = '';
+            $data['apellido2'] = '';
+            $data['apellido3'] = '';
+        }
         unset($data['nombre']);
     }
 
@@ -183,6 +215,12 @@ class RepresentanteLegalModel extends AbstractModel
     {
         if (isset(self::$scraped[$id])) {
             return self::$scraped[$id];
+        }
+
+        $inDb = $this->find($id);
+        if ($inDb) {
+            self::$scraped[$id] = $inDb;
+            return $inDb;
         }
 
         $url    = "http://guatecompras.gt/proveedores/consultaDetProvee.aspx?rqp=10&lprv={$id}";
@@ -216,11 +254,10 @@ class RepresentanteLegalModel extends AbstractModel
         ];
 
         $data = ['id' => $id] + ScraperModel::fetchData($xpaths, $página);
-        try {
-            $this->splitNombre($data);
-        } catch (\Exception $e) {
-            return false;
+        if ($data['nombre'] == '[Pendiente confirmar con SAT]') {
+            throw new RepresentanteLegalException();
         }
+        $this->splitNombre($data);
 
         // después de capturar los datos, hacemos un postproceso
         $data['status']               = ($data['status'] == 'HABILITADO');
@@ -241,8 +278,13 @@ class RepresentanteLegalModel extends AbstractModel
         $entity->exchangeArray($data);
 
         $repLegales = $this->scrapRepresentantesLegales($id);
-        foreach($repLegales as $newId) {
-            $newRep = $this->scrap($newId);
+        foreach($repLegales as $newId) {            
+            try {
+                $newRep = $this->scrap($newId);
+            } catch (RepresentanteLegalException $e) {
+                echo "\n Proveedor #$id incompleto, continuemos\n";
+                continue;
+            }
             $entity->appendRepresentanteLegal($newRep);
         }
 
@@ -252,7 +294,6 @@ class RepresentanteLegalModel extends AbstractModel
             $nombreComercial->setNombre($nombre);
             $entity->appendNombreComercial($nombreComercial);
         }
-
         self::$scraped[$id] = $entity;
         return $entity;
     }

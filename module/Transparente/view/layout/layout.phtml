@@ -1,16 +1,11 @@
 <?php
-/**
- * GTT layout
- */
-
 /* @var $this Zend\View\Renderer\PhpRenderer */
-
 echo $this->doctype();
 ?>
 <html lang="es">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle('Guatemala Transparente')->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headTitle('transparente.gt')->setSeparator(' - ')->setAutoEscape(false) ?>
         <?php echo $this->headMeta()
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
             ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
@@ -18,6 +13,7 @@ echo $this->doctype();
         <!-- Le styles -->
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/Transparente/img/favicon.ico'))
                         ->prependStylesheet($this->basePath() . '/Transparente/css/style.css')
+                        ->prependStylesheet('//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css')
                         ->prependStylesheet($this->basePath() . '/css/style.css')
                         ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
                         ->prependStylesheet('//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
@@ -25,6 +21,7 @@ echo $this->doctype();
 
         <!-- Scripts -->
         <?php echo $this->headScript()
+            ->prependFile('//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js')
             ->prependFile('//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js')
             ->prependFile('//code.jquery.com/jquery-migrate-1.2.1.min.js')
             ->prependFile('//code.jquery.com/jquery-1.11.0.min.js')
@@ -41,15 +38,37 @@ echo $this->doctype();
             <?php echo $this->content; ?>
             <hr>
             <footer>
-                <a href="http://maphpia.com" title="Desarrollado por La Maphpia" >
-                    <img src="<?=$this->basePath()?>/img/maphpia_powered.png" alt="Desarrollado por La Maphpia" />
-                </a>
-                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank"  style="display: inline;">
-                    <input type="hidden" name="cmd" value="_s-xclick" />
-                    <input type="hidden" name="hosted_button_id" value="48SXBFDP69SP2" />
-                    <input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_donate_SM.gif" name="submit" alt="PayPal. La forma rápida y segura de pagar en Internet." />
-                    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" />
-                </form>
+                <style>
+                    footer .disclamer {font-size:smaller; font-style: italic;}
+                    .vertical-center * {
+                        display: inline-block;
+                        vertical-align: middle;
+                        float: none;
+                    }
+                </style>
+                <div  class="row">
+                    <div class="col-sm-9">
+                        <span class="disclamer">
+                            Los datos aquí publicados están disponibles bajo la
+                            <a href="http://opendatacommons.org/licenses/odbl/1.0/">Licencia de Base de Datos Abierta</a>.
+                            Cualquier derecho en los contenidos individuales de la base de datos están licenciados bajo la
+                            <a href="http://opendatacommons.org/licenses/dbcl/1.0">Licencia de Contenidos de Bases de Datos Abiertos</a>.
+                            © 2014-<?=date('Y')?> <a href="/transparente/index/about">transparente.gt</a>
+                        </span>
+                    </div>
+
+                    <div class="col-sm-3 vertical-center text-center">
+                        <a href="http://maphpia.com" title="Desarrollado por La Maphpia" >
+                            <img src="<?=$this->basePath()?>/img/maphpia_powered.png" alt="Desarrollado por La Maphpia" />
+                        </a>
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank"  style="display: inline;">
+                            <input type="hidden" name="cmd" value="_s-xclick" />
+                            <input type="hidden" name="hosted_button_id" value="48SXBFDP69SP2" />
+                            <input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_donate_SM.gif" name="submit" alt="PayPal. La forma rápida y segura de pagar en Internet." />
+                            <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+                        </form>
+                    </div>
+                </div>
             </footer>
         </div> <!-- /container -->
         <?php echo $this->inlineScript() ?>

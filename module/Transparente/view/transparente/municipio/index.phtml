@@ -1,0 +1,25 @@
+<script>
+$(function(){
+    var mapa = document.getElementById('mapa');
+    mapa.addEventListener('load', function() {
+        $(mapa.contentDocument).find('path').each(function() {
+            var id = $(this).attr('id');
+            if (id) {
+                $(this).css('cursor',  'pointer');
+                $(this).attr('title',  id);
+            }
+        });
+        $(mapa.contentDocument).find('path').click(function(){
+            var id = $(this).attr('id');
+            if (id) {
+                location.href = '/transparente/municipio/departamento/'+id;
+            }
+        });
+    });
+});
+</script>
+<h1>Departamentos de Guatemala</h1>
+<p>
+    Aquí se muestra el mapa de Guatemala para poder desglosar los datos capturados por departamento y municipio.
+</p>
+<object data="/Transparente/img/guatemala-map.svg" type="image/svg+xml" id="mapa" width="100%" height="100%"></object>

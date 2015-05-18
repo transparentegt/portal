@@ -6,6 +6,13 @@ use Zend\View\Model\ViewModel;
 
 class MunicipioController extends AbstractActionController
 {
+    public function departamentoAction()
+    {
+        $departamento      = $this->params('id');
+        $departamentoModel = $this->getServiceLocator()->get('Transparente\Model\GeoDepartamentoModel');
+        $departamento      = $departamentoModel->findOneByNombre($departamento);
+        return new ViewModel(compact('departamento'));
+    }
 
     /**
      * Ver los detalles de un proveedor
@@ -13,7 +20,7 @@ class MunicipioController extends AbstractActionController
     public function detallesAction()
     {
         $id             = $this->params('id');
-        $municipioModel = $this->getServiceLocator()->get('Transparente\Model\MunicipioModel');
+        $municipioModel = $this->getServiceLocator()->get('Transparente\Model\GeoMunicipioModel');
         $municipio      = $municipioModel->findOneById($id);
         /* @var GeoMunicipio $municipio */
 
