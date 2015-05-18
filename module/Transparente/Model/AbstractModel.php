@@ -29,7 +29,6 @@ abstract class AbstractModel extends EntityRepository
         echo sprintf("\tDB time: %s", ScraperModel::profileTime($start, $end));
     }
 
-
     /**
      * Guardar una entidad
      *
@@ -45,6 +44,15 @@ abstract class AbstractModel extends EntityRepository
         $em->clear();
         echo sprintf("\tDB time: %s", ScraperModel::profileTime($start, $end));
     }
+
+    public function findCount()
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery("SELECT count(t.id)  FROM {$this->_entityName} t");
+        $count = $query->getSingleScalarResult();
+        return $count;
+    }
+
 
     /**
      * Generates a Zend Paginator based on a DQL

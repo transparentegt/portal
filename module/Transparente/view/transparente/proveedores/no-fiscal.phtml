@@ -7,22 +7,28 @@
  */
 
 /* @var $this Zend\View\Renderer\PhpRenderer */
-$pager = $this->paginationControl(
-        // the paginator object
-        $this->paginator,
-        // the scrolling style
-        'sliding',
-        // the partial to use to render the control
-        'partial/paginator.phtml',
-        // the route to link to when a user clicks a control link
-        ['route' => 'transparente/default', 'routeParams' => ['controller' => 'proveedores', 'action' => 'no-fiscal']]
+/* @var $this->paginator Zend\Paginator\Paginator */
+
+
+$reportTotal = $this->paginator->getPages()->totalItemCount;
+$percent     = floor($reportTotal * 100 / $this->total);
+$pager       = $this->paginationControl(
+    // the paginator object
+    $this->paginator,
+    // the scrolling style
+    'sliding',
+    // the partial to use to render the control
+    'partial/paginator.phtml',
+    // the route to link to when a user clicks a control link
+    ['route' => 'transparente/default', 'routeParams' => ['controller' => 'proveedores', 'action' => 'no-fiscal']]
 );
+
 ?>
 <h1>Proveedores sin domicilio fiscal</h1>
 <p>
     Del catálogo de proveedores recopilados, este es el listado de los proveedores que no tienen dirección fiscal
     publicada. De los  <span class="badge"><?=number_format($this->total)?></span> proveedores en Guatecompras, más del
-    <span class="badge">60%</span> de proveedores no tienen su dirección fiscal publicada en por el portal de
+    <span class="badge"><?=$percent ?>%</span> de proveedores no tienen su dirección fiscal publicada en por el portal de
     Guatecompras.  Ponemos a la par si detectamos o no la dirección comercial como comparativa.
 </p>
 <table class="table">

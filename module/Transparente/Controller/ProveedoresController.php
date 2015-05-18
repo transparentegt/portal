@@ -43,7 +43,7 @@ class ProveedoresController extends AbstractActionController
     {
         $proveedoresModel = $this->getServiceLocator()->get('Transparente\Model\ProveedorModel');
         $paginator        = $proveedoresModel->getPagerSinDomicilioFiscal();
-        $total            = count($proveedoresModel->findAll());
+        $total            = $proveedoresModel->findCount();
         return new ViewModel(compact('total', 'paginator'));
     }
 
