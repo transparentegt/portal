@@ -89,6 +89,7 @@ class Proyecto extends AbstractDoctrineEntity
      * Pagos por el proyecto
      *
      * @ORM\OneToMany(targetEntity="Pago", mappedBy="proyecto", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $pagos;
 

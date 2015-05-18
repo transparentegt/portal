@@ -16,6 +16,32 @@ class ScraperModel
 
     private static $cache;
 
+    /**
+     * Convierte las fechas de formato GTC dia.mesEnEspañol.año en un objeto DateTime
+     * @param  string    $date
+     * @return \DateTime
+     */
+    public static function fecha($date)
+    {
+        $meses = [
+                [null, 'ene',   'feb',     'mar',   'abr',   'may',  'jun',   'jul',   'ago',    'sep',        'oct',     'nov',        'dic'],
+                [null, 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+        ] ;
+        $matches = false;
+        preg_match('/(\d+)\.(\w+)\.(\d+)/', $date, $matches);
+        if (!$matches) throw new \Exception("No se pudo detectar la fecha: '$date'");
+        $día = $matches[1];
+        $año = $matches[3];
+        foreach ($meses as $nombres) {
+            $mes = array_search($matches[2], $nombres);
+            if ($mes) break;
+        }
+        if (!$mes) throw new \Exception("No se pudo detectar la fecha para el mes: '{$matches[2]}'");
+        $fecha = "$año-$mes-$día";
+        $fecha = new \DateTime($fecha);
+        return $fecha;
+    }
+
     public static function fetchData($xpaths, \Zend\Dom\Query $dom)
     {
         $element = [];
@@ -51,6 +77,10 @@ class ScraperModel
         return $element;
     }
 
+    /**
+     * Creates a cache singleton
+     * @return \Zend\Cache\Storage\StorageInterface
+     */
     public static function getCache()
     {
         if (!self::$cache) {
@@ -78,14 +108,16 @@ class ScraperModel
      */
     public static function getCachedUrl($url, $key, $method = self::PAGE_MODE_GET, &$vars = [])
     {
+        $timeStart  = $timeEnd = 0;
+        self::profileTime($timeStart, $timeEnd);
         $downloaded = false;
         $key       .= "-$method";
         $cache      = self::getCache();
         if ($cache->hasItem($key)) {
-            echo sprintf("Leyendo cache:   \t%-40s\t%s\n", $key, $url);
+            echo sprintf("\nLeyendo cache:    %-40s %-80s", $key, $url);
             $content = $cache->getItem($key);
         } else {
-            echo sprintf("Leyendo original:\t%-40s\t%s\n", $key, $url);
+            echo sprintf("\nLeyendo original: %-40s %-80s", $key, $url);
             $downloaded = true;
             switch ($method) {
                 case self::PAGE_MODE_GET:
@@ -203,6 +235,7 @@ class ScraperModel
             $cache->setItem($key, $content);
         }
         $dom = new \Zend\Dom\Query($content);
+        echo sprintf("\tcache time: %s", self::profileTime($timeStart, $timeEnd));
         return $dom;
     }
 
@@ -233,27 +266,16 @@ class ScraperModel
         return $nombre;
     }
 
-    /**
-     * Convierte las fechas de formato GTC dia.mesEnEspañol.año en un objeto DateTime
-     * @param  string    $date
-     * @return \DateTime
-     */
-    public static function fecha($date)
+    public static function profileTime(&$start, &$end = null, $decimals = 5)
     {
-        $meses = [
-            [null, 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
-            [null, 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
-        ] ;
-        preg_match('/(\d+)\.(\w+)\.(\d+)/', $date, $matches);
-        $día = $matches[1];
-        $año = $matches[3];
-        foreach ($meses as $nombres) {
-            $mes = array_search($matches[2], $nombres);
-            if ($mes) break;
+        $elapsed = 0;
+        if (!$start) {
+            $start = microtime(true);
+        } else {
+            $end     = microtime(true);
+            $elapsed = number_format($end - $start, $decimals);
         }
-        if (!$mes) throw new \Exception("No se pudo detectar la fecha para el mes: '{$matches[2]}'");
-        $fecha = "$año-$mes-$día";
-        $fecha = new \DateTime($fecha);
-        return $fecha;
+        return $elapsed;
     }
+
 }

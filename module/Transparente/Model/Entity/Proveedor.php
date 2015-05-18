@@ -27,13 +27,13 @@ class Proveedor extends AbstractDoctrineEntity
 {
     /**
      * @ORM\ManyToOne(targetEntity="Domicilio", cascade="persist")
-     * @ORM\JoinColumn(name="id_domicilio_comercial", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_domicilio_comercial", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $domicilio_comercial;
 
     /**
      * @ORM\ManyToOne(targetEntity="Domicilio", cascade="persist")
-     * @ORM\JoinColumn(name="id_domicilio_fiscal", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_domicilio_fiscal", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $domicilio_fiscal;
 
@@ -96,7 +96,8 @@ class Proveedor extends AbstractDoctrineEntity
     protected $nombre;
 
     /**
-     * @ORM\OneToMany(targetEntity="ProveedorNombreComercial", mappedBy="proveedor", cascade="persist")
+     * @ORM\OneToMany(targetEntity="ProveedorNombreComercial", mappedBy="proveedor", cascade="all")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $nombres_comerciales;
 
@@ -104,6 +105,7 @@ class Proveedor extends AbstractDoctrineEntity
      * Pagos al proveedor
      *
      * @ORM\OneToMany(targetEntity="Pago", mappedBy="proveedor", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $pagos;
 
@@ -131,7 +133,7 @@ class Proveedor extends AbstractDoctrineEntity
     /**
      * Un representante legal puede representar muchas empresas. Una empresa puede estar representada por muchos representantes.
      *
-     * @ORM\ManyToMany ( targetEntity = "RepresentanteLegal", inversedBy = "proveedores", cascade = "persist" )
+     * @ORM\ManyToMany ( targetEntity = "RepresentanteLegal", inversedBy = "proveedores", cascade = "all" )
      * @ORM\JoinTable (
      *      name               = "proveedor_representado_por",
      *      joinColumns        = { @ORM\JoinColumn (name = "id_proveedor",           referencedColumnName = "id") },
@@ -202,6 +204,10 @@ class Proveedor extends AbstractDoctrineEntity
 
     public function appendRepresentanteLegal(RepresentanteLegal $repLegal)
     {
+        $existing = $this->getRepresentantesLegales();
+        foreach ($existing as $rep) {
+            if ($repLegal->getId() == $rep->getId()) return $this;
+        }
         $repLegal->representa($this);
         $this->representantes_legales[] = $repLegal;
         return $this;

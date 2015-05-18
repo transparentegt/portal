@@ -83,7 +83,7 @@ class ProyectoModel extends AbstractModel
     {
         $key = "proveedor-{$proveedor->getId()}-proyectos-list";
         if (ScraperModel::getCache()->hasItem($key)) {
-            echo "Leyendo cache: $key\n";
+            echo "\nLeyendo cache:    $key";
             $ids = ScraperModel::getCache()->getItem($key);
         } else {
             $pagerKeys   = [
@@ -101,7 +101,6 @@ class ProyectoModel extends AbstractModel
                 }
                 $xpath = "//a[starts-with(@href, '../Concursos/consultaDetalleCon.aspx')]";
                 $list  = $html->queryXpath($xpath);
-                $encontrados = count($list);
                 foreach ($list as $nodo) {
                     /* @var $proveedor DOMElement */
                     $url  = parse_url($nodo->getAttribute('href'));

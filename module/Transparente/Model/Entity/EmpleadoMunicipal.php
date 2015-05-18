@@ -62,7 +62,7 @@ class EmpleadoMunicipal extends AbstractDoctrineEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="PartidoPolitico", inversedBy="empleados_municipales")
-     * @ORM\JoinColumn(name="id_partido_político", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_partido_político", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $partido_político;
 
