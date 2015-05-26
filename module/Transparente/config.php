@@ -3,7 +3,7 @@
  * Configuración del módulo de Transparente
  *
  * @todo simplificar más este archivo (la documentación para un módulo mínimo es muy poca)
- * @todo el application_entities debería de ser por namespace, ahy que probar si funciona usando __NAMESPACE__
+ * @todo el application_entities debería de ser por namespace, hay que probar si funciona usando __NAMESPACE__
  * @todo las rutas deberían de poder definirse desde el controlador, ver https://github.com/str/gtt/issues/48
  */
 return array(
@@ -80,21 +80,21 @@ return array(
     ),
     'navigation' => [
         'default' => [
-            ['route' => 'transparente/default', 'label' => 'datos abiertos', 'pages' => [
+            ['route' => 'transparente/default', 'controller' => 'index', 'action' => 'about',  'label' => '<i class="fa fa-link"></i> <span>¿Qué es transparente.gt?</span>'],
+            ['route' => 'transparente/default', 'label' => '<i class="fa fa-link"></i> <span>datos abiertos</span>', 'pages' => [
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'empleado-municipal',  'label' => 'empleados municipales'],
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'municipio',           'label' => 'municipalidades'],
-                ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'partido-politico',    'label' => 'partidos políticos'],
+                // ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'partido-politico',    'label' => 'partidos políticos'],
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'proveedores',         'label' => 'proveedores'],
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'representante-legal', 'label' => 'representantes legales'],
             ]],
-            ['route' => 'transparente/default', 'label' => 'reportes', 'pages' => [
+            ['route' => 'transparente/default', 'label' => '<i class="fa fa-link"></i> <span>reportes</span>', 'pages' => [
                 ['route' => 'transparente/default', 'controller' => 'proveedores',         'action' => 'no-fiscal',           'label' => 'proveedores sin domicilio fiscal'],
-                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-proveedor',     'label' => 'representantes de más de una empresa proveedora'],
-                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'nombres-comerciales', 'label' => 'representantes actuando como proveedores'],
-                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-level',         'label' => 'representantes con representantes legales'],
+                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-proveedor',     'label' => 'representantes de varias empresas'],
+                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'nombres-comerciales', 'label' => 'representantes como proveedores'],
+                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-level',         'label' => 'representantes multi niveles'],
             ]],
-            ['uri' => ' /apigility/documentation/Api-v1',  'label' => 'API'],
-            ['route' => 'transparente/default', 'controller' => 'index', 'action' => 'about',  'label' => 'info'],
+            ['uri' => ' /apigility/documentation/Api-v1',  'label' => '<i class="fa fa-link"></i> <span>API</span>'],
         ],
     ],
     'service_manager' => array(
