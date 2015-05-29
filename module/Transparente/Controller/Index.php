@@ -27,9 +27,4 @@ class Index extends AbstractActionController
         $totals = $db->createNativeQuery($sql, $rsm)->getResult();
         return new ViewModel(compact('totals'));
     }
-
-    public function aboutAction()
-    {
-        return new ViewModel();
-    }
 }

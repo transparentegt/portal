@@ -36,16 +36,21 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/',
-                    'defaults' => array(
-                        'controller' => 'Transparente\Controller\Index',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
+            'home' => [
+                'type'    => 'Literal',
+                'options' => ['defaults' => [
+                    'controller' => 'Transparente\Controller\Index',
+                    'action'     => 'index',
+                ], 'route' => '/']
+            ],
+            'about' => [
+                'type'    => 'Literal',
+                'options' => ['defaults' => [
+                    'controller' => 'PhlySimplePage\Controller\Page',
+                    'template'   => 'page/about',
+                ], 'route' => '/about']
+            ],
+
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -80,7 +85,7 @@ return array(
     ),
     'navigation' => [
         'default' => [
-            ['route' => 'transparente/default', 'controller' => 'index', 'action' => 'about',  'label' => '<i class="fa fa-info-circle"></i> <span>¿Qué es transparente.gt?</span>'],
+            ['route' => 'about', 'label' => '<i class="fa fa-info-circle"></i> <span>¿Qué es transparente.gt?</span>'],
             ['route' => 'transparente/default', 'label' => '<i class="fa fa-database"></i> <span>datos abiertos</span>', 'pages' => [
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'empleado-municipal',  'label' => 'empleados municipales'],
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'municipio',           'label' => 'municipalidades'],

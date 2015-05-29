@@ -23,6 +23,7 @@ return array(
         // end módulos Apigility
         'Api',
         'Transparente',
+        'PhlySimplePage',
     ),
 
     // These are various options for the listeners attached to the ModuleManager
