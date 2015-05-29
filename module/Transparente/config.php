@@ -80,21 +80,23 @@ return array(
     ),
     'navigation' => [
         'default' => [
-            ['route' => 'transparente/default', 'controller' => 'index', 'action' => 'about',  'label' => '<i class="fa fa-link"></i> <span>¿Qué es transparente.gt?</span>'],
-            ['route' => 'transparente/default', 'label' => '<i class="fa fa-link"></i> <span>datos abiertos</span>', 'pages' => [
+            ['route' => 'transparente/default', 'controller' => 'index', 'action' => 'about',  'label' => '<i class="fa fa-info-circle"></i> <span>¿Qué es transparente.gt?</span>'],
+            ['route' => 'transparente/default', 'label' => '<i class="fa fa-database"></i> <span>datos abiertos</span>', 'pages' => [
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'empleado-municipal',  'label' => 'empleados municipales'],
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'municipio',           'label' => 'municipalidades'],
                 // ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'partido-politico',    'label' => 'partidos políticos'],
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'proveedores',         'label' => 'proveedores'],
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'representante-legal', 'label' => 'representantes legales'],
             ]],
-            ['route' => 'transparente/default', 'label' => '<i class="fa fa-link"></i> <span>reportes</span>', 'pages' => [
+            ['route' => 'transparente/default', 'label' => '<i class="fa fa-folder-open"></i> <span>reportes</span>', 'pages' => [
                 ['route' => 'transparente/default', 'controller' => 'proveedores',         'action' => 'no-fiscal',           'label' => 'proveedores sin domicilio fiscal'],
                 ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-proveedor',     'label' => 'representantes de varias empresas'],
                 ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'nombres-comerciales', 'label' => 'representantes como proveedores'],
                 ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-level',         'label' => 'representantes multi niveles'],
             ]],
-            ['uri' => ' /apigility/documentation/Api-v1',  'label' => '<i class="fa fa-link"></i> <span>API</span>'],
+            ['uri' => ' /apigility/documentation/Api-v1',  'label' => '<i class="fa fa-connectdevelop"></i> <span>API</span>'],
+            ['uri' => ' /',  'label' => '<i class="fa fa-bug"></i> <span>reportar un problema</span>'],
+            ['uri' => ' /',  'label' => '<i class="fa fa-envelope"></i> <span>contacto</span>'],
         ],
     ],
     'service_manager' => array(
