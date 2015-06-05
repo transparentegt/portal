@@ -59,7 +59,7 @@ class Index extends AbstractActionController
             $flash = $this->flashmessenger();
             /* @var $flash \Zend\Mvc\Controller\Plugin\FlashMessenger */
             if (!$captcha) {
-                $flash->addErrorMessage('El sistema no detectó el bloqueo anto SPAM. Por favor inténtelo de nuevo.');
+                $flash->addErrorMessage('El sistema no detectó el bloqueo anti SPAM. Por favor inténtelo de nuevo.');
             } else {
                 $data = $request->getPost()->get('contact');
                 $mail = new \Zend\Mail\Message();
@@ -74,7 +74,7 @@ class Index extends AbstractActionController
                 (new \Zend\Mail\Transport\Sendmail())->send($mail);
                 $flash->addSuccessMessage('Su información ha sido enviada. Pronto nos contactaremos de regreso. Gracias.');
             }
-            return $this->redirect($request->getHeader('referer'));
+            return $this->redirect()->toUrl($request->getHeader('referer')->getUri());
         }
 
         return new ViewModel();

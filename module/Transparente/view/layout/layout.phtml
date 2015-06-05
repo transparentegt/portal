@@ -79,36 +79,42 @@ echo $this->doctype();
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
-<?
- $flash = $this->flashMessenger();
- $flash->setMessageOpenFormat('<div%s>
-     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-         &times;
-     </button>
-     <ul><li>')
-     ->setMessageSeparatorString('</li><li>')
-     ->setMessageCloseString('</li></ul></div>');
-
- echo $flash->render('error',   array('alert', 'alert-dismissible', 'alert-danger'));
- echo $flash->render('info',    array('alert', 'alert-dismissible', 'alert-info'));
- echo $flash->render('default', array('alert', 'alert-dismissible', 'alert-warning'));
- echo $flash->render('success', array('alert', 'alert-dismissible', 'alert-success'));
- ?>
-
                 <!-- Content Header (Page header) -->
-                <!--
-                <section class="content-header">
-                  <h1> Page Header <small>Optional description</small> </h1>
-                  <ol class="breadcrumb">
-                    <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                    <li class="active">Here</li>
-                  </ol>
-                </section>
-                 -->
+                <? if ($this->title) :?>
+                    <section class="content-header">
+                        <h1>
+                            <?php echo $this->title ?>
+                            <? if ($this->subtitle) :?>
+                                <small><?php echo $this->subtitle ?></small>
+                            <? endif ?>
+                        </h1>
+                        <!--
+                        <ol class="breadcrumb">
+                            <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+                            <li class="active">Here</li>
+                        </ol>
+                         -->
+                    </section>
+                <? endif ?>
                 <!-- Main content -->
                 <section class="content">
+                    <?
+                     $flash = $this->flashMessenger();
+                     $flash->setMessageOpenFormat('<div%s>
+                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                             &times;
+                         </button>
+                         <ul><li>')
+                         ->setMessageSeparatorString('</li><li>')
+                         ->setMessageCloseString('</li></ul></div>');
+
+                     echo $flash->render('error',   array('alert', 'alert-dismissible', 'alert-danger'));
+                     echo $flash->render('info',    array('alert', 'alert-dismissible', 'alert-info'));
+                     echo $flash->render('default', array('alert', 'alert-dismissible', 'alert-warning'));
+                     echo $flash->render('success', array('alert', 'alert-dismissible', 'alert-success'));
+                     ?>
                     <!-- Your Page Content Here -->
-                    <?php echo $this->content; ?>
+                    <?php echo $this->content ?>
                 </section><!-- /.content -->
             </div><!-- /.content-wrapper -->
 
