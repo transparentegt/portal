@@ -7,3 +7,11 @@ body > .wrapper {
     opacity: 0.90;
     filter: alpha(opacity=90); /* For IE8 and earlier */
 }
+
+
+.sidebar-menu .treeview-menu > li > a {font-size: 0.9em;}
+.skin-blue-light .sidebar-menu > li:hover > a,
+.skin-blue-light .sidebar-menu > li.active > a {
+    background-color: #3c8dbc;
+    color: white;
+}

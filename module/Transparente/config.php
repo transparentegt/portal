@@ -50,6 +50,13 @@ return array(
                     'template'   => 'page/about',
                 ], 'route' => '/about']
             ],
+            'contact' => [
+                'type'    => 'Literal',
+                'options' => ['defaults' => [
+                    'controller' => 'Transparente\Controller\Index',
+                    'action'     => 'contact',
+                ], 'route' => '/contact']
+            ],
 
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
@@ -101,7 +108,7 @@ return array(
             ]],
             ['uri' => ' /apigility/documentation/Api-v1',  'label' => '<i class="fa fa-connectdevelop"></i> <span>API</span>'],
             ['uri' => ' /',  'label' => '<i class="fa fa-bug"></i> <span>reportar un problema</span>'],
-            ['uri' => ' /',  'label' => '<i class="fa fa-envelope"></i> <span>contacto</span>'],
+            ['route' => 'contact',  'label' => '<i class="fa fa-envelope"></i> <span>contacto</span>'],
         ],
     ],
     'service_manager' => array(

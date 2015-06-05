@@ -5,6 +5,9 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Doctrine\ORM\Query\ResultSetMapping;
 
+/**
+ * Controlador para páginas con lógica
+ */
 class Index extends AbstractActionController
 {
     public function indexAction()
@@ -27,4 +30,54 @@ class Index extends AbstractActionController
         $totals = $db->createNativeQuery($sql, $rsm)->getResult();
         return new ViewModel(compact('totals'));
     }
+
+    /**
+     * Página de contacto
+     */
+    public function contactAction()
+    {
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+
+            $vars = [
+                'secret' => '6Lf_lwcTAAAAAKJEoGlninIccUEYIhtZsvvpn7yH',
+                'response' => $request->getPost()->get('g-recaptcha-response'),
+                'remoteip' => $_SERVER['REMOTE_ADDR'],
+            ];
+            $postdata = http_build_query($vars);
+            $url      = 'https://www.google.com/recaptcha/api/siteverify';
+            $opts     = ['http' => [
+                    'method'  => 'POST',
+                    'header'  => 'Content-type: application/x-www-form-urlencoded',
+                    'content' => $postdata
+                ]
+            ];
+            $context = stream_context_create($opts);
+            $content = file_get_contents($url, false, $context, -1);
+            $captcha = json_decode($content)->success;
+
+            $flash = $this->flashmessenger();
+            /* @var $flash \Zend\Mvc\Controller\Plugin\FlashMessenger */
+            if (!$captcha) {
+                $flash->addErrorMessage('El sistema no detectó el bloqueo anto SPAM. Por favor inténtelo de nuevo.');
+            } else {
+                $data = $request->getPost()->get('contact');
+                $mail = new \Zend\Mail\Message();
+                $mail->setBody("Contacto:
+                    nombre: {$data['name']}
+                    email:  {$data['email']}
+                    comments: {$data['comments']}
+                ");
+                $mail->setFrom('info@transparente.gt');
+                $mail->addTo('info@transparente.gt');
+                $mail->setSubject('[Transparente] contacto');
+                (new \Zend\Mail\Transport\Sendmail())->send($mail);
+                $flash->addSuccessMessage('Su información ha sido enviada. Pronto nos contactaremos de regreso. Gracias.');
+            }
+            return $this->redirect($request->getHeader('referer'));
+        }
+
+        return new ViewModel();
+    }
+
 }
