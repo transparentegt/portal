@@ -50,6 +50,13 @@ return array(
                     'template'   => 'page/about',
                 ], 'route' => '/about'],
             ],
+            'about-collab' => [
+                'type'    => 'Literal',
+                'options' => ['defaults' => [
+                    'controller' => 'PhlySimplePage\Controller\Page',
+                    'template'   => 'page/about/collab',
+                ], 'route' => '/about/collab'],
+            ],
             'about-dbcompras' => [
                 'type'    => 'Literal',
                 'options' => ['defaults' => [
@@ -87,29 +94,27 @@ return array(
                     ),
                 ),
                 'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/[:controller[/:action[/:id]]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
-                    ),
-                ),
+                'child_routes'  => ['default' => [
+                    'type'    => 'Segment',
+                    'options' => [
+                        'defaults'    => [],
+                        'route'       => '/[:controller[/:action[/:id]]]',
+                        'constraints' => [
+                            'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        ],
+                    ],
+                ]],
             ),
         ),
     ),
     'navigation' => [
         'default' => [
             ['route' => 'about', 'label' => '<i class="fa fa-info-circle"></i> <span>¿Qué es transparente.gt?</span>',],
-            ['route' => 'default', 'label' => '<i class="fa fa-info-circle"></i> <span>proyectos</span>', 'pages' => [
+            ['route' => 'default', 'label' => '<i class="fa fa-cubes"></i> <span>proyectos</span>', 'pages' => [
                 ['route' => 'about-dbcompras', 'label' => 'dbCompras'],
                 ['route' => 'about-dbcompras', 'label' => 'reCuento'],
+                ['uri' => ' /apigility/documentation/Api-v1',  'label' => 'API'],
             ]],
             ['route' => 'transparente/default', 'label' => '<i class="fa fa-database"></i> <span>datos abiertos</span>', 'pages' => [
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'empleado-municipal',  'label' => 'empleados municipales'],
@@ -120,13 +125,12 @@ return array(
             ]],
             ['route' => 'transparente/default', 'label' => '<i class="fa fa-folder-open"></i> <span>reportes</span>', 'pages' => [
                 ['route' => 'transparente/default', 'controller' => 'proveedores',         'action' => 'no-fiscal',           'label' => 'proveedores sin domicilio fiscal'],
-                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-proveedor',     'label' => 'representantes de varias empresas'],
-                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'nombres-comerciales', 'label' => 'representantes como proveedores'],
+                // ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-proveedor',     'label' => 'representantes de varias empresas'],
+                // ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'nombres-comerciales', 'label' => 'representantes como proveedores'],
                 ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-level',         'label' => 'representantes multi niveles'],
             ]],
-            ['uri' => ' /apigility/documentation/Api-v1',  'label' => '<i class="fa fa-connectdevelop"></i> <span>API</span>'],
-            ['uri' => ' /',  'label' => '<i class="fa fa-bug"></i> <span>reportar un problema</span>'],
-            ['route' => 'contact',  'label' => '<i class="fa fa-envelope"></i> <span>contacto</span>'],
+            ['route' => 'about-collab',  'label' => '<i class="fa fa-users"></i>    <span>¿Quierés colaborar?</span>'],
+            ['route' => 'contact',       'label' => '<i class="fa fa-envelope"></i> <span>contacto</span>'],
         ],
     ],
     'service_manager' => array(

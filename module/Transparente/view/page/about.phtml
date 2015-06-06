@@ -12,134 +12,136 @@ $this->layout()->setVariables([
     'subtitle' => 'Sobre el proyecto',
 ])
 ?>
-<section>
-    <h2 class="page-header">Antecedente</h2>
-    <p>
-        En Guatemala existe una
-        <a  target="_blank" href="http://wikiguate.com.gt/wiki/Ley_de_Acceso_a_la_Informaci%C3%B3n_P%C3%BAblica_%28documento%29">
-            Ley de Acceso a la Información Pública
-        </a>
-        que permite que cualquier ciudadano tenga acceso a toda información de la administración pública. A finales del año 2012 según el
-        <a target="_blank" href="http://www.transparencia.gob.gt/web/images/Acuerdo/acuerdo_360-2012_COPRET.pdf">acuerdo gubernativo #360-2012</a>
-        se crea la
-        <a target="_blank" href="http://transparencia.gob.gt/">
-            Comisión Presidencial de Transparencia,
-            <abbr title="Comisión Presidencial de Transparencia">COPRET</abbr>
-        </a>,
-        quién vela por que cada entidad del gobierno cumpla esta ley y publique su información con el fin de mejorar la transparencia.
-    </p>
-    <p>
-        Lamentablemente esta información no es transparente, no es confiable. La información que nos proveen está filtrada, procesada y lo
-        peor de todo, la entregan impresa en papel. Con esa información, no se puede corroborar los datos, no se puede
-        verificar la fuente, no se puede agrupar, sumar, ni filtrar, ni hacer cruce de datos ni procesar más datos que lo
-        que ya está escrito en papel.
-    </p>
-    <blockquote>
-        <q>Algo que permite ver a través, sin distinguir la verdad, no es transparente, es translúcido.</q>
-        <footer>Stuardo Rodríguez</footer>
-    </blockquote>
-    <p>
-        En el año 2013
-        <a href="http://www.transparency.org/cpi2013/results" target="_blank">
-            Guatemala ocupaba el puesto 53 entre los países más corruptos del mundo
-        </a>
-        (de 177 paises, debajo del 70%) en el informe 2013 publicado por
-        <a href="http://www.transparency.org/" target="_blank">Transparencia Internacional</a>, y aunque ese número ha disminuido poco
-        a poco durante los 2 siguientes años, los que vivimos en Guatemala sentimos que la corrupción ha incrementado. Aún con la Ley
-        De Acceso a la Información, a los ciudadanos no nos queda más que seguir mintiéndonos a nosotros mismos para creernos que el
-        gobierno está haciendo bien su trabajo.
-    </p>
-    <p>
-        Los ciudadanos no confían en el gobierno y se organizan diferentes grupos civiles con el fin de detener tanto abuso de poder.
-        Es por esto que unos cuantos ciudadanos se reunieron a buscar cómo aportar su granito de arena para mejorar la situación y creamos
-        <a href="http://transparente.gt">transparente.gt</a>
-    </p>
-</section>
-
-<section>
-    <h2 class="page-header">¿Qué es transparente.gt?</h2>
-    <p>
-        <a href="http://transparente.gt">transparente.gt</a> es una iniciativa cívica dedicada a crear herramientas tecnológicas
-        para empoderar al ciudadano y le permitan combatir la corrupción dentro del gobierno, desde afuera.
-    </p>
-    <div class="row">
-        <div class="col-md-6">
-            <dl class="dl-horizontal">
-                <dt>Misión</dt>
-                <dd>Crear herramientas tecnológicas útiles para empoderar al ciudadano en la lucha contra la corrupción.</dd>
-
-                <dt>Visión</dt>
-                <dd>Que el gobierno aplique en sus sistemas, los mismos pilares de transparencia sobre los cuales están fundadas las herramientas que creamos.</dd>
-            </dl>
-        </div>
-        <div class="col-md-6">
-            <img alt="transparente.gt" title="transparente.gt"src="<?=$this->basePath()?>/Transparente/img/logo-home.png" />
-        </div>
-    </div>
-    <p>
-        A pesar que es trabajo voluntariado, esfuerzos de poca gente, dedicándole pocas horas del poco tiempo libre que se tiene, hemos empezado
-        los siguientes proyectos.
-    </p>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">DB Compras</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                    <img alt="dbCompras" src="/Transparente/img/dbCompras.png" class="img-thumbnail" />
-                    <p>
-                        El primer proyecto de <a href="http://transparente.gt">transparente.gt</a> fue desenmarañar los datos del gasto público
-                        publicado en <a href="http://guatecompras.gt">Guatecompras</a> y construir una base de datos pública descargable para
-                        que cualquier ciudadano descargue y pueda hacer investigaciones más profundas.
-                    </p>
-                    <a class="btn btn-primary" href="/about/dbcompras">ver proyecto</a>
-                </div><!-- /.box-body -->
-
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">reCuento</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                    <img alt="dbCompras" src="/Transparente/img/reCuentoLogo.png" class="img-thumbnail" />
-                    <p>
-                        Para el año electoral
-                    </p>
-                </div><!-- /.box-body -->
-            </div>
-        </div>
-
-    </div>
-
-
-
-</section>
-<h2 class="page-header">¿Quiénes hacen transparente.gt?</h2>
+<h2>Antecedente</h2>
 <p>
-    El proyecto es un trabajo creado por puro voluntariado, invirtiendo sus horas libres en la escritura del sistema,
-    reuniones para pedir información, digitando el texto publicado en papel y solucionando todo bloqueo que un sistema
-    corrupto pone como obstáculo para no poder indentificar la corrupción.
-</p><p>
-
-No hay ninguna ONG, ningún partido político, ningúna organización; somos simples ciudadanos cansados de ver políticos enriquecerse mientras dicen que no hay dinero para escuelas u hospitales; cansados de ver mansiones aparecer de la nada mientras no hay dinero para infraestructura; cansados de ver nuevos impuestos cuando no tenemos con que pagar el pan de cada día.
-</p><p>
-
-¿Quienes somos los que hacemos <a href="/">transparente.gt</a>? Somos las víctimas de una dictadura montada
-sobre un monstruo de corrupción. Somos el David contra Goliat, y esta es nuestra honda y piedra.
+    En Guatemala existe una
+    <a  target="_blank" href="http://wikiguate.com.gt/wiki/Ley_de_Acceso_a_la_Informaci%C3%B3n_P%C3%BAblica_%28documento%29">
+        Ley de Acceso a la Información Pública
+    </a>
+    que permite que cualquier ciudadano tenga acceso a toda información de la administración pública. A finales del año 2012 según el
+    <a target="_blank" href="http://www.transparencia.gob.gt/web/images/Acuerdo/acuerdo_360-2012_COPRET.pdf">acuerdo gubernativo #360-2012</a>
+    se crea la
+    <a target="_blank" href="http://transparencia.gob.gt/">
+        Comisión Presidencial de Transparencia,
+        <abbr title="Comisión Presidencial de Transparencia">COPRET</abbr>
+    </a>,
+    quién vela por que cada entidad del gobierno cumpla esta ley y publique su información con el fin de mejorar la transparencia.
 </p>
-<h2 class="page-header">¿Cómo nace transparente.gt?</h2>
+<p>
+    Lamentablemente esta información no es transparente, no es confiable. La información que nos proveen está filtrada, procesada y lo
+    peor de todo, la entregan impresa en papel. Con esa información, no se puede corroborar los datos, no se puede
+    verificar la fuente, no se puede agrupar, sumar, ni filtrar, ni hacer cruce de datos ni procesar más datos que lo
+    que ya está escrito en papel.
+</p>
+<blockquote>
+    <q>No poder distinguir la verdad que hay detrás, no es transparencia, es translucidez.</q>
+    <footer>Stuardo Rodríguez, director de desarrollo <a href="http://transparente.gt">transparente.gt</a></footer>
+</blockquote>
+<p>
+    En el año 2013
+    <a href="http://www.transparency.org/cpi2013/results" target="_blank">
+        Guatemala ocupaba el puesto 53 entre los países más corruptos del mundo
+    </a>
+    (de 177 paises, debajo del 70%) en el informe 2013 publicado por
+    <a href="http://www.transparency.org/" target="_blank">Transparencia Internacional</a>, y aunque ese número ha disminuido poco
+    a poco durante los 2 siguientes años, los que vivimos en Guatemala sentimos que la corrupción ha incrementado. Aún con la Ley
+    De Acceso a la Información, a los ciudadanos no nos queda más que seguir mintiéndonos a nosotros mismos para creernos que el
+    gobierno está haciendo bien su trabajo.
+</p>
+<p>
+    Los ciudadanos no confían en el gobierno y se organizan diferentes grupos civiles con el fin de detener tanto abuso de poder.
+    Es por esto que unos cuantos ciudadanos se reunieron a buscar cómo aportar su granito de arena para mejorar la situación y creamos
+    <a href="http://transparente.gt">transparente.gt</a>
+</p>
 
+<h2>¿Qué es transparente.gt?</h2>
+<p>
+    <a href="http://transparente.gt">transparente.gt</a> es una iniciativa cívica dedicada a crear herramientas tecnológicas
+    para empoderar al ciudadano y le permitan combatir la corrupción dentro del gobierno, desde afuera.
+</p>
+<div class="row">
+    <div class="col-md-6">
+        <dl class="dl-horizontal">
+            <dt>Misión</dt>
+            <dd>Crear herramientas tecnológicas útiles para empoderar al ciudadano en la lucha contra la corrupción.</dd>
+
+            <dt>Visión</dt>
+            <dd>Que el gobierno aplique en sus sistemas, los mismos pilares de transparencia sobre los cuales están fundadas las herramientas que creamos.</dd>
+        </dl>
+    </div>
+    <div class="col-md-6">
+        <img alt="transparente.gt" title="transparente.gt"src="<?=$this->basePath()?>/Transparente/img/logo-home.png" />
+    </div>
+</div>
+<p>
+    El trabajo realizado es puramente voluntariado. Esfuerzos de poca gente, dedicándole pocas horas del poco tiempo libre que se tiene, y con eso
+    hemos trabajado en los siguientes proyectos:
+</p>
+<div class="row">
+    <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">DB Compras</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+                <img alt="dbCompras" src="/Transparente/img/dbCompras.png" class="img-thumbnail" />
+                <p>
+                    El primer proyecto de <a href="http://transparente.gt">transparente.gt</a> fue desenmarañar los datos del gasto público
+                    publicado en <a href="http://guatecompras.gt">Guatecompras</a> y construir una base de datos pública descargable para
+                    que cualquier ciudadano descargue y pueda hacer investigaciones más profundas.
+                </p>
+                <a class="btn btn-primary pull-right" href="/about/dbcompras">ver proyecto</a>
+            </div><!-- /.box-body -->
+
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">reCuento</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+                <img alt="dbCompras" src="/Transparente/img/reCuentoLogo.png" class="img-thumbnail" />
+                <p>
+                    Para el año electoral, <a href="http://transparente.gt">transparente.gt</a> tiene un proyecto muy ambicioso: hacer
+                    un reCuento de los votos. Ayudándose de la tecnología, se creará una herramienta para poder validar el conteo
+                    oficial de votos.
+                </p>
+
+                <a class="btn btn-primary pull-right" href="/about/recuento">ver proyecto</a>
+            </div><!-- /.box-body -->
+        </div>
+    </div>
+</div>
+<p>
+    Tenemos muchas ideas en mente y más proyectos en cola. que esperamos con el tiempo, empezarlos.
+</p>
+<h2>¿Quiénes hacen transparente.gt?</h2>
+<p>
+    El desarrollo de los proyectos es un trabajo creado por puro voluntariado, invirtiendo sus horas libres en la escritura de código,
+    realizando u organizando reuniones para pedir información, digitando el texto publicado en papel y solucionando todo bloqueo que
+    un sistema corrupto pone como obstáculo para no poder indentificar la corrupción.
+</p>
+<p>
+    No hay ninguna ONG, ningún partido político, ningúna organización; somos simples ciudadanos cansados de ver políticos enriquecerse
+    mientras dicen que no hay dinero para escuelas u hospitales; cansados de ver mansiones aparecer de la nada mientras no hay dinero
+    para infraestructura; cansados de pagar impuestos para enriquiecer a otros cuando no tenemos con que pagar el pan de cada día.
+</p>
+<p>
+    ¿Quienes somos los que hacemos <a href="http://transparente.gt">transparente.gt</a>? Somos las víctimas de una dictadura montada
+    sobre un monstruo de corrupción. Somos el David contra Goliat, creando nuestras hondas y piedras.
+</p>
+
+<h2>¿Cómo nace transparente.gt?</h2>
 <a href="https://www.facebook.com/groups/hhguatemala/" target="_blank">
-    <img src="http://larutadeldinero.info/imagenes/hh.png" alt="hacks/hackers" class="pull-right"/>
+    <img alt="hacks/hackers" class="pull-left img-thumbnail" style="margin-right: 1em; width: 11em;"
+        src="https://pbs.twimg.com/profile_images/2551870120/euucna7qbj8pf7pu4bjc_400x400.jpeg" />
 </a>
 <p>
     <a href="http://hackshackers.com">Hacks/Hackers</a> es un movimiento <a href="http://hackshackers.com/chapters/">internacional</a>
     que reune periodistas con gente de tecnología, y entre ambos poder crear noticias con fundamentos técnicos sólidos.
     Hacks/Hackers <strong>no</strong> se refiere al término mal-asociado a vándalos informáticos, sino a la
-    <a href="http://es.wikipedia.org/wiki/Cultura_hacker">cultura de aficionados a la informática</a>.
+    <a href="http://es.wikipedia.org/wiki/%C3%89tica_hackerr">ética de aficionados a la informática</a>.
 </p>
 <p>
     En un evento organizado por <a href="https://www.facebook.com/groups/hhguatemala/" target="_blank">Hacks/Hackers
@@ -153,64 +155,61 @@ sobre un monstruo de corrupción. Somos el David contra Goliat, y esta es nuestr
     gobierno no quiere hacer públicas. Somos el cambio que queremos ver en nuestro país.
 </p>
 
-<h2 class="page-header">¿Cómo puedo participar?</h2>
-<p>
-    ¿Estás interesado en apoyar? Los aportes que podemos recibir son:
-</p>
-<ul>
-    <li>Apoyo técnico: todo el código del proyecto es público y se puede ver, editar y mejorar en el portal de
-    github en <a href="https://github.com/str/gtt/" target="_blank">transparente.gt</a></li>
+<h2>Patrocinadores</h2>
+<div class="row">
+    <div class="col-md-6">
+        <div class="box box-success">
+            <div class="box-header with-border">
+                <h3 class="box-title">La Maphpia</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+                <a href="http://maphpia.com">
+                    <img alt="La Maphpia" title="La Maphpia" class="img-thumbnail center-block" style="height: 94px;"
+                        src="<?=$this->basePath()?>/Transparente/img/la.maphpia.png" />
+                </a>
+                <p>
+                    <a href="http://maphpia.com">La Maphpia</a> es una empresa de desarrollo de sofware especializada en el
+                    desarrollo de aplicaciones web a la medida, personalizaciones de sistemas populares y mantenimiento de
+                    sistemas heredados o de dificil mantenimiento.
+                </p>
+                <p>
+                    <a href="http://maphpia.com">La Maphpia</a> siempre ha participado activamente en diferentes grupos del
+                    movimiento del software libre y ahora coloabora patrocinando el desarrollo del proyecto, donando muchas
+                    horas de asesoría, análisis, desarrollo y programación.
+                </p>
+            </div><!-- /.box-body -->
 
-    <li>Tareas específicas: los pendientes por hacer son varios, en especial a estas alturas del proyecto. Llevamos
-    un manejador de incidencias de estas tareas específicas, las cuales se pueden ver en el
-    <a href="https://github.com/str/gtt/issues?state=open" target="_blank">manejador de incidencias</a></li>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="box box-success">
+            <div class="box-header with-border">
+                <h3 class="box-title">Ojo con mi pisto</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+                <a href="http://ojoconmipisto.com/">
+                    <img alt="Ojo con mi Pisto" title="Ojo con mi Pisto" class="img-thumbnail center-block" style="height: 94px;"
+                        src="<?=$this->basePath()?>/Transparente/img/ojoconmipisto.png" />
+                </a>
+                <p>
+                    <a target="_blank" href="http://www.ojoconmipisto.com" title="Ojoconmipisto.com">Ojoconmipisto.com</a>
+                    es un proyecto de
+                    <a target="_blank" href="http://www.labmedios.com" title="Laboratorio de Medios S.A.">Laboratorio de Medios, S.A.</a>
+                    que persigue la fiscalización de los fondos municipales. Promueve la capacitación de reporteros para identificar actos
+                     de corrupción, opacidad, malas prácticas, falta de transparencia y escasa eficiencia en el uso de esos recursos.
+                </p>
+                <p>
+                     <a target="_blank" href="http://www.ojoconmipisto.com" title="Ojoconmipisto.com">Ojoconmipisto.com</a> ha
+                     patrocinado su conocimiento, definiendo las metas. También ha hecho las gestioneces necesarias para conseguir datos que se han tenido que trabajar a mano.
+                </p>
+            </div><!-- /.box-body -->
+        </div>
+    </div>
+</div>
 
-    <li>Donaciones económicas: a pesar que el proyecto está creado por voluntariado que aporta su tiempo libre para la
-    investigación y creación de este, se tienen gastos para contratar el servicio de alojamiento, compra del dominio y
-    demás que están pendientes. Cualquier donación es bienvenida.
-        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-            <input type="hidden" name="cmd" value="_s-xclick">
-            <input type="hidden" name="hosted_button_id" value="48SXBFDP69SP2">
-            <input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_donateCC_LG.gif" name="submit" alt="PayPal. La forma rápida y segura de pagar en Internet.">
-            <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-        </form>
-    </li>
-</ul>
-<h2 class="page-header">Patrocinadores</h2>
-
-<a href="http://maphpia.com">
-    <img alt="La Maphpia" title="La Maphpia" class="pull-right" style="width: 250px;" src="<?=$this->basePath()?>/Transparente/img/la.maphpia.png" />
-</a>
 <p>
-    <a href="http://maphpia.com">La Maphpia</a> es una empresa de desarrollo de sofware especializada en el
-    desarrollo de aplicaciones web a la medida, personalizaciones de sistemas populares y mantenimiento de
-    sistemas heredados o de dificil mantenimiento.
-</p>
-<p>
-    <a href="http://maphpia.com">La Maphpia</a> siempre ha participado activamente en diferentes grupos del
-    movimiento del software libre y ahora coloabora patrocinando el desarrollo del proyecto, donando muchas
-    horas de asesoría, análisis, desarrollo y programación.
-</p>
-
-<a href="http://ojoconmipisto.com/">
-    <img alt="Ojo con mi Pisto" title="Ojo con mi Pisto" class="pull-right" style="width: 250px;" src="<?=$this->basePath()?>/Transparente/img/ojoconmipisto.png" />
-</a>
-<p>
-    <a target="_blank" href="http://www.ojoconmipisto.com" title="Ojoconmipisto.com">Ojoconmipisto.com</a>
-    es un proyecto de
-    <a target="_blank" href="http://www.labmedios.com" title="Laboratorio de Medios S.A.">Laboratorio de Medios, S.A.</a>
-    que persigue la fiscalización de los fondos municipales. Es también un ejemplo de periodismo de transparencia
-    que promueve la capacitación de reporteros para identificar actos de corrupción, opacidad, malas prácticas,
-    falta de transparencia y escasa eficiencia en el uso de esos recursos.
-</p>
-<p>
-     <a target="_blank" href="http://www.ojoconmipisto.com" title="Ojoconmipisto.com">Ojoconmipisto.com</a> ha
-     patrocinado su conocimiento, definiendo las metas y reportes que <a href="/">transparente.gt</a>
-     puede conseguir. También ha hecho las gestioneces necesarias para conseguir datos que se han tenido que trabajar a mano.
-</p>
-<p>
-    El proyecto <a href="/">transparente.gt</a> no podría existir sin la ayuda de estos patrocinadores y la
-    ayuda de voluntarios. A todos, muchas gracias.
+    Ninguno de los proyectos realizados por la iniciativa <a href="http://transparente.gt">transparente.gt</a> podría existir sin
+    los apoprtes de estos patrocinadores y la ayuda de los voluntarios. A todos, muchas gracias.
 </p>
 
 <hr />

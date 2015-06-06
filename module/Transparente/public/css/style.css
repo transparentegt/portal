@@ -10,6 +10,8 @@ body > .wrapper {
 
 blockquote {background-color: white;}
 
+h2, .h2 {font-size: 22px;}
+
 .sidebar-menu .treeview-menu > li > a {font-size: 0.9em;}
 .skin-blue-light .sidebar-menu > li:hover > a,
 .skin-blue-light .sidebar-menu > li.active > a {
