@@ -48,7 +48,21 @@ return array(
                 'options' => ['defaults' => [
                     'controller' => 'PhlySimplePage\Controller\Page',
                     'template'   => 'page/about',
-                ], 'route' => '/about']
+                ], 'route' => '/about'],
+            ],
+            'about-dbcompras' => [
+                'type'    => 'Literal',
+                'options' => ['defaults' => [
+                    'controller' => 'PhlySimplePage\Controller\Page',
+                    'template'   => 'page/about/dbcompras',
+                ], 'route' => '/about/dbcompras'],
+            ],
+            'about-recuento' => [
+                'type'    => 'Literal',
+                'options' => ['defaults' => [
+                    'controller' => 'PhlySimplePage\Controller\Page',
+                    'template'   => 'page/about/recuento',
+                ], 'route' => '/about/recuento'],
             ],
             'contact' => [
                 'type'    => 'Literal',
@@ -92,7 +106,11 @@ return array(
     ),
     'navigation' => [
         'default' => [
-            ['route' => 'about', 'label' => '<i class="fa fa-info-circle"></i> <span>¿Qué es transparente.gt?</span>'],
+            ['route' => 'about', 'label' => '<i class="fa fa-info-circle"></i> <span>¿Qué es transparente.gt?</span>',],
+            ['route' => 'default', 'label' => '<i class="fa fa-info-circle"></i> <span>proyectos</span>', 'pages' => [
+                ['route' => 'about-dbcompras', 'label' => 'dbCompras'],
+                ['route' => 'about-dbcompras', 'label' => 'reCuento'],
+            ]],
             ['route' => 'transparente/default', 'label' => '<i class="fa fa-database"></i> <span>datos abiertos</span>', 'pages' => [
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'empleado-municipal',  'label' => 'empleados municipales'],
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'municipio',           'label' => 'municipalidades'],

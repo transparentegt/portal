@@ -8,6 +8,7 @@ body > .wrapper {
     filter: alpha(opacity=90); /* For IE8 and earlier */
 }
 
+blockquote {background-color: white;}
 
 .sidebar-menu .treeview-menu > li > a {font-size: 0.9em;}
 .skin-blue-light .sidebar-menu > li:hover > a,
