@@ -114,7 +114,6 @@ return array(
             ['route' => 'default', 'label' => '<i class="fa fa-cubes"></i> <span>proyectos</span>', 'pages' => [
                 ['route' => 'about-dbcompras', 'label' => 'dbCompras'],
                 ['route' => 'about-dbcompras', 'label' => 'reCuento'],
-                ['uri' => ' /apigility/documentation/Api-v1',  'label' => 'API'],
             ]],
             ['route' => 'transparente/default', 'label' => '<i class="fa fa-database"></i> <span>datos abiertos</span>', 'pages' => [
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'empleado-municipal',  'label' => 'empleados municipales'],
