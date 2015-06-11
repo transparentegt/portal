@@ -113,7 +113,7 @@ return array(
             ['route' => 'about', 'label' => '<i class="fa fa-info-circle"></i> <span>¿Qué es transparente.gt?</span>',],
             ['route' => 'default', 'label' => '<i class="fa fa-cubes"></i> <span>proyectos</span>', 'pages' => [
                 ['route' => 'about-dbcompras', 'label' => 'dbCompras'],
-                ['route' => 'about-dbcompras', 'label' => 'reCuento'],
+                ['route' => 'about-recuento',  'label' => 'reCuento'],
             ]],
             ['route' => 'transparente/default', 'label' => '<i class="fa fa-database"></i> <span>datos abiertos</span>', 'pages' => [
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'empleado-municipal',  'label' => 'empleados municipales'],
