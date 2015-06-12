@@ -12,6 +12,11 @@ blockquote {background-color: white;}
 
 h2, .h2 {font-size: 22px;}
 
+.skin-blue-light .main-header .logo,
+.skin-blue-light .main-header .logo:hover {
+    background-color: #f9fafc; color: #3c8dbc;
+}
+
 .sidebar-menu .treeview-menu > li > a {font-size: 0.9em;}
 .skin-blue-light .sidebar-menu > li:hover > a,
 .skin-blue-light .sidebar-menu > li.active > a {

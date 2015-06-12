@@ -128,7 +128,7 @@ return array(
                 // ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'nombres-comerciales', 'label' => 'representantes como proveedores'],
                 ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-level',         'label' => 'representantes multi niveles'],
             ]],
-            ['route' => 'about-collab',  'label' => '<i class="fa fa-users"></i>    <span>¿Quierés colaborar?</span>'],
+            ['route' => 'about-collab',  'label' => '<i class="fa fa-users"></i>    <span>¿Quieres colaborar?</span>'],
             ['route' => 'contact',       'label' => '<i class="fa fa-envelope"></i> <span>contacto</span>'],
         ],
     ],
