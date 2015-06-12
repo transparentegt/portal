@@ -2,90 +2,109 @@
 /* @var $this Zend\View\Renderer\PhpRenderer */
 ?>
 <style>
-.jumbotron {margin-top: 1em; background-color: #3c8dbc; padding: 0;}
-.jumbotron img {background-color: white; padding: 6em 4em;}
+.jumbotron {
+    background-color: white;
+    padding: 1em;
+}
 </style>
 <div class="jumbotron">
-    <div class="row text-center">
-        <img alt="transparente.gt" title="transparente.gt" src="<?=$this->basePath()?>/Transparente/img/logo-home.png">
+    <div class="text-center">
+        <img alt="transparente.gt" title="transparente.gt"
+            src="<?=$this->basePath()?>/Transparente/img/logo-home.png">
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p>
+                <a href="http://transparente.gt">transparente.gt</a> es una iniciativa cívica dedicada a crear
+                herramientas tecnológicas para empoderar al ciudadano y que le permitan combatir la corrupción dentro
+                del gobierno, desde afuera.
+            </p>
+            <a class="pull-right btn btn-primary" href="/about"> <strong>¿Qué es transparente.gt?</strong>
+            </a>
+        </div>
     </div>
 </div>
 
+<center>
+    <script async
+        src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- horizontal-content -->
+    <ins class="adsbygoogle"
+        style="display: inline-block; width: 728px; height: 90px"
+        data-ad-client="ca-pub-4234050867741816"
+        data-ad-slot="1596749955"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</center>
+<br />
 <div class="row">
 
-    <div class="col-md-4">
-        <div class="panel panel-default">
+    <div class="col-md-6">
+        <div class="box box-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">Resumen de datos recopilados</h3>
+                <h3 class="panel-title">Datos abiertos</h3>
             </div>
             <div class="panel-body">
-                <p>Estos son los datos recopilados hasta el momento:</p>
+                <p>
+                    El concepto datos abiertos (open data, en inglés) es una filosofía y práctica que persigue que
+                    determinados tipos de datos estén disponibles de forma libre para todo el mundo, sin restricciones
+                    de derechos de autor, de patentes o de otros mecanismos de control.1 Tiene una ética similar a
+                    otros movimientos y comunidades abiertos, como el software libre, el código abierto (open source,
+                    en inglés) y el acceso libre (open access, en inglés).
+                </p>
+                <p>
+                    Gracias a las metas alcanzadas por <a href="http://transparente.gt">transparente.gt</a> hemos
+                    logrado recopilar y publicar la siguiente información.
+                </p>
                 <ul>
                     <? foreach ($this->totals as $count) :?>
                     <li><span class="badge"><?=number_format($count['total'])?></span> <?=$count['entidad']?></li>
                     <? endforeach ?>
-                    <li><span class="badge">4</span> reportes de inconsistencias</li>
+                    <li><span class="badge">2</span> reportes de inconsistencias</li>
                 </ul>
-                <p>
-                    Descarga la base de datos en formato <a href="http://www.mysql.com/">Oracle's MySQL</a>.
-                </p>
-
-                <a class="btn btn-primary pull-right" href="<?=$this->basepath()?>/Transparente/db-latest.sql.bz2">
-                    Descarga la base de datos »
-                </a>
+                <a class="btn btn-primary" href="<?=$this->basepath()?>/Transparente/db-latest.sql.bz2">Descarga la base de datos » </a>
             </div>
         </div>
     </div>
-
-
-    <div class="col-md-4">
-        <div class="panel panel-default">
+    <div class="col-md-6">
+        <div class="box box-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">¿Cómo colaborar?</h3>
+                <h3 class="panel-title">Trabajo voluntariado</h3>
             </div>
             <div class="panel-body">
-                <p>
-                    "Apenas llevamos 3 trazos de un plano de 3 millones de lineas" y hay mucho que hacer. Las tareas
-                    específicas que hemos encontrado las hemos publicado en el
-                    <a href="https://github.com/str/gtt/issues?state=open" target="_blank">
-                        manejador de incidencias
+                <div id="carousel-example-generic"
+                    class="carousel slide" data-ride="carousel">
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" role="listbox">
+                        <div class="item active"><img src="/Transparente/img/home/home-pic01.jpg" /></div>
+                        <div class="item"><img src="/Transparente/img/home/home-pic02.jpg" /></div>
+                        <div class="item"><img src="/Transparente/img/home/home-pic03.jpg" /></div>
+                        <div class="item"><img src="/Transparente/img/home/home-pic04.jpg" /></div>
+                        <div class="item"><img src="/Transparente/img/home/home-pic05.jpg" /></div>
+                        <div class="item"><img src="/Transparente/img/home/home-pic06.jpg" /></div>
+                    </div>
+
+                    <!-- Controls -->
+                    <a class="left carousel-control"
+                        href="#carousel-example-generic" role="button"
+                        data-slide="prev"> <span
+                        class="glyphicon glyphicon-chevron-left"
+                        aria-hidden="true"></span> <span class="sr-only">Previous</span>
+                    </a> <a class="right carousel-control"
+                        href="#carousel-example-generic" role="button"
+                        data-slide="next"> <span
+                        class="glyphicon glyphicon-chevron-right"
+                        aria-hidden="true"></span> <span class="sr-only">Next</span>
                     </a>
-                    donde publicamos las tareas donde podríamos recibir ayuda.
-                </p>
+                </div>
+                <br />
                 <p>
-                    ¿Encontraste un problema y quieres reportarlo? También podés publicar la incidencia para que lo
-                    arreglemos.
+                    Los proyectos desarrollados son trabajo voluntariado y los resultados los ponemos a disposicioń de
+                    los ciudadanos.
                 </p>
-                <p>
-                    <a class="btn btn-primary pull-right" href="https://github.com/str/gtt/issues?state=open" target="_blank">
-                        Ver manejador de incidencias »
-                    </a>
-                </p>
+                <a class="btn btn-primary" href="/about/collab">¿Quieres colaborar?</a>
             </div>
         </div>
     </div>
-
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Software Libre</h3>
-            </div>
-            <div class="panel-body">
-                <p>
-                    <a href="/">transparente.gt</a> es un proyecto colaborativo donde, con el tema de transparencia siempre
-                    primero, el código fuente es libre para que cualquiera lo pueda ver, mejorar, y replicar.
-                </p>
-                <p>
-                    El status del proyecto se puede seguir en la página en github.
-                </p>
-                <p>
-                    <a class="btn btn-primary pull-right" href="https://github.com/str/gtt" target="_blank">
-                        Ver el proyecto en GitHub »
-                    </a>
-                </p>
-            </div>
-        </div>
-    </div>
-
-
 </div>
