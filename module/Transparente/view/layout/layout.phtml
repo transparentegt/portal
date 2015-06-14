@@ -32,6 +32,7 @@ echo $this->doctype();
             ->prependFile($this->basePath() . 'https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js',   'text/javascript', array('conditional' => 'lt IE 9',))
         ?>
         <?php echo $this->inlineScript() ?>
+        <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     </head>
     <body class="skin-blue-light fixed">
         <div class="wrapper">
@@ -135,11 +136,11 @@ echo $this->doctype();
                 </div>
                 <!-- Default to the left -->
                 <small>
-                    Los datos aquí publicados están disponibles bajo la
+                    © 2014-<?=date('Y')?> <a href="/transparente/index/about">transparente.gt</a> |
+                    Datos publicados bajo la
                     <a href="http://opendatacommons.org/licenses/odbl/1.0/">Licencia de Base de Datos Abierta</a>.
                     Cualquier derecho en los contenidos individuales de la base de datos están licenciados bajo la
                     <a href="http://opendatacommons.org/licenses/dbcl/1.0">Licencia de Contenidos de Bases de Datos Abiertos</a>.
-                    | © 2014-<?=date('Y')?> <a href="/transparente/index/about">transparente.gt</a>
                 </small>
             </footer>
         </div><!-- ./wrapper -->

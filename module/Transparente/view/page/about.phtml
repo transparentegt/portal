@@ -12,6 +12,11 @@ $this->layout()->setVariables([
     'subtitle' => 'Sobre el proyecto',
 ])
 ?>
+<style>
+.dl-horizontal dt {width: 50px;}
+.dl-horizontal dd {margin-left: 60px;}
+</style>
+
 <h2>Antecedente</h2>
 <p>
     En Guatemala existe una
@@ -70,7 +75,7 @@ $this->layout()->setVariables([
     para empoderar al ciudadano y que le permitan combatir la corrupción dentro del gobierno, desde afuera.
 </p>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-5">
         <dl class="dl-horizontal">
             <dt>Misión</dt>
             <dd>Crear herramientas tecnológicas útiles para empoderar al ciudadano en la lucha contra la corrupción.</dd>
@@ -79,7 +84,7 @@ $this->layout()->setVariables([
             <dd>Que el gobierno aplique en sus sistemas, los mismos pilares de transparencia sobre los cuales están fundadas las herramientas que creamos.</dd>
         </dl>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-7">
         <img alt="transparente.gt" title="transparente.gt"src="<?=$this->basePath()?>/Transparente/img/logo-home.png" />
     </div>
 </div>
@@ -221,10 +226,6 @@ $this->layout()->setVariables([
     los apoprtes de estos patrocinadores y la ayuda de los voluntarios. A todos, muchas gracias.
 </p>
 
-<hr />
-<p>
-    <strong>Nota:</strong> Todos los datos publicados por <a href="/">transparente.gt</a> son información
-    pública, recolectada de portales públicos de <em>"transparencia"</em>. <a href="/">transparente.gt</a> solo
-    publica los datos recolectados, toda interpretación de los datos es responsabilidad de quién los interprete
-    y no nos hacemos responsables del uso que se le den.
-</p>
+<center>
+    <a href="/about/collab" class="btn btn-lg btn-warning">¿Quieres colaborar? Hay muchas formas de hacer un cambio. entérate aquí.</a>
+</center>

@@ -1,7 +1,7 @@
 @CHARSET "UTF-8";
-body {
-    background-image: url('../img/background.png');
-}
+
+body, h1, h2, h3, h4,h5, h6  { font-family: 'Roboto', sans-serif; }
+body { background-image: url('../img/background.png'); }
 body > .wrapper {
     background: white;
     opacity: 0.90;
@@ -17,7 +17,6 @@ h2, .h2 {font-size: 22px;}
     background-color: #f9fafc; color: #3c8dbc;
 }
 
-.sidebar-menu .treeview-menu > li > a {font-size: 0.9em;}
 .skin-blue-light .sidebar-menu > li:hover > a,
 .skin-blue-light .sidebar-menu > li.active > a {
     background-color: #3c8dbc;
