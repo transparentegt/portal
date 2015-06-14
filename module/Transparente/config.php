@@ -64,6 +64,13 @@ return array(
                     'template'   => 'page/about/dbcompras',
                 ], 'route' => '/about/dbcompras'],
             ],
+            'about-opengov' => [
+                'type'    => 'Literal',
+                'options' => ['defaults' => [
+                    'controller' => 'PhlySimplePage\Controller\Page',
+                    'template'   => 'page/about/opengov',
+                ], 'route' => '/about/opengov'],
+            ],
             'about-recuento' => [
                 'type'    => 'Literal',
                 'options' => ['defaults' => [
@@ -111,6 +118,7 @@ return array(
     'navigation' => [
         'default' => [
             ['route' => 'about', 'label' => '<i class="fa fa-info-circle"></i> <span>¿Qué es transparente.gt?</span>',],
+            ['route' => 'about-opengov',  'label' => '<i class="fa fa-bank"></i> sobre el gobierno abierto'],
             ['route' => 'default', 'label' => '<i class="fa fa-cubes"></i> <span>proyectos</span>', 'pages' => [
                 ['route' => 'about-dbcompras', 'label' => 'dbCompras'],
                 ['route' => 'about-recuento',  'label' => 'reCuento'],
@@ -128,7 +136,7 @@ return array(
                 // ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'nombres-comerciales', 'label' => 'representantes como proveedores'],
                 ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-level',         'label' => 'representantes multi niveles'],
             ]],
-            ['route' => 'about-collab',  'label' => '<i class="fa fa-users"></i>    <span>¿Quieres colaborar?</span>'],
+            ['route' => 'about-collab',  'label' => '<i class="fa fa-users"></i>    <span>cómo colaborar</span>'],
             ['route' => 'contact',       'label' => '<i class="fa fa-envelope"></i> <span>contacto</span>'],
         ],
     ],

@@ -17,8 +17,15 @@ h2, .h2 {font-size: 22px;}
     background-color: #f9fafc; color: #3c8dbc;
 }
 
+.skin-blue-light .sidebar-menu li > a {padding-left: 5px;}
 .skin-blue-light .sidebar-menu > li:hover > a,
 .skin-blue-light .sidebar-menu > li.active > a {
     background-color: #3c8dbc;
     color: white;
 }
+
+.lead {
+    font-size: 18px;
+    font-style: italic;
+}
+

@@ -61,9 +61,8 @@ $pager       = $this->paginationControl(
             </td>
             <td class="text-right"><?=$entity->getNit()?></td>
             <td>
-                <a target="_blank" href="<?=$entity->getUrlGuatecompras()?>" >
+                <a href="<?=$entity->getUrlGuatecompras()?>" >
                     <?=($entity->getDomicilioFiscal()) ? '' : 'no detectada'?>
-                    <span class="glyphicon glyphicon-new-window"></span>
                 </a>
             </td>
             <td>

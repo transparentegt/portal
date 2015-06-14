@@ -22,6 +22,7 @@ echo $this->doctype();
             ->prependStylesheet('//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css')
         ?>
         <?php echo $this->headScript()
+            ->prependFile('/Transparente/js/transparente.js')
             ->prependFile('/AdminLTE/dist/js/app.min.js')
             ->prependFile('//cdn.rawgit.com/rochal/jQuery-slimScroll/master/jquery.slimscroll.min.js')
             ->prependFile('//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js')
@@ -123,16 +124,13 @@ echo $this->doctype();
             <footer class="main-footer">
                 <!-- To the right -->
                 <div class="pull-right hidden-xs">
-                    <a href="http://maphpia.com" title="Desarrollado por La Maphpia" >
+                    <a href="http://maphpia.com" title="Desarrollado por La Maphpia" target="_blank">
                         <img src="<?=$this->basePath()?>/img/maphpia_powered.png" alt="Desarrollado por La Maphpia" />
                     </a>
                     <br />
-                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank"  style="display: inline; margin-top: 4px; float: right">
-                        <input type="hidden" name="cmd" value="_s-xclick" />
-                        <input type="hidden" name="hosted_button_id" value="48SXBFDP69SP2" />
-                        <input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_donate_SM.gif" name="submit" alt="PayPal. La forma rápida y segura de pagar en Internet." />
-                        <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" />
-                    </form>
+                    <a href="/about/collab" title="cómo colaborar"  style="margin-top: 4px; float: right" >
+                        <img src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_donate_SM.gif" alt="cómo colaborar" />
+                    </a>
                 </div>
                 <!-- Default to the left -->
                 <small>
