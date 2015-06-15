@@ -278,7 +278,7 @@ class RepresentanteLegalModel extends AbstractModel
         $entity->exchangeArray($data);
 
         $repLegales = $this->scrapRepresentantesLegales($id);
-        foreach($repLegales as $newId) {            
+        foreach($repLegales as $newId) {
             try {
                 $newRep = $this->scrap($newId);
             } catch (RepresentanteLegalException $e) {

@@ -11,6 +11,11 @@ $municipio = $this->municipio;
 $this->headtitle('Municipio: '.$municipio->getNombre() . ', ' . $municipio->getDepartamento()->getNombre());
 
 $representantes = $this->representantes;
+
+$this->layout()->setVariables([
+    'title'    => "{$municipio->getNombre()}, {$municipio->getDepartamento()->getNombre()}",
+    'subtitle' => 'datos abiertos del municipio',
+]);
 ?>
 <style >
 .empleado {float: left; height: 360px; width: 100%;}
@@ -20,7 +25,6 @@ $representantes = $this->representantes;
 .dl-horizontal dt { width: 260px; }
 .dl-horizontal dd { margin-left: 270px;}
 </style>
-<h1>Municipio: <?=$municipio->getNombre()?>, <?=$municipio->getDepartamento()->getNombre()?></h1>
 <div class="row">
     <div class="col-sm-4">
 
@@ -36,6 +40,17 @@ $representantes = $this->representantes;
         <iframe width="560" height="315" src="//www.youtube.com/embed/m-JozsD_IxQ?rel=0&end=50" style="border: none;"></iframe>
     </div>
 </div>
+<center>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- horizontal-content -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-4234050867741816"
+         data-ad-slot="1596749955"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</center>
 <div class="row">
     <?php foreach($this->empleadosMunicipales as $empleado) :?>
     <div class="col-sm-6">
@@ -63,3 +78,4 @@ $representantes = $this->representantes;
     </div>
     <?php endforeach ?>
 </div>
+<?=$this->partial('partial/opendatadisclamer') ?>

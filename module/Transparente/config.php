@@ -3,7 +3,7 @@
  * Configuración del módulo de Transparente
  *
  * @todo simplificar más este archivo (la documentación para un módulo mínimo es muy poca)
- * @todo el application_entities debería de ser por namespace, ahy que probar si funciona usando __NAMESPACE__
+ * @todo el application_entities debería de ser por namespace, hay que probar si funciona usando __NAMESPACE__
  * @todo las rutas deberían de poder definirse desde el controlador, ver https://github.com/str/gtt/issues/48
  */
 return array(
@@ -36,16 +36,56 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/',
-                    'defaults' => array(
-                        'controller' => 'Transparente\Controller\Index',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
+            'home' => [
+                'type'    => 'Literal',
+                'options' => ['defaults' => [
+                    'controller' => 'Transparente\Controller\Index',
+                    'action'     => 'index',
+                ], 'route' => '/']
+            ],
+            'about' => [
+                'type'    => 'Literal',
+                'options' => ['defaults' => [
+                    'controller' => 'PhlySimplePage\Controller\Page',
+                    'template'   => 'page/about',
+                ], 'route' => '/about'],
+            ],
+            'about-collab' => [
+                'type'    => 'Literal',
+                'options' => ['defaults' => [
+                    'controller' => 'PhlySimplePage\Controller\Page',
+                    'template'   => 'page/about/collab',
+                ], 'route' => '/about/collab'],
+            ],
+            'about-dbcompras' => [
+                'type'    => 'Literal',
+                'options' => ['defaults' => [
+                    'controller' => 'PhlySimplePage\Controller\Page',
+                    'template'   => 'page/about/dbcompras',
+                ], 'route' => '/about/dbcompras'],
+            ],
+            'about-opengov' => [
+                'type'    => 'Literal',
+                'options' => ['defaults' => [
+                    'controller' => 'PhlySimplePage\Controller\Page',
+                    'template'   => 'page/about/opengov',
+                ], 'route' => '/about/opengov'],
+            ],
+            'about-recuento' => [
+                'type'    => 'Literal',
+                'options' => ['defaults' => [
+                    'controller' => 'PhlySimplePage\Controller\Page',
+                    'template'   => 'page/about/recuento',
+                ], 'route' => '/about/recuento'],
+            ],
+            'contact' => [
+                'type'    => 'Literal',
+                'options' => ['defaults' => [
+                    'controller' => 'Transparente\Controller\Index',
+                    'action'     => 'contact',
+                ], 'route' => '/contact']
+            ],
+
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -61,40 +101,43 @@ return array(
                     ),
                 ),
                 'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/[:controller[/:action[/:id]]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
-                    ),
-                ),
+                'child_routes'  => ['default' => [
+                    'type'    => 'Segment',
+                    'options' => [
+                        'defaults'    => [],
+                        'route'       => '/[:controller[/:action[/:id]]]',
+                        'constraints' => [
+                            'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        ],
+                    ],
+                ]],
             ),
         ),
     ),
     'navigation' => [
         'default' => [
-            ['route' => 'transparente/default', 'label' => 'datos abiertos', 'pages' => [
+            ['route' => 'about', 'label' => '<i class="fa fa-info-circle"></i> <span>¿Qué es transparente.gt?</span>',],
+            ['route' => 'about-opengov',  'label' => '<i class="fa fa-bank"></i> sobre el gobierno abierto'],
+            ['route' => 'default', 'label' => '<i class="fa fa-cubes"></i> <span>proyectos</span>', 'pages' => [
+                ['route' => 'about-dbcompras', 'label' => 'dbCompras'],
+                ['route' => 'about-recuento',  'label' => 'reCuento'],
+            ]],
+            ['route' => 'transparente/default', 'label' => '<i class="fa fa-database"></i> <span>datos abiertos</span>', 'pages' => [
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'empleado-municipal',  'label' => 'empleados municipales'],
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'municipio',           'label' => 'municipalidades'],
-                ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'partido-politico',    'label' => 'partidos políticos'],
+                // ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'partido-politico',    'label' => 'partidos políticos'],
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'proveedores',         'label' => 'proveedores'],
                 ['route' => 'transparente/default', 'action' => 'index', 'controller' => 'representante-legal', 'label' => 'representantes legales'],
             ]],
-            ['route' => 'transparente/default', 'label' => 'reportes', 'pages' => [
+            ['route' => 'transparente/default', 'label' => '<i class="fa fa-folder-open"></i> <span>reportes</span>', 'pages' => [
                 ['route' => 'transparente/default', 'controller' => 'proveedores',         'action' => 'no-fiscal',           'label' => 'proveedores sin domicilio fiscal'],
-                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-proveedor',     'label' => 'representantes de más de una empresa proveedora'],
-                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'nombres-comerciales', 'label' => 'representantes actuando como proveedores'],
-                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-level',         'label' => 'representantes con representantes legales'],
+                // ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-proveedor',     'label' => 'representantes de varias empresas'],
+                // ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'nombres-comerciales', 'label' => 'representantes como proveedores'],
+                ['route' => 'transparente/default', 'controller' => 'representante-legal', 'action' => 'multi-level',         'label' => 'representantes multi niveles'],
             ]],
-            ['uri' => ' /apigility/documentation/Api-v1',  'label' => 'API'],
-            ['route' => 'transparente/default', 'controller' => 'index', 'action' => 'about',  'label' => 'info'],
+            ['route' => 'about-collab',  'label' => '<i class="fa fa-users"></i>    <span>cómo colaborar</span>'],
+            ['route' => 'contact',       'label' => '<i class="fa fa-envelope"></i> <span>contacto</span>'],
         ],
     ],
     'service_manager' => array(

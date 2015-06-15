@@ -204,12 +204,11 @@ class Proveedor extends AbstractDoctrineEntity
 
     public function appendRepresentanteLegal(RepresentanteLegal $repLegal)
     {
-        $existing = $this->getRepresentantesLegales();
-        foreach ($existing as $rep) {
-            if ($repLegal->getId() == $rep->getId()) return $this;
-        }
+        if (isset($this->representantes_legales[$repLegal->getId()])) return $this;
         $repLegal->representa($this);
-        $this->representantes_legales[] = $repLegal;
+        if (!isset($this->representantes_legales[$repLegal->getId()])) {
+            $this->representantes_legales[$repLegal->getId()] = $repLegal;
+        }
         return $this;
     }
 
