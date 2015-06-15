@@ -4,3 +4,9 @@
 [submodule "module/ZendDeveloperTools"]
 	path = module/ZendDeveloperTools
 	url = git@github.com:zendframework/ZendDeveloperTools.git
+[submodule "public/AdminLTE"]
+	path = public/AdminLTE
+	url = https://github.com/almasaeed2010/AdminLTE.git
+[submodule "vendor/PhlySimplePage"]
+	path = vendor/PhlySimplePage
+	url = git://github.com/weierophinney/PhlySimplePage.git

@@ -1,6 +1,13 @@
 SetEnv APPLICATION_ENV development
 
 RewriteEngine On
+
+# old paths
+Redirect 301 /transparente/index/about /about
+Redirect 301 /transparente/index/index /
+
+# RedirectMatch 301 /transparente/foo/bar(.*) /opendata/foo/bar/$1
+
 # The following rule tells Apache that if the requested filename
 # exists, simply serve it.
 RewriteCond %{REQUEST_FILENAME} -s [OR]

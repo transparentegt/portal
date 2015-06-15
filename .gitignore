@@ -12,23 +12,12 @@ nbproject
 .project
 .settings
 composer.lock
-vendor/bin
+vendor/*
 
-# DoctrineORM
-vendor/doctrine/
-vendor/symfony/
-
-# Apigility
 config/development.config.php
-vendor/bshaffer/
-vendor/kriswallsmith/
-vendor/rwoverdijk/
-vendor/zfcampus/
-vendor/rhumsaa/
 
 data/cache*
 data/*.key
 data/DoctrineORMModule/
 data/*
 db/*.bz2
-

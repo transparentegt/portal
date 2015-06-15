@@ -412,6 +412,9 @@ class RepresentanteLegal extends AbstractDoctrineEntity
 
     public function representa(Proveedor $proveedor)
     {
-        $this->proveedores[] = $proveedor;
+        if (!isset($this->proveedores[$proveedor->getId()])) {
+            $this->proveedores[] = $proveedor;
+        }
+        return $this;
     }
 }

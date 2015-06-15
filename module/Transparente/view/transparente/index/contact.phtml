@@ -1,0 +1,50 @@
+<?
+/* @var $this \Zend\View\Renderer\PhpRenderer */
+
+$this->layout()->setVariables([
+    'title' => 'Contacto',
+])
+?>
+<p>Estamos interesados en saber sus opiniones o comentarios.</p>
+
+<center>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- horizontal-content -->
+    <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-4234050867741816" data-ad-slot="1596749955"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</center>
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Formulario de contacto</h3>
+    </div><!-- /.box-header -->
+    <!-- form start -->
+    <form role="form" method="post">
+        <div class="box-body">
+
+            <div class="form-group">
+                <label for="contact[name]">Su nombre:</label>
+                <input class="form-control" id="contact[name]" name="contact[name]" placeholder="nombre completo" />
+            </div>
+            <div class="form-group">
+                <label for="contact[email]">Dirección de correo electrónico:</label>
+                <input type="email" class="form-control" id="contact[email]" name="contact[email]" id="contact[email]" placeholder="ciudadano@ejemplar.com" />
+            </div>
+            <div class="form-group">
+                <label for="contact[comments]">Comentarios:</label>
+                <textarea placeholder="Comentarios..." rows="3" class="form-control" name="contact[comments]" id="contact[comments]"></textarea>
+            </div>
+            <div class="g-recaptcha" data-sitekey="6Lf_lwcTAAAAAKk7yb5eAdy8ELDlchvpO_a7Cvxu"></div>
+        </div><!-- /.box-body -->
+        <div class="box-footer">
+            <button class="btn btn-primary" type="submit">enviar</button>
+        </div>
+    </form>
+</div>
+
+<center>
+    <a href="/about/collab" class="btn btn-lg btn-warning">¿Quieres colaborar? Hay muchas formas de hacer un cambio. entérate aquí.</a>
+</center>
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
