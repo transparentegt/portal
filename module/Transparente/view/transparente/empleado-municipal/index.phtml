@@ -6,8 +6,7 @@
 /* @var $this \Zend\View\Renderer\PhpRenderer */
 
 $this->layout()->setVariables([
-    'title'    => 'Empleados municipales',
-    'subtitle' => 'datos abiertos',
+    'title' => 'Empleados municipales',
 ]);
 ?>
 <script type="text/javascript">
@@ -49,7 +48,7 @@ $(document).ready(function(){
     Listado de todos los empleados municipales importados proveidos por
     <a href="http://www.ojoconmipisto.com/">Ojo Con Mi Pisto</a>.
 </p>
-
+<?=$this->partial('partial/dbcomprasdisclamer') ?>
 <center>
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <!-- horizontal-content -->

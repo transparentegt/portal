@@ -4,6 +4,10 @@
  */
 
 /* @var $this Zend\View\Renderer\PhpRenderer */
+
+$this->layout()->setVariables([
+    'title' => 'Proveedores',
+])
 ?>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -40,11 +44,11 @@ $(document).ready(function(){
 });
 </script>
 
-<h1>Proveedores</h1>
 <p>
     Listado de todos los proveedores importados del portal de
     <a href="http://guatecompras.gt/proveedores/consultaProveeAdjLst.aspx?lper=2014">Guatecompras</a>.
 </p>
+<?=$this->partial('partial/dbcomprasdisclamer') ?>
 <center>
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <!-- horizontal-content -->
